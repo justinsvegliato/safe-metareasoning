@@ -1,4 +1,4 @@
-class SafetySensitiveAutonomousSystem:
+class Ssas:
     def __init__(self, object_level_process, meta_level_controllers):
         self.object_level_process = object_level_process
         self.meta_level_controllers = meta_level_controllers
@@ -17,8 +17,7 @@ class SafetySensitiveAutonomousSystem:
             if worst_case_severity < lowest_severity:
                 lowest_severity = worst_case_severity
                 lowest_severity_meta_level_actions = [meta_level_action]
-
-            if worst_case_severity == lowest_severity:
+            elif worst_case_severity is lowest_severity:
                 lowest_severity_meta_level_actions.append(meta_level_action)
 
         lowest_interference = float('inf')
@@ -34,6 +33,7 @@ class SafetySensitiveAutonomousSystem:
             if worst_case_interference < lowest_interference:
                 lowest_interference = worst_case_interference
                 lowest_interference_meta_level_actions = [meta_level_action]
-
-            if worst_case_interference == lowest_interference:
+            elif worst_case_interference is lowest_interference:
                 lowest_interference_meta_level_actions.append(meta_level_action)
+
+        return lowest_interference_meta_level_actions

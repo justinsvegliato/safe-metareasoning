@@ -1,3 +1,6 @@
+import math
+
+
 def print_states(mdp):
     print("States:")
 
@@ -75,12 +78,20 @@ def print_mdp(mdp):
     print_start_state_function(mdp)
 
 
-def print_grid_world_domain(grid_world):
-    for row in range(len(grid_world)):
+def print_grid_world_domain(grid_world, current_state):
+    height = len(grid_world)
+    width = len(grid_world[0])
+
+    current_row = math.floor(current_state / width)
+    current_column = current_state - current_row * width
+
+    for row in range(height):
         text = ""
 
-        for column in range(len(grid_world[row])):
-            if grid_world[row][column] == 'W':
+        for column in range(width):
+            if row == current_row and column == current_column:
+                text += "R"
+            elif grid_world[row][column] == 'W':
                 text += "\u25A0"
             elif grid_world[row][column] == 'G':
                 text += "\u272A"
