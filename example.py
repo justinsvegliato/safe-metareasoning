@@ -1,4 +1,3 @@
-import math
 import random
 import time
 
@@ -7,7 +6,7 @@ import numpy as np
 import mdp_printer
 import mdp_solver
 from grid_world_mdp import GridWorldMdp
-from obstacle_mlc import ObstacleMlc
+from obstacle_collision_mlc import ObstacleCollisionMlc
 from ssas import Ssas
 from traction_loss_mlc import TractionLossMlc
 
@@ -36,44 +35,40 @@ def main():
         ['O', 'O', 'O', 'O', 'O', 'W', 'W', 'W', 'W', 'W', 'G', 'O']
     ]
 
-    print("Setting up the grid world MDP...")
+    print("Creating and solving the grid world MDP...")
     mdp = GridWorldMdp(grid_world)
-
-    print("Solving the grid world MDP...")
     solution = mdp_solver.solve(mdp, 0.99)
-
-    print("Concrete Grid World Policy:")
-    mdp_printer.print_grid_world_policy(grid_world, solution['policy'])
 
     print("Creating the traction loss MLC...")
     traction_loss_mlc = TractionLossMlc()
 
     print("Creating the obstacle MLC...")
-    obstacle_mlc = ObstacleMlc()
+    obstacle_collision_mlc = ObstacleCollisionMlc()
 
     print("Creating the SSAS...")
-    ssas = Ssas(mdp, [traction_loss_mlc, obstacle_mlc])
+    ssas = Ssas(mdp, [traction_loss_mlc, obstacle_collision_mlc])
 
     current_state = 0
     current_action = None
 
     while current_action != "STAY":
+        print("===================================================================")
+
         mdp_printer.print_grid_world_domain(grid_world, current_state)
-        print("==================================")
 
         current_action = solution['policy'][current_state]
 
         traction_loss_mlc_state = np.random.choice(traction_loss_mlc.meta_level_states(), p=[0.1, 0.2, 0.7])
-        obstacle_mlc_state = np.random.choice(obstacle_mlc.meta_level_states(), p=[0.2, 0.8])
+        obstacle_mlc_state = np.random.choice(obstacle_collision_mlc.meta_level_states(), p=[0.2, 0.8])
 
         print("Traction Loss MLC State:", traction_loss_mlc_state)
-        print("Obstacle MLC State:", obstacle_mlc_state)
+        print("Obstacle Collision MLC State:", obstacle_mlc_state)
 
-        traction_loss_recommendation = traction_loss_mlc.recommend(traction_loss_mlc_state)
-        obstacle_loss_recommendation = obstacle_mlc.recommend(obstacle_mlc_state)
+        traction_loss_recommendation = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
+        obstacle_loss_recommendation = ssas.recommend(obstacle_collision_mlc, obstacle_mlc_state)
         meta_level_actions = ssas.resolve([traction_loss_recommendation, obstacle_loss_recommendation])
 
-        print("Excuted:", meta_level_actions)
+        print("Hyperparameter Selection:", meta_level_actions)
 
         current_state = get_successor_state(current_state, current_action, mdp)
 

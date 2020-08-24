@@ -1,7 +1,4 @@
-class ObstacleMlc:
-    def __init__(self):
-        pass
-
+class ObstacleCollisionMlc:
     def meta_level_states(self):
         return ['BLOCKING', 'NOT_BLOCKING']
 
@@ -42,6 +39,3 @@ class ObstacleMlc:
             return 0
 
         return False
-
-    def recommend(self, state):
-        return {action: (self.severity_function(state, action), self.interference_function(state, action)) for action in self.meta_level_actions()}

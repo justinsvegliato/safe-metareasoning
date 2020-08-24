@@ -1,7 +1,4 @@
 class TractionLossMlc:
-    def __init__(self):
-        pass
-
     def meta_level_states(self):
         return ['HIGH', 'MEDIUM', 'LOW']
 
@@ -52,6 +49,3 @@ class TractionLossMlc:
             return 0
 
         return False
-
-    def recommend(self, state):
-        return {action: (self.severity_function(state, action), self.interference_function(state, action)) for action in self.meta_level_actions()}

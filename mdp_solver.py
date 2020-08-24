@@ -26,7 +26,7 @@ class MemoryMDP:
             self.start_state_probabilities[state] = mdp.start_state_function(self.states[state])
 
 
-def __validate(memory_mdp):
+def validate(memory_mdp):
     assert memory_mdp.n_states is not None
     assert memory_mdp.n_actions is not None
 
@@ -41,16 +41,16 @@ def __validate(memory_mdp):
     assert memory_mdp.start_state_probabilities.shape == (memory_mdp.n_states,)
 
 
-def __set_variables(c, memory_mdp):
+def set_variables(c, memory_mdp):
     c.variables.add(types=[c.variables.type.continuous] * memory_mdp.n_states)
 
 
-def __set_objective(c, memory_mdp):
+def set_objective(c, memory_mdp):
     c.objective.set_linear([(i, memory_mdp.start_state_probabilities[i]) for i in range(memory_mdp.n_states)])
     c.objective.set_sense(c.objective.sense.minimize)
 
 
-def __set_constraints(program, memory_mdp, gamma):
+def set_constraints(program, memory_mdp, gamma):
     lin_expr = []
     rhs = []
 
@@ -73,7 +73,7 @@ def __set_constraints(program, memory_mdp, gamma):
     program.linear_constraints.add(lin_expr=lin_expr, rhs=rhs, senses=["G"] * len(rhs))
 
 
-def __get_policy(values, memory_mdp, gamma):
+def get_policy(values, memory_mdp, gamma):
     policy = []
 
     for i in range(memory_mdp.n_states):
@@ -93,13 +93,13 @@ def __get_policy(values, memory_mdp, gamma):
 def solve(mdp, gamma):
     memory_mdp = MemoryMDP(mdp)
 
-    __validate(memory_mdp)
+    validate(memory_mdp)
 
     c = cplex.Cplex()
 
-    __set_variables(c, memory_mdp)
-    __set_objective(c, memory_mdp)
-    __set_constraints(c, memory_mdp, gamma)
+    set_variables(c, memory_mdp)
+    set_objective(c, memory_mdp)
+    set_constraints(c, memory_mdp, gamma)
 
     print("===== Program Details =============================================")
     print("{} variables".format(c.variables.get_num()))
@@ -113,7 +113,7 @@ def solve(mdp, gamma):
 
     objective_value = c.solution.get_objective_value()
     values = c.solution.get_values()
-    policy = __get_policy(values, memory_mdp, gamma)
+    policy = get_policy(values, memory_mdp, gamma)
 
     return {
         'objective_value': objective_value,

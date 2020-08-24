@@ -3,37 +3,28 @@ class Ssas:
         self.object_level_process = object_level_process
         self.meta_level_controllers = meta_level_controllers
 
+    def filter(self, meta_level_actions, recommendations, key):
+        lowest_meta_level_actions = []
+        lowest_value = float('inf')
+
+        for meta_level_action in meta_level_actions:
+            worst_case_value = float('-inf')
+            for recommendation in recommendations:
+                current_value = recommendation[meta_level_action][key]
+                if current_value > worst_case_value:
+                    worst_case_value = current_value
+
+            if worst_case_value < lowest_value:
+                lowest_value = worst_case_value
+                lowest_meta_level_actions = [meta_level_action]
+            elif worst_case_value is lowest_value:
+                lowest_meta_level_actions.append(meta_level_action)
+
+        return lowest_meta_level_actions
+
     def resolve(self, recommendations):
-        lowest_severity_meta_level_actions = []
-        lowest_severity = float('inf')
+        lowest_severity_meta_level_actions = self.filter(self.meta_level_controllers[0].meta_level_actions(), recommendations, 'severity')
+        return self.filter(lowest_severity_meta_level_actions, recommendations, 'interference')
 
-        for meta_level_action in self.meta_level_controllers[0].meta_level_actions():
-            worst_case_severity = float('-inf')
-            for recommendation in recommendations:
-                current_severity = recommendation[meta_level_action][0]
-                if current_severity > worst_case_severity:
-                    worst_case_severity = current_severity
-
-            if worst_case_severity < lowest_severity:
-                lowest_severity = worst_case_severity
-                lowest_severity_meta_level_actions = [meta_level_action]
-            elif worst_case_severity is lowest_severity:
-                lowest_severity_meta_level_actions.append(meta_level_action)
-
-        lowest_interference = float('inf')
-        lowest_interference_meta_level_actions = []
-
-        for meta_level_action in lowest_severity_meta_level_actions:
-            worst_case_interference = float('-inf')
-            for recommendation in recommendations:
-                current_interference = recommendation[meta_level_action][1]
-                if current_interference > worst_case_interference:
-                    worst_case_interference = current_interference
-
-            if worst_case_interference < lowest_interference:
-                lowest_interference = worst_case_interference
-                lowest_interference_meta_level_actions = [meta_level_action]
-            elif worst_case_interference is lowest_interference:
-                lowest_interference_meta_level_actions.append(meta_level_action)
-
-        return lowest_interference_meta_level_actions
+    def recommend(self, mlc, state):
+        return {action: {'severity': mlc.severity_function(state, action), 'interference': mlc.interference_function(state, action)} for action in mlc.meta_level_actions()}
