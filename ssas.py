@@ -23,8 +23,7 @@ class Ssas:
         return lowest_meta_level_actions
 
     def resolve(self, recommendations):
-        lowest_severity_meta_level_actions = self.filter(self.meta_level_controllers[0].meta_level_actions(), recommendations, 'severity')
-        return self.filter(lowest_severity_meta_level_actions, recommendations, 'interference')
+        return self.filter(self.filter(self.meta_level_controllers[0].meta_level_actions(), recommendations, 'severity'), recommendations, 'interference')
 
     def recommend(self, mlc, state):
         return {action: {'severity': mlc.severity_function(state, action), 'interference': mlc.interference_function(state, action)} for action in mlc.meta_level_actions()}
