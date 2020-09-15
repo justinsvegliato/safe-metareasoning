@@ -2,6 +2,7 @@ import cplex
 import numpy as np
 
 
+# TODO: Fix this hack
 class MemoryMDP:
     def __init__(self, mdp):
         self.states = mdp.states()
@@ -13,7 +14,7 @@ class MemoryMDP:
         self.rewards = np.zeros(shape=(self.n_states, self.n_actions))
         for state in range(self.n_states):
             for action in range(self.n_actions):
-                self.rewards[state, action] = mdp.reward_function(self.states[state], self.actions[action])
+                self.rewards[state, action] = 5 - mdp.reward_function(self.states[state], self.actions[action])
 
         self.transition_probabilities = np.zeros(shape=(self.n_states, self.n_actions, self.n_states))
         for state in range(self.n_states):

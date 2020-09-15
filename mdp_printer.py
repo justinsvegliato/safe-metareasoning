@@ -34,7 +34,7 @@ def print_transition_function(mdp):
                 if probability > 0:
                     print(f"    Successor State: {successor_state} -> {probability}")
 
-            is_valid = is_valid and total_probability == 1.0
+            is_valid = is_valid and 0.99 <= total_probability <= 1.01
             print(f"    Total Probability: {total_probability}")
 
             if not is_valid:
