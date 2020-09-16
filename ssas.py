@@ -9,37 +9,53 @@ class Ssas:
         self.object_level_process = object_level_process
         self.meta_level_controllers = meta_level_controllers
 
-        self.severity_action_value_map = {}
-        self.interference_action_value_map = {}
+        self.severity_parameter_value_map = {}
+        self.interference_parameter_value_map = {}
+
         for meta_level_controller in self.meta_level_controllers:
             solution = mlc_solver.solve(meta_level_controller, GAMMA, EPSILON)
-            self.severity_action_value_map[meta_level_controller.name] = solution['severity_action_values']
-            self.interference_action_value_map[meta_level_controller.name] = solution['interference_action_values']
+            self.severity_parameter_value_map[meta_level_controller.name] = solution['severity_parameter_values']
+            self.interference_parameter_value_map[meta_level_controller.name] = solution['interference_parameter_values']
 
-    def filter(self, meta_level_actions, recommendations, key):
-        lowest_meta_level_actions = []
+    # TODO: Clean up this function
+    def filter(self, parameters, recommendations, key):
+        lowest_parameters = []
         lowest_value = float('inf')
 
-        for meta_level_action in meta_level_actions:
+        for parameter in parameters:
             worst_case_value = float('-inf')
             for recommendation in recommendations:
-                current_value = recommendation[meta_level_action][key]
+                current_value = recommendation[parameter][key]
                 if current_value > worst_case_value:
                     worst_case_value = current_value
 
             if worst_case_value < lowest_value:
                 lowest_value = worst_case_value
-                lowest_meta_level_actions = [meta_level_action]
+                lowest_parameters = [parameter]
             elif worst_case_value is lowest_value:
-                lowest_meta_level_actions.append(meta_level_action)
+                lowest_parameters.append(parameter)
 
-        return lowest_meta_level_actions
+        return lowest_parameters
 
-    def resolve(self, recommendations):
-        return self.filter(self.filter(self.meta_level_controllers[0].actions(), recommendations, 'severity'), recommendations, 'interference')
+    def resolve(self, preferences):
+        parameters = self.meta_level_controllers[0].parameters()
+        filtered_severity_preferences = self.filter(parameters, preferences, 'severity')
+        filtered_interference_preferences = self.filter(parameters, filtered_severity_preferences, 'interferences')
+        return filtered_interference_preferences
 
-    def myopic_recommend(self, mlc, state):
-        return {action: {'severity': mlc.severity_function(state, action), 'interference': mlc.interference_function(state, action)} for action in mlc.meta_level_actions()}
+    def recommend(self, meta_level_controller, state, is_nonmyopic=True):
+        preference = {}
 
-    def nonmyopic_recommend(self, mlc, state):
-        return {action: {'severity': self.severity_action_value_map[mlc.name][state][action], 'interference': self.interference_action_value_map[mlc.name][state][action]} for action in mlc.actions()}
+        for parameter in meta_level_controller.parameters():
+            if is_nonmyopic:
+                preference[parameter] = {
+                    'severity': self.severity_parameter_value_map[meta_level_controller.name][state][parameter],
+                    'interference': self.interference_parameter_value_map[meta_level_controller.name][state][parameter]
+                }
+            else:
+                preference[parameter] = {
+                    'severity': meta_level_controller.severity_function(state, parameter),
+                    'interference': meta_level_controller.interference_function(state, parameter)
+                }
+
+        return preference

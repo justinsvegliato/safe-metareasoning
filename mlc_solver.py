@@ -3,21 +3,21 @@ import math
 MAXIMUM_SEVERITY = 5
 
 
-def get_severity_state_values(mdp, gamma, epsilon):
-    severity_state_values = {state: 0.0 for state in mdp.states()}
+def get_severity_state_values(mlc, gamma, epsilon):
+    severity_state_values = {state: 0.0 for state in mlc.states()}
 
     while True:
         delta = 0
 
-        for state in mdp.states():
+        for state in mlc.states():
             best_severity_value = float('-inf')
 
-            for action in mdp.actions():
-                immediate_severity = MAXIMUM_SEVERITY - mdp.severity_function(state, action)
+            for parameter in mlc.parameters():
+                immediate_severity = MAXIMUM_SEVERITY - mlc.severity_function(state, parameter)
 
                 expected_future_severity = 0
-                for successor_state in mdp.states():
-                    expected_future_severity += mdp.transition_function(state, action, successor_state) * severity_state_values[successor_state]
+                for successor_state in mlc.states():
+                    expected_future_severity += mlc.transition_function(state, parameter, successor_state) * severity_state_values[successor_state]
 
                 severity_value = immediate_severity + gamma * expected_future_severity
 
@@ -32,18 +32,18 @@ def get_severity_state_values(mdp, gamma, epsilon):
             return severity_state_values
 
 
-def get_interference_state_values(mdp, gamma, epsilon, policy):
-    interference_state_values = {state: 0.0 for state in mdp.states()}
+def get_interference_state_values(mlc, gamma, epsilon, policy):
+    interference_state_values = {state: 0.0 for state in mlc.states()}
 
     while True:
         delta = 0
 
-        for state in mdp.states():
-            immediate_interference = MAXIMUM_SEVERITY - mdp.interference_function(state, policy[state])
+        for state in mlc.states():
+            immediate_interference = MAXIMUM_SEVERITY - mlc.interference_function(state, policy[state])
 
             expected_future_interference = 0
-            for successor_state in mdp.states():
-                expected_future_interference += mdp.transition_function(state, policy[state], successor_state) * interference_state_values[successor_state]
+            for successor_state in mlc.states():
+                expected_future_interference += mlc.transition_function(state, policy[state], successor_state) * interference_state_values[successor_state]
 
             new_interference_value = immediate_interference + gamma * expected_future_interference
             delta = max(delta, math.fabs(new_interference_value - interference_state_values[state]))
@@ -54,81 +54,81 @@ def get_interference_state_values(mdp, gamma, epsilon, policy):
             return interference_state_values
 
 
-def get_severity_action_values(mdp, gamma, severity_state_values):
-    severity_action_values = {}
+def get_severity_parameter_values(mlc, gamma, severity_state_values):
+    severity_parameter_values = {}
 
-    for state in mdp.states():
-        severity_action_values[state] = {}
+    for state in mlc.states():
+        severity_parameter_values[state] = {}
 
-        for action in mdp.actions():
-            immediate_severity = MAXIMUM_SEVERITY - mdp.severity_function(state, action)
+        for parameter in mlc.parameters():
+            immediate_severity = MAXIMUM_SEVERITY - mlc.severity_function(state, parameter)
 
             expected_future_severity = 0
-            for successor_state in mdp.states():
-                expected_future_severity += mdp.transition_function(state, action, successor_state) * severity_state_values[successor_state]
+            for successor_state in mlc.states():
+                expected_future_severity += mlc.transition_function(state, parameter, successor_state) * severity_state_values[successor_state]
 
-            severity_action_values[state][action] = immediate_severity + gamma * expected_future_severity
+            severity_parameter_values[state][parameter] = immediate_severity + gamma * expected_future_severity
 
-    return severity_action_values
+    return severity_parameter_values
 
 
-def get_interference_action_values(mdp, gamma, interference_state_values):
-    interference_action_values = {}
+def get_interference_parameter_values(mlc, gamma, interference_state_values):
+    interference_parameter_values = {}
 
-    for state in mdp.states():
-        interference_action_values[state] = {}
+    for state in mlc.states():
+        interference_parameter_values[state] = {}
 
-        for action in mdp.actions():
-            immediate_interference = mdp.interference_function(state, action)
+        for parameter in mlc.parameters():
+            immediate_interference = mlc.interference_function(state, parameter)
 
             expected_future_interference = 0
-            for successor_state in mdp.states():
-                expected_future_interference += mdp.transition_function(state, action, successor_state) * interference_state_values[successor_state]
+            for successor_state in mlc.states():
+                expected_future_interference += mlc.transition_function(state, parameter, successor_state) * interference_state_values[successor_state]
 
-            interference_action_values[state][action] = immediate_interference + gamma * expected_future_interference
+            interference_parameter_values[state][parameter] = immediate_interference + gamma * expected_future_interference
 
-    return interference_action_values
+    return interference_parameter_values
 
 
-def get_policy(mdp, gamma, severity_state_values):
+def get_policy(mlc, gamma, severity_state_values):
     policy = {}
 
-    for state in mdp.states():
-        best_action = None
-        best_action_value = None
+    for state in mlc.states():
+        best_parameter = None
+        best_parameter_value = None
 
-        for action in mdp.actions():
-            immediate_severity = MAXIMUM_SEVERITY - mdp.severity_function(state, action)
+        for parameter in mlc.parameters():
+            immediate_severity = MAXIMUM_SEVERITY - mlc.severity_function(state, parameter)
 
             expected_future_severity = 0
-            for successor_state in mdp.states():
-                expected_future_severity += mdp.transition_function(state, action, successor_state) * severity_state_values[successor_state]
+            for successor_state in mlc.states():
+                expected_future_severity += mlc.transition_function(state, parameter, successor_state) * severity_state_values[successor_state]
 
-            action_value = immediate_severity + gamma * expected_future_severity
+            parameter_value = immediate_severity + gamma * expected_future_severity
 
-            if best_action_value is None or action_value > best_action_value:
-                best_action = action
-                best_action_value = action_value
+            if best_parameter_value is None or parameter_value > best_parameter_value:
+                best_parameter = parameter
+                best_parameter_value = parameter_value
 
-        policy[state] = best_action
+        policy[state] = best_parameter
 
     return policy
 
 
-def solve(mdp, gamma, epsilon):
-    severity_state_values = get_severity_state_values(mdp, gamma, epsilon)
-    severity_action_values = get_severity_action_values(mdp, gamma, severity_state_values)
+def solve(mlc, gamma, epsilon):
+    severity_state_values = get_severity_state_values(mlc, gamma, epsilon)
+    severity_parameter_values = get_severity_parameter_values(mlc, gamma, severity_state_values)
 
-    policy = get_policy(mdp, gamma, severity_state_values)
+    policy = get_policy(mlc, gamma, severity_state_values)
 
-    interference_state_values = get_interference_state_values(mdp, gamma, epsilon, policy)
-    interference_action_values = get_interference_action_values(mdp, gamma, interference_state_values)
+    interference_state_values = get_interference_state_values(mlc, gamma, epsilon, policy)
+    interference_parameter_values = get_interference_parameter_values(mlc, gamma, interference_state_values)
 
     return {
         'severity_state_values': severity_state_values,
-        'severity_action_values': severity_action_values,
+        'severity_parameter_values': severity_parameter_values,
         'interference_state_values': interference_state_values,
-        'interference_action_values': interference_action_values,
+        'interference_parameter_values': interference_parameter_values,
         'policy': policy
     }
   

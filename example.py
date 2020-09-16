@@ -4,10 +4,10 @@ import time
 import numpy as np
 
 import mdp_printer
-import olp_solver
+import mdp_solver
 from grid_world_mdp import GridWorldMdp
-from ssas import Ssas
 from nonmyopic_traction_loss_mlc import TractionLossMlc
+from ssas import Ssas
 
 
 def get_successor_state(current_state, current_action, mdp):
@@ -36,7 +36,7 @@ def main():
 
     print("Creating and solving the grid world MDP...")
     mdp = GridWorldMdp(grid_world)
-    solution = olp_solver.solve(mdp, 0.99)
+    solution = mdp_solver.solve(mdp, 0.99)
 
     print("Creating the traction loss MLC...")
     traction_loss_mlc1 = TractionLossMlc()
@@ -45,11 +45,12 @@ def main():
     print("Creating the SSAS...")
     ssas = Ssas(mdp, [traction_loss_mlc1, traction_loss_mlc2])
 
-    traction_loss_recommendation1 = ssas.nonmyopic_recommend(traction_loss_mlc1, 'APPROACHING:LEFT:LOW:LEFT')
-    traction_loss_recommendation2 = ssas.nonmyopic_recommend(traction_loss_mlc2, 'APPROACHING:CENTER:LOW:LEFT')
-    meta_level_actions = ssas.resolve([traction_loss_recommendation1, traction_loss_recommendation2])
-    print(traction_loss_recommendation1)
-    print(traction_loss_recommendation2)
+    traction_loss_preference_1 = ssas.recommend(traction_loss_mlc1, 'APPROACHING:LEFT:LOW:LEFT')
+    traction_loss_preference_2 = ssas.recommend(traction_loss_mlc2, 'APPROACHING:CENTER:LOW:LEFT')
+    meta_level_actions = ssas.resolve([traction_loss_preference_1, traction_loss_preference_2])
+    
+    print(traction_loss_preference_1)
+    print(traction_loss_preference_2)
     print(meta_level_actions)
 
     # current_state = 0
