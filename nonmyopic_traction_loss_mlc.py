@@ -52,6 +52,8 @@ VEHICLE_OFFSET_PROBABILITIES = {
 
 class TractionLossMlc:
     def __init__(self):
+        self.name = 'TRACTION_LOSS'
+
         self.meta_level_state_registry = {}
         for state_tuple in itertools.product(ROAD_POSITION, LANE_POSITION, VEHICLE_SPEED, VEHICLE_OFFSET):
             state = ':'.join(state_tuple)
@@ -116,7 +118,7 @@ class TractionLossMlc:
 
         return 1
 
-    def reward_function(self, state, _):
+    def severity_function(self, state, _):
         state_record = self.meta_level_state_registry[state]
 
         if state_record['road_position'] == 'APPROACHING':
@@ -152,21 +154,3 @@ class TractionLossMlc:
             return 10
 
         return 0
-
-    def start_state_function(self, state):
-        start_states = []
-
-        for key in self.states():
-            state_record = self.meta_level_state_registry[key]
-            if state_record['road_position'] == 'NONE' and state_record['lane_position'] == 'NONE':
-                start_states.append(key)
-
-        return 1.0 / len(start_states) if state in start_states else 0
-
-
-import vi_mdp_solver
-import json
-
-mdp = TractionLossMlc()
-solution = vi_mdp_solver.solve(mdp, 0.99, 0.01)
-print(json.dumps(solution['policy'], indent=4))
