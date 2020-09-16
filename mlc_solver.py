@@ -1,7 +1,5 @@
 import math
 
-MAXIMUM_SEVERITY = 5
-
 
 def get_severity_state_values(mlc, gamma, epsilon):
     severity_state_values = {state: 0.0 for state in mlc.states()}
@@ -10,10 +8,10 @@ def get_severity_state_values(mlc, gamma, epsilon):
         delta = 0
 
         for state in mlc.states():
-            best_severity_value = float('-inf')
+            best_severity_value = float('inf')
 
             for parameter in mlc.parameters():
-                immediate_severity = MAXIMUM_SEVERITY - mlc.severity_function(state, parameter)
+                immediate_severity = mlc.severity_function(state, parameter)
 
                 expected_future_severity = 0
                 for successor_state in mlc.states():
@@ -21,7 +19,7 @@ def get_severity_state_values(mlc, gamma, epsilon):
 
                 severity_value = immediate_severity + gamma * expected_future_severity
 
-                if best_severity_value < severity_value:
+                if best_severity_value > severity_value:
                     best_severity_value = severity_value
 
             delta = max(delta, math.fabs(best_severity_value - severity_state_values[state]))
@@ -39,7 +37,7 @@ def get_interference_state_values(mlc, gamma, epsilon, policy):
         delta = 0
 
         for state in mlc.states():
-            immediate_interference = MAXIMUM_SEVERITY - mlc.interference_function(state, policy[state])
+            immediate_interference = mlc.interference_function(state, policy[state])
 
             expected_future_interference = 0
             for successor_state in mlc.states():
@@ -61,7 +59,7 @@ def get_severity_parameter_values(mlc, gamma, severity_state_values):
         severity_parameter_values[state] = {}
 
         for parameter in mlc.parameters():
-            immediate_severity = MAXIMUM_SEVERITY - mlc.severity_function(state, parameter)
+            immediate_severity = mlc.severity_function(state, parameter)
 
             expected_future_severity = 0
             for successor_state in mlc.states():
@@ -98,7 +96,7 @@ def get_policy(mlc, gamma, severity_state_values):
         best_parameter_value = None
 
         for parameter in mlc.parameters():
-            immediate_severity = MAXIMUM_SEVERITY - mlc.severity_function(state, parameter)
+            immediate_severity = mlc.severity_function(state, parameter)
 
             expected_future_severity = 0
             for successor_state in mlc.states():
@@ -106,7 +104,7 @@ def get_policy(mlc, gamma, severity_state_values):
 
             parameter_value = immediate_severity + gamma * expected_future_severity
 
-            if best_parameter_value is None or parameter_value > best_parameter_value:
+            if best_parameter_value is None or parameter_value < best_parameter_value:
                 best_parameter = parameter
                 best_parameter_value = parameter_value
 

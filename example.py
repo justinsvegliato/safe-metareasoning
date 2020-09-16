@@ -39,19 +39,15 @@ def main():
     solution = mdp_solver.solve(mdp, 0.99)
 
     print("Creating the traction loss MLC...")
-    traction_loss_mlc1 = TractionLossMlc()
-    traction_loss_mlc2 = TractionLossMlc()
+    traction_loss_mlc = TractionLossMlc()
 
     print("Creating the SSAS...")
-    ssas = Ssas(mdp, [traction_loss_mlc1, traction_loss_mlc2])
+    ssas = Ssas(mdp, [traction_loss_mlc])
 
-    traction_loss_preference_1 = ssas.recommend(traction_loss_mlc1, 'APPROACHING:LEFT:LOW:LEFT')
-    traction_loss_preference_2 = ssas.recommend(traction_loss_mlc2, 'APPROACHING:CENTER:LOW:LEFT')
-    meta_level_actions = ssas.resolve([traction_loss_preference_1, traction_loss_preference_2])
-    
-    print(traction_loss_preference_1)
-    print(traction_loss_preference_2)
-    print(meta_level_actions)
+    traction_loss_preference_1 = ssas.recommend(traction_loss_mlc, 'APPROACHING:LEFT:LOW:CENTER')
+    traction_loss_preference_2 = ssas.recommend(traction_loss_mlc, 'AT:RIGHT:LOW:CENTER')
+    parameters = ssas.resolve([traction_loss_preference_1, traction_loss_preference_2])
+    print(parameters)
 
     # current_state = 0
     # current_action = None
