@@ -5,7 +5,6 @@ import numpy as np
 
 import mdp_printer
 import mdp_solver
-import mlc_printer
 from grid_world_mdp import GridWorldMdp
 from nonmyopic_traction_loss_mlc import TractionLossMlc
 from ssas import Ssas
@@ -41,15 +40,12 @@ def main():
 
     print("Creating the traction loss MLC...")
     traction_loss_mlc = TractionLossMlc()
-    mlc_printer.print_severity_function(traction_loss_mlc)
-
-    exit()
 
     print("Creating the SSAS...")
     ssas = Ssas(mdp, [traction_loss_mlc])
 
-    # current_state = 0
-    # current_action = None
+    current_state = 0
+    current_action = None
 
     # while current_action != "STAY":
     #     print("===================================================================")

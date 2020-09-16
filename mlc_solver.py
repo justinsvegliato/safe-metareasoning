@@ -27,7 +27,7 @@ def get_severity_state_values(mlc, gamma, epsilon):
 
         print('Delta:', delta)
         if delta < epsilon:
-            return severity_state_values
+            return {state: round(severity_state_values[state], 3) for state in mlc.states()}
 
 
 def get_interference_state_values(mlc, gamma, epsilon, policy):
@@ -49,7 +49,7 @@ def get_interference_state_values(mlc, gamma, epsilon, policy):
 
         print('Delta:', delta)
         if delta < epsilon:
-            return interference_state_values
+            return {state: round(interference_state_values[state], 3) for state in mlc.states()}
 
 
 def get_severity_parameter_values(mlc, gamma, severity_state_values):
@@ -67,7 +67,7 @@ def get_severity_parameter_values(mlc, gamma, severity_state_values):
 
             severity_parameter_values[state][parameter] = immediate_severity + gamma * expected_future_severity
 
-    return severity_parameter_values
+    return {state: {parameter: round(severity_parameter_values[state][parameter], 3) for parameter in mlc.parameters()} for state in mlc.states()}
 
 
 def get_interference_parameter_values(mlc, gamma, interference_state_values):
@@ -85,10 +85,10 @@ def get_interference_parameter_values(mlc, gamma, interference_state_values):
 
             interference_parameter_values[state][parameter] = immediate_interference + gamma * expected_future_interference
 
-    return interference_parameter_values
+    return {state: {parameter: round(interference_parameter_values[state][parameter], 3) for parameter in mlc.parameters()} for state in mlc.states()}
 
 
-def get_policy(mlc, gamma, severity_state_values):
+def get_policy(mlc, severity_parameter_values):
     policy = {}
 
     for state in mlc.states():
@@ -96,13 +96,7 @@ def get_policy(mlc, gamma, severity_state_values):
         best_parameter_value = None
 
         for parameter in mlc.parameters():
-            immediate_severity = mlc.severity_function(state, parameter)
-
-            expected_future_severity = 0
-            for successor_state in mlc.states():
-                expected_future_severity += mlc.transition_function(state, parameter, successor_state) * severity_state_values[successor_state]
-
-            parameter_value = immediate_severity + gamma * expected_future_severity
+            parameter_value = severity_parameter_values[state][parameter]
 
             if best_parameter_value is None or parameter_value < best_parameter_value:
                 best_parameter = parameter
@@ -117,13 +111,7 @@ def solve(mlc, gamma, epsilon):
     severity_state_values = get_severity_state_values(mlc, gamma, epsilon)
     severity_parameter_values = get_severity_parameter_values(mlc, gamma, severity_state_values)
 
-    # import json
-    # print(json.dumps(severity_parameter_values, indent=4))
-
-    policy = get_policy(mlc, gamma, severity_state_values)
-    # print(json.dumps(policy, indent=4))
-
-    # exit()
+    policy = get_policy(mlc, severity_parameter_values)
 
     interference_state_values = get_interference_state_values(mlc, gamma, epsilon, policy)
     interference_parameter_values = get_interference_parameter_values(mlc, gamma, interference_state_values)
@@ -135,4 +123,3 @@ def solve(mlc, gamma, epsilon):
         'interference_parameter_values': interference_parameter_values,
         'policy': policy
     }
-  

@@ -121,15 +121,6 @@ class TractionLossMlc:
     def severity_function(self, state, _):
         state_record = self.state_registry[state]
 
-        if state_record['road_position'] == 'APPROACHING':
-            if state_record['lane_position'] == state_record['vehicle_offset']:
-                if state_record['vehicle_speed'] == 'LOW':
-                    return 1
-                if state_record['vehicle_speed'] == 'NORMAL':
-                    return 2
-                if state_record['vehicle_speed'] == 'HIGH':
-                    return 3
-
         if state_record['road_position'] == 'AT':
             if state_record['lane_position'] == state_record['vehicle_offset']:
                 if state_record['vehicle_speed'] == 'LOW':
