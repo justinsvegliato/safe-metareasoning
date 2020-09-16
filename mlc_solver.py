@@ -117,7 +117,13 @@ def solve(mlc, gamma, epsilon):
     severity_state_values = get_severity_state_values(mlc, gamma, epsilon)
     severity_parameter_values = get_severity_parameter_values(mlc, gamma, severity_state_values)
 
+    # import json
+    # print(json.dumps(severity_parameter_values, indent=4))
+
     policy = get_policy(mlc, gamma, severity_state_values)
+    # print(json.dumps(policy, indent=4))
+
+    # exit()
 
     interference_state_values = get_interference_state_values(mlc, gamma, epsilon, policy)
     interference_parameter_values = get_interference_parameter_values(mlc, gamma, interference_state_values)

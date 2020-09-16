@@ -5,6 +5,7 @@ import numpy as np
 
 import mdp_printer
 import mdp_solver
+import mlc_printer
 from grid_world_mdp import GridWorldMdp
 from nonmyopic_traction_loss_mlc import TractionLossMlc
 from ssas import Ssas
@@ -40,14 +41,12 @@ def main():
 
     print("Creating the traction loss MLC...")
     traction_loss_mlc = TractionLossMlc()
+    mlc_printer.print_severity_function(traction_loss_mlc)
+
+    exit()
 
     print("Creating the SSAS...")
     ssas = Ssas(mdp, [traction_loss_mlc])
-
-    traction_loss_preference_1 = ssas.recommend(traction_loss_mlc, 'APPROACHING:LEFT:LOW:CENTER')
-    traction_loss_preference_2 = ssas.recommend(traction_loss_mlc, 'AT:RIGHT:LOW:CENTER')
-    parameters = ssas.resolve([traction_loss_preference_1, traction_loss_preference_2])
-    print(parameters)
 
     # current_state = 0
     # current_action = None
@@ -59,17 +58,26 @@ def main():
 
     #     current_action = solution['policy'][current_state]
 
-    #     traction_loss_mlc_state = np.random.choice(traction_loss_mlc.meta_level_states(), p=[0.1, 0.2, 0.7])
-    #     obstacle_mlc_state = np.random.choice(obstacle_collision_mlc.meta_level_states(), p=[0.2, 0.8])
+    #     traction_loss_mlc_start_state = np.random.choice(traction_loss_mlc.get_start_states())
+    #     print("Traction Loss MLC Start State:", traction_loss_mlc_start_state)
 
+    #     traction_loss_mlc_state = get_successor_state(traction_loss_mlc_start_state, 'NONE:NONE', traction_loss_mlc)
     #     print("Traction Loss MLC State:", traction_loss_mlc_state)
-    #     print("Obstacle Collision MLC State:", obstacle_mlc_state)
 
-    #     traction_loss_recommendation = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
-    #     obstacle_loss_recommendation = ssas.recommend(obstacle_collision_mlc, obstacle_mlc_state)
-    #     meta_level_actions = ssas.resolve([traction_loss_recommendation, obstacle_loss_recommendation])
+    #     traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
+    #     parameters = ssas.resolve([traction_loss_mlc_preference])
+    #     selected_parameter = np.random.choice(parameters)
+    #     print("Parameter Selection:", selected_parameter)
 
-    #     print("Hyperparameter Selection:", meta_level_actions)
+    #     while selected_parameter != 'NONE:NONE':
+    #         traction_loss_mlc_state = get_successor_state(traction_loss_mlc_state, selected_parameter, traction_loss_mlc)
+    #         print("Traction Loss MLC State:", traction_loss_mlc_state)
+
+    #         traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
+    #         parameters = ssas.resolve([traction_loss_mlc_preference])
+    #         selected_parameter = np.random.choice(parameters)
+
+    #         print("Parameter Selection:", parameters)
 
     #     current_state = get_successor_state(current_state, current_action, mdp)
 

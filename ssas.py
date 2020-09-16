@@ -1,6 +1,6 @@
 import mlc_solver
 
-EPSILON = 0.01
+EPSILON = 0.001
 GAMMA = 0.99
 
 

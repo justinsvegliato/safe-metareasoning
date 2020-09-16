@@ -21,9 +21,9 @@ LANE_POSITION_PROBABILITIES = {
 
 SPEED_PROBABILITIES = {
     'NONE': {
-        'LOW': 0.25,
-        'NORMAL': 0.5,
-        'HIGH': 0.25
+        'LOW': 0.1,
+        'NORMAL': 0.7,
+        'HIGH': 0.2
     },
     'SLOW_DOWN': {
         'LOW': 1.0,
@@ -33,9 +33,9 @@ SPEED_PROBABILITIES = {
 }
 VEHICLE_OFFSET_PROBABILITIES = {
     'NONE': {
-        'LEFT': 0.25,
-        'CENTER': 0.5,
-        'RIGHT': 0.25
+        'LEFT': 0.05,
+        'CENTER': 0.9,
+        'RIGHT': 0.05
     },
     'SHIFT_LEFT': {
         'LEFT': 1.0,
@@ -154,3 +154,13 @@ class TractionLossMlc:
             return 10
 
         return 0
+
+    def get_start_states(self):
+        start_states = []
+
+        for vehicle_speed in VEHICLE_SPEED:
+            for vehicle_offset in VEHICLE_OFFSET:
+                start_state = 'NONE:NONE:{}:{}'.format(vehicle_speed, vehicle_offset)
+                start_states.append(start_state)
+
+        return start_states
