@@ -1,6 +1,5 @@
 import math
 
-
 SLIP_PROBABILITY = 0.1
 ACTION_DETAILS = {
     'STAY': {

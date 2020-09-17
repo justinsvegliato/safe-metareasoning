@@ -1,8 +1,6 @@
 import random
 import time
 
-import numpy as np
-
 import mdp_printer
 import mdp_solver
 from grid_world_mdp import GridWorldMdp
@@ -47,37 +45,37 @@ def main():
     current_state = 0
     current_action = None
 
-    # while current_action != "STAY":
-    #     print("===================================================================")
+    while current_action != "STAY":
+        print("===================================================================")
 
-    #     mdp_printer.print_grid_world_domain(grid_world, current_state)
+        mdp_printer.print_grid_world_domain(grid_world, current_state)
 
-    #     current_action = solution['policy'][current_state]
+        current_action = solution['policy'][current_state]
 
-    #     traction_loss_mlc_start_state = np.random.choice(traction_loss_mlc.get_start_states())
-    #     print("Traction Loss MLC Start State:", traction_loss_mlc_start_state)
+        traction_loss_mlc_start_state = random.choice(traction_loss_mlc.start_states())
+        print("Traction Loss MLC Start State:", traction_loss_mlc_start_state)
 
-    #     traction_loss_mlc_state = get_successor_state(traction_loss_mlc_start_state, 'NONE:NONE', traction_loss_mlc)
-    #     print("Traction Loss MLC State:", traction_loss_mlc_state)
+        traction_loss_mlc_state = get_successor_state(traction_loss_mlc_start_state, 'NONE:NONE', traction_loss_mlc)
+        print("Traction Loss MLC State:", traction_loss_mlc_state)
 
-    #     traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
-    #     parameters = ssas.resolve([traction_loss_mlc_preference])
-    #     selected_parameter = np.random.choice(parameters)
-    #     print("Parameter Selection:", selected_parameter)
+        traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
+        parameters = ssas.resolve([traction_loss_mlc_preference])
+        selected_parameter = parameters
+        print("Parameter Selection:", selected_parameter)
 
-    #     while selected_parameter != 'NONE:NONE':
-    #         traction_loss_mlc_state = get_successor_state(traction_loss_mlc_state, selected_parameter, traction_loss_mlc)
-    #         print("Traction Loss MLC State:", traction_loss_mlc_state)
+        while selected_parameter != 'NONE:NONE':
+            traction_loss_mlc_state = get_successor_state(traction_loss_mlc_state, selected_parameter, traction_loss_mlc)
+            print("Traction Loss MLC State:", traction_loss_mlc_state)
 
-    #         traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
-    #         parameters = ssas.resolve([traction_loss_mlc_preference])
-    #         selected_parameter = np.random.choice(parameters)
+            traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
+            parameters = ssas.resolve([traction_loss_mlc_preference])
+            selected_parameter = parameters
 
-    #         print("Parameter Selection:", parameters)
+            print("Parameter Selection:", parameters)
 
-    #     current_state = get_successor_state(current_state, current_action, mdp)
+        current_state = get_successor_state(current_state, current_action, mdp)
 
-    #     time.sleep(0.25)
+        time.sleep(0.25)
 
 
 if __name__ == '__main__':

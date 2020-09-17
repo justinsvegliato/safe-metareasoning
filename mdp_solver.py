@@ -41,13 +41,13 @@ def validate(memory_mdp):
     assert memory_mdp.start_state_probabilities.shape == (memory_mdp.n_states,)
 
 
-def set_variables(c, memory_mdp):
-    c.variables.add(types=[c.variables.type.continuous] * memory_mdp.n_states)
+def set_variables(program, memory_mdp):
+    program.variables.add(types=[program.variables.type.continuous] * memory_mdp.n_states)
 
 
-def set_objective(c, memory_mdp):
-    c.objective.set_linear([(i, memory_mdp.start_state_probabilities[i]) for i in range(memory_mdp.n_states)])
-    c.objective.set_sense(c.objective.sense.minimize)
+def set_objective(program, memory_mdp):
+    program.objective.set_linear([(i, memory_mdp.start_state_probabilities[i]) for i in range(memory_mdp.n_states)])
+    program.objective.set_sense(program.objective.sense.minimize)
 
 
 def set_constraints(program, memory_mdp, gamma):
@@ -59,15 +59,16 @@ def set_constraints(program, memory_mdp, gamma):
     for i in range(memory_mdp.n_states):
         for j in range(memory_mdp.n_actions):
             coefficients = []
+
             for k in range(memory_mdp.n_states):
                 if k != i:
                     coefficient = - gamma * memory_mdp.transition_probabilities[i, j, k]
                 else:
                     coefficient = 1 - gamma * memory_mdp.transition_probabilities[i, j, k]
+
                 coefficients.append(coefficient)
 
             lin_expr.append([variables, coefficients])
-
             rhs.append(float(memory_mdp.rewards[i, j]))
 
     program.linear_constraints.add(lin_expr=lin_expr, rhs=rhs, senses=["G"] * len(rhs))
@@ -95,24 +96,24 @@ def solve(mdp, gamma):
 
     validate(memory_mdp)
 
-    c = cplex.Cplex()
+    program = cplex.Cplex()
 
-    set_variables(c, memory_mdp)
-    set_objective(c, memory_mdp)
-    set_constraints(c, memory_mdp, gamma)
+    set_variables(program, memory_mdp)
+    set_objective(program, memory_mdp)
+    set_constraints(program, memory_mdp, gamma)
 
     print("===== Program Details =============================================")
-    print("{} variables".format(c.variables.get_num()))
-    print("{} sense".format(c.objective.sense[c.objective.get_sense()]))
-    print("{} linear coefficients".format(len(c.objective.get_linear())))
-    print("{} linear constraints".format(c.linear_constraints.get_num()))
+    print("{} variables".format(program.variables.get_num()))
+    print("{} sense".format(program.objective.sense[program.objective.get_sense()]))
+    print("{} linear coefficients".format(len(program.objective.get_linear())))
+    print("{} linear constraints".format(program.linear_constraints.get_num()))
 
     print("===== CPLEX Details ===============================================")
-    c.solve()
+    program.solve()
     print("===================================================================")
 
-    objective_value = c.solution.get_objective_value()
-    values = c.solution.get_values()
+    objective_value = program.solution.get_objective_value()
+    values = program.solution.get_values()
     policy = get_policy(values, memory_mdp, gamma)
 
     return {

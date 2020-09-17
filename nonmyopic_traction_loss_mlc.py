@@ -146,7 +146,7 @@ class TractionLossMlc:
 
         return 0
 
-    def get_start_states(self):
+    def start_states(self):
         start_states = []
 
         for vehicle_speed in VEHICLE_SPEED:
