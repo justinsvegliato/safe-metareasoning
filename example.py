@@ -7,6 +7,11 @@ from grid_world_mdp import GridWorldMdp
 from nonmyopic_traction_loss_mlc import TractionLossMlc
 from ssas import Ssas
 
+OLP_SLEEP_DURATION = 0.25
+MLC_SLEEP_DURATION = 0.1
+MINIMUM_ACTION_DURATION = 1
+MAXIMUM_ACTION_DURATION = 10
+
 
 def get_successor_state(current_state, current_action, mdp):
     probability_threshold = random.random()
@@ -32,50 +37,56 @@ def main():
         ['O', 'O', 'O', 'O', 'O', 'W', 'W', 'W', 'W', 'W', 'G', 'O']
     ]
 
-    print("Creating and solving the grid world MDP...")
+    print("Building and solving the grid world MDP...")
     mdp = GridWorldMdp(grid_world)
     solution = mdp_solver.solve(mdp, 0.99)
 
-    print("Creating the traction loss MLC...")
+    print("Building the traction loss MLC...")
     traction_loss_mlc = TractionLossMlc()
 
-    print("Creating the SSAS...")
+    print("Building the SSAS...")
     ssas = Ssas(mdp, [traction_loss_mlc])
 
     current_state = 0
     current_action = None
 
     while current_action != "STAY":
-        print("===================================================================")
-
-        mdp_printer.print_grid_world_domain(grid_world, current_state)
-
         current_action = solution['policy'][current_state]
 
-        traction_loss_mlc_start_state = random.choice(traction_loss_mlc.start_states())
-        print("Traction Loss MLC Start State:", traction_loss_mlc_start_state)
+        print("========== Object Level Process ========================================")
+        mdp_printer.print_grid_world_domain(grid_world, current_state)
+        print("Action In Progress:", current_action)
 
-        traction_loss_mlc_state = get_successor_state(traction_loss_mlc_start_state, 'NONE:NONE', traction_loss_mlc)
-        print("Traction Loss MLC State:", traction_loss_mlc_state)
+        print("========== Traction Loss Meta-Level Controller =========================")
+        action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
-        traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
-        parameters = ssas.resolve([traction_loss_mlc_preference])
-        selected_parameter = parameters
-        print("Parameter Selection:", selected_parameter)
+        traction_loss_state = random.choice(traction_loss_mlc.start_states())
+        traction_loss_preference = ssas.recommend(traction_loss_mlc, traction_loss_state)
+        traction_loss_parameter = ssas.resolve([traction_loss_preference])
 
-        while selected_parameter != 'NONE:NONE':
-            traction_loss_mlc_state = get_successor_state(traction_loss_mlc_state, selected_parameter, traction_loss_mlc)
-            print("Traction Loss MLC State:", traction_loss_mlc_state)
+        state_record = traction_loss_mlc.state_registry[traction_loss_state]
+        parameter_record = traction_loss_mlc.parameter_registry[traction_loss_parameter]
+        print(f"0 State:     [Road Position: {state_record['road_position']} - Lane Position: {state_record['lane_position']} - Vehicle Speed: {state_record['vehicle_speed']} - Vehicle Offset: {state_record['vehicle_offset']}]")
+        print(f"| Parameter: [Speed Parameter: {parameter_record['speed_parameter']} - Location Parameter: {parameter_record['location_parameter']}]")
 
-            traction_loss_mlc_preference = ssas.recommend(traction_loss_mlc, traction_loss_mlc_state)
-            parameters = ssas.resolve([traction_loss_mlc_preference])
-            selected_parameter = parameters
+        step = 1
+        while step <= action_duration or traction_loss_parameter != 'NONE:NONE':
+            print()
 
-            print("Parameter Selection:", parameters)
+            traction_loss_state = get_successor_state(traction_loss_state, traction_loss_parameter, traction_loss_mlc)
+            traction_loss_preference = ssas.recommend(traction_loss_mlc, traction_loss_state)
+            traction_loss_parameter = ssas.resolve([traction_loss_preference])
+
+            state_record = traction_loss_mlc.state_registry[traction_loss_state]
+            parameter_record = traction_loss_mlc.parameter_registry[traction_loss_parameter]
+            print(f"{step} State:     [Road Position: {state_record['road_position']} - Lane Position: {state_record['lane_position']} - Vehicle Speed: {state_record['vehicle_speed']} - Vehicle Offset: {state_record['vehicle_offset']}]")
+            print(f"| Parameter: [Speed Parameter: {parameter_record['speed_parameter']} - Location Parameter: {parameter_record['location_parameter']}]")
+
+            step += 1
+            time.sleep(MLC_SLEEP_DURATION)
 
         current_state = get_successor_state(current_state, current_action, mdp)
-
-        time.sleep(0.25)
+        time.sleep(OLP_SLEEP_DURATION)
 
 
 if __name__ == '__main__':
