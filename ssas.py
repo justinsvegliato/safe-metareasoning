@@ -1,4 +1,4 @@
-import mlc_solver
+from solvers import mlc_solver
 import random
 
 EPSILON = 0.001

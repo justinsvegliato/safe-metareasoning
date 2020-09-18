@@ -1,10 +1,10 @@
 import random
 import time
 
-import mdp_printer
-import mdp_solver
-from grid_world_mdp import GridWorldMdp
-from nonmyopic_traction_loss_mlc import TractionLossMlc
+from printers import mdp_printer
+from solvers import mdp_solver
+from olp.grid_world_mdp import GridWorldMdp
+from mlc.traction_loss_mlc import TractionLossMlc
 from ssas import Ssas
 
 OLP_SLEEP_DURATION = 0.25
