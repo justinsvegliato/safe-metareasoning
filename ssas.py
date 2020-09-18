@@ -1,5 +1,6 @@
-from solvers import mlc_solver
 import random
+
+from solvers import mlc_solver
 
 EPSILON = 0.001
 GAMMA = 0.99
