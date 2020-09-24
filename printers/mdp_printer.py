@@ -66,7 +66,7 @@ def print_start_state_function(mdp):
 
     print(f"  Total Probability: {total_probability}")
 
-    is_valid = total_probability == 1.0
+    is_valid = 0.99 <= total_probability <= 1.01
     print(f"  Is Valid: {is_valid}")
 
 
