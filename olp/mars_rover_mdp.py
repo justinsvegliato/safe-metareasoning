@@ -4,7 +4,6 @@ TERRAIN_TYPES = {'W': 'IMPASSABLE', 'O': 'NORMAL'}
 
 WEATHER = ['SUNNY', 'SHADY']
 
-# TODO: Fix the bug when you change this to 10
 MAXIMUM_BATTERY_LEVEL = 10
 BATTERY_LEVELS = range(0, MAXIMUM_BATTERY_LEVEL + 1)
 
@@ -39,6 +38,7 @@ MOVEMENT_ACTION_DETAILS = {
 STATIONARY_ACTIONS = ['REBOOT', 'TRANSMIT', 'CHARGE', 'ANALYZE']
 
 
+# TODO Make sure to clean up this class - it's disgusting
 class MarsRoverMdp:
     def __init__(self, grid_world, point_of_interests, shady_locations):
         self.grid_world = grid_world
@@ -120,17 +120,18 @@ class MarsRoverMdp:
         if is_battery_dead and is_same_state:
             return 1
 
-        # Ensure that every action other than the CHARGE action decrements the battery level
-        is_charging = action == 'CHARGE'
-        is_battery_decremented = battery_level == successor_battery_level + 1
-        if not is_charging and not is_battery_decremented and successor_state != GOAL_STATE:
-            return 0
+        if successor_state != GOAL_STATE:
+            # Ensure that every action other than the CHARGE action decrements the battery level
+            is_charging = action == 'CHARGE'
+            is_battery_decremented = battery_level == successor_battery_level + 1
+            if not is_charging and not is_battery_decremented:
+                return 0
 
-        # Ensure that every action other than the ANALYZE action does not alter any analysis status
-        is_analyzing = action == 'ANALYZE'
-        is_analysis_status_unchanged = analysis_status == successor_analysis_status
-        if not is_analyzing and not is_analysis_status_unchanged and successor_state != GOAL_STATE:
-            return 0
+            # Ensure that every action other than the ANALYZE action does not alter any analysis status
+            is_analyzing = action == 'ANALYZE'
+            is_analysis_status_unchanged = analysis_status == successor_analysis_status
+            if not is_analyzing and not is_analysis_status_unchanged:
+                return 0
 
         if battery_level > 0:
             if action in MOVEMENT_ACTION_DETAILS:
@@ -169,7 +170,6 @@ class MarsRoverMdp:
                     if not is_sunny and has_battery_decremented:
                         return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
 
-            # TODO: Look at analysis status here
             if action == 'ANALYZE':
                 has_not_moved = row == successor_row and column == successor_column
                 if has_not_moved:
@@ -198,7 +198,7 @@ class MarsRoverMdp:
         complete_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.point_of_interests}
 
         is_transmitting = action == 'TRANSMIT'
-        is_alive = battery_level > 0
+        is_alive = battery_level > 1
         is_everything_analyzed = analysis_status == complete_analysis_status
         if is_alive and is_transmitting and is_everything_analyzed:
             return 100

@@ -18,22 +18,25 @@ def main():
     # ]
     # mdp = MarsRoverMdp(grid_world, [(1, 1)], [(1, 0)])
 
-    grid_world = [
-        ['O', 'W', 'O'],
-        ['O', 'O', 'O'],
-        ['O', 'W', 'O']
-    ]
-    mdp = MarsRoverMdp(grid_world, [(2, 2)], [(1, 1)])
-
     # grid_world = [
-    #     ['O', 'W'],
-    #     ['O', 'O']
+    #     ['O', 'W', 'O'],
+    #     ['O', 'O', 'O'],
+    #     ['O', 'W', 'O']
     # ]
-    # mdp = MarsRoverMdp(grid_world, [(1, 1)], [(1, 0)])
+    # mdp = MarsRoverMdp(grid_world, [(2, 2)], [(1, 1)])
+
+    grid_world = [
+        ['O', 'W'],
+        ['O', 'O']
+    ]
+    mdp = MarsRoverMdp(grid_world, [(1, 1)], [(1, 0)])
+
+    # mdp_printer.print_transition_function(mdp)
 
     import json
     solutions = mdp_solver.solve(mdp, 0.99)
     print(json.dumps(solutions['policy'], indent=4))
+    print(json.dumps(solutions['values'], indent=4))
 
 if __name__ == '__main__':
     main()
