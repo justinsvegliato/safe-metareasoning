@@ -18,7 +18,6 @@ ANALYSIS_CONDITIONS = ['NOT_ANALYZED', 'ANALYZED']
 
 GOAL_STATE = 'SLEEP_MODE'
 
-# TODO: Remove references to the grid world
 MOVEMENT_ACTION_DETAILS = {
     'NORTH': {
         'is_at_boundary': lambda row, column, grid_world: row == 0 or grid_world[row - 1][column] == 'W',
@@ -108,31 +107,39 @@ class MarsRoverMdp:
         state_successor_record = self.state_registry[successor_state]
         successor_row = state_successor_record['row']
         successor_column = state_successor_record['column']
+        successor_terrain_type = state_successor_record['terrain_type']
         successor_battery_level = state_successor_record['battery_level']
         successor_water_analyzer_health = state_successor_record['water_analyzer_health']
         successor_soil_analyzer_health = state_successor_record['soil_analyzer_health']
         successor_analysis_status = state_successor_record['analysis_status']
+        successor_is_point_of_interest = state_successor_record['is_point_of_interest']
 
         # Loop for every action other than the CHARGE action if the rover ran out of battery
-        if battery_level == 0 and state_record == state_successor_record:
+        is_battery_dead = battery_level == 0
+        is_same_state = state_record == state_successor_record
+        if is_battery_dead and is_same_state:
             return 1
 
         # Ensure that every action other than the CHARGE action decrements the battery level
-        if action != 'CHARGE' and battery_level != successor_battery_level + 1 and successor_state != GOAL_STATE:
+        is_charging = action == 'CHARGE'
+        is_battery_decremented = battery_level == successor_battery_level + 1
+        if not is_charging and not is_battery_decremented and successor_state != GOAL_STATE:
             return 0
 
         # Ensure that every action other than the ANALYZE action does not alter any analysis status
-        if action != 'ANALYZE' and analysis_status != successor_analysis_status and successor_state != GOAL_STATE:
+        is_analyzing = action == 'ANALYZE'
+        is_analysis_status_unchanged = analysis_status == successor_analysis_status
+        if not is_analyzing and not is_analysis_status_unchanged and successor_state != GOAL_STATE:
             return 0
 
         if battery_level > 0:
             if action in MOVEMENT_ACTION_DETAILS:
                 is_at_boundary = MOVEMENT_ACTION_DETAILS[action]['is_at_boundary'](row, column, self.grid_world)
-                if is_at_boundary and row == successor_row and column == successor_column:
+                has_not_moved = row == successor_row and column == successor_column
+                if is_at_boundary and has_not_moved:
                     return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
 
-                # TODO: Confirm that this legacy code does anything
-                if self.grid_world[successor_row][successor_column] == 'W':
+                if successor_terrain_type == 'IMPASSABLE':
                     return 0
 
                 is_valid_move = MOVEMENT_ACTION_DETAILS[action]['is_valid_move'](row, successor_row, column, successor_column)
@@ -140,7 +147,9 @@ class MarsRoverMdp:
                     return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
 
             if action == 'REBOOT':
-                if row == successor_row and column == successor_column and successor_water_analyzer_health == 'NOMINAL' and successor_soil_analyzer_health == 'NOMINAL':
+                has_not_moved = row == successor_row and column == successor_column
+                is_nominal = successor_water_analyzer_health == 'NOMINAL' and successor_soil_analyzer_health == 'NOMINAL'
+                if has_not_moved and is_nominal:
                     return 1
 
             if action == 'TRANSMIT':
@@ -148,21 +157,35 @@ class MarsRoverMdp:
                     return 1
 
             if action == 'CHARGE':
-                if row == successor_row and column == successor_column:
-                    if (battery_level == successor_battery_level - 1 or battery_level == MAXIMUM_BATTERY_LEVEL and successor_battery_level == MAXIMUM_BATTERY_LEVEL) and weather == 'SUNNY':
+                has_not_moved = row == successor_row and column == successor_column
+                if has_not_moved:
+                    has_battery_incremented = battery_level == successor_battery_level - 1
+                    is_fully_charged = battery_level == MAXIMUM_BATTERY_LEVEL and successor_battery_level == MAXIMUM_BATTERY_LEVEL
+                    is_sunny = weather == 'SUNNY'
+                    if is_sunny and (has_battery_incremented or is_fully_charged):
                         return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
-                    if battery_level == successor_battery_level and weather == 'SHADY':
+
+                    has_battery_decremented = battery_level == successor_battery_level + 1
+                    if not is_sunny and has_battery_decremented:
                         return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
 
             # TODO: Look at analysis status here
             if action == 'ANALYZE':
-                if row == successor_row and column == successor_column:
-                    if (row, column) in successor_analysis_status and water_analyzer_health == 'NOMINAL' and soil_analyzer_health == 'NOMINAL':
-                        analysis_status = analysis_status.copy()
-                        analysis_status[(row, column)] = 'ANALYZED'
-                        if analysis_status == successor_analysis_status:
+                has_not_moved = row == successor_row and column == successor_column
+                if has_not_moved:
+                    is_nominal = water_analyzer_health == 'NOMINAL' and soil_analyzer_health == 'NOMINAL'
+                    if successor_is_point_of_interest and is_nominal:
+                        coordinate = (row, column)
+                        target_analysis_status = analysis_status.copy()
+                        target_analysis_status[coordinate] = 'ANALYZED'
+
+                        is_analysis_status_updated = target_analysis_status == successor_analysis_status
+                        if is_analysis_status_updated:
                             return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
-                    if analysis_status == successor_analysis_status and ((row, column) not in successor_analysis_status or water_analyzer_health != 'NOMINAL' or soil_analyzer_health != 'NOMINAL'):
+
+                    is_analysis_status_unchanged = analysis_status == successor_analysis_status
+                    is_something_broken = water_analyzer_health != 'NOMINAL' or soil_analyzer_health != 'NOMINAL'
+                    if is_analysis_status_unchanged and (not successor_is_point_of_interest or is_something_broken):
                         return ANALYZER_HEALTH_PROBABILITIES[water_analyzer_health][successor_water_analyzer_health] * ANALYZER_HEALTH_PROBABILITIES[soil_analyzer_health][successor_soil_analyzer_health]
 
         return 0
@@ -172,9 +195,12 @@ class MarsRoverMdp:
         analysis_status = state_record['analysis_status']
         battery_level = state_record['battery_level']
 
-        target_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.point_of_interests}
+        complete_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.point_of_interests}
 
-        if battery_level > 0 and action == 'TRANSMIT' and analysis_status == target_analysis_status:
+        is_transmitting = action == 'TRANSMIT'
+        is_alive = battery_level > 0
+        is_everything_analyzed = analysis_status == complete_analysis_status
+        if is_alive and is_transmitting and is_everything_analyzed:
             return 100
 
         return 0
@@ -192,12 +218,12 @@ class MarsRoverMdp:
 
             is_passable = terrain_type != 'IMPASSABLE'
             is_fully_charged = battery_level == MAXIMUM_BATTERY_LEVEL
-            are_analyzers_nominal = water_analyzer_health == 'NOMINAL' and soil_analyzer_health == 'NOMINAL'
+            is_nominal = water_analyzer_health == 'NOMINAL' and soil_analyzer_health == 'NOMINAL'
 
-            initial_analysis_status = {point_of_interest: 'NOT_ANALYZED' for point_of_interest in self.point_of_interests}
-            has_not_analyzed = analysis_status == initial_analysis_status
+            initial_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.point_of_interests}
+            is_everything_analyzed = analysis_status == initial_analysis_status
 
-            if is_passable and is_fully_charged and are_analyzers_nominal and has_not_analyzed:
+            if is_passable and is_fully_charged and is_nominal and not is_everything_analyzed:
                 start_states.append(start_state)
 
         # start_states = ['0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED']
