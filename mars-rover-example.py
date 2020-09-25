@@ -16,24 +16,24 @@ def main():
     #     ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
     #     ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']
     # ]
-    # grid_world = [
-    #     ['O', 'W', 'O'],
-    #     ['O', 'O', 'O'],
-    #     ['O', 'W', 'O']
-    # ]
+    # mdp = MarsRoverMdp(grid_world, [(1, 1)], [(1, 0)])
+
     grid_world = [
-        ['O', 'W'],
-        ['O', 'O']
+        ['O', 'W', 'O'],
+        ['O', 'O', 'O'],
+        ['O', 'W', 'O']
     ]
+    mdp = MarsRoverMdp(grid_world, [(2, 2)], [(1, 1)])
 
-    mdp = MarsRoverMdp(grid_world, [(1, 1)], [(1, 0)])
-    mdp_printer.print_reward_function(mdp)
+    # grid_world = [
+    #     ['O', 'W'],
+    #     ['O', 'O']
+    # ]
+    # mdp = MarsRoverMdp(grid_world, [(1, 1)], [(1, 0)])
 
-    # solutions = mdp_solver.solve(mdp, 0.99)
-
-    # import json
-    # print(json.dumps(solutions['values'], indent=4))
-    # print(json.dumps(solutions['policy'], indent=4))
+    import json
+    solutions = mdp_solver.solve(mdp, 0.99)
+    print(json.dumps(solutions['policy'], indent=4))
 
 if __name__ == '__main__':
     main()
