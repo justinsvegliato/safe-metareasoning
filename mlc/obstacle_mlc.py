@@ -50,6 +50,7 @@ VEHICLE_OFFSET_PROBABILITIES = {
 }
 
 
+# TODO Verify that the policy is correct
 class ObstacleMlc:
     identifier = 1
 
