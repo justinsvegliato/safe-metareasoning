@@ -3,6 +3,8 @@ import sys
 
 from termcolor import colored
 
+BORDER_SIZE = 150
+
 
 def print_states(mdp):
     print("States:")
@@ -134,7 +136,6 @@ def print_grid_world_policy(grid_world, policy):
 
 
 def print_mars_rover_policy(mars_rover_mdp, current_state, policy, grid_world):
-    BORDER_SIZE = 150
     symbols = {
         'NORTH': '\u2191',
         'EAST': '\u2192',
@@ -159,15 +160,13 @@ def print_mars_rover_policy(mars_rover_mdp, current_state, policy, grid_world):
 
     remaining_battery = "#" * current_state_record['battery_level']
     depleted_battery = "-" * (5 - current_state_record['battery_level'])
-    print(f"|{remaining_battery}{depleted_battery}| \u2022 {current_state_record['battery_level']}")
+    print(f"|{remaining_battery}{depleted_battery}| \u00B7 {current_state_record['battery_level']}")
 
-    print(f"Water Analyzer {symbols[current_state_record['water_analyzer_health']]}")
-    print(f"Soil Analyzer  {symbols[current_state_record['soil_analyzer_health']]}")
-
-    print("===== Mission Status ".ljust(BORDER_SIZE, '='))
+    print(f"{symbols[current_state_record['water_analyzer_health']]} Water Analyzer")
+    print(f"{symbols[current_state_record['soil_analyzer_health']]} Soil Analyzer")
 
     for point_of_interest, analysis_status in current_state_record['analysis_status'].items():
-        print(f"{point_of_interest}: {symbols[analysis_status]}")
+        print(f"{symbols[analysis_status]} {point_of_interest}")
 
     print("===== Control Policy ".ljust(BORDER_SIZE, '='))
 
@@ -199,4 +198,14 @@ def print_mars_rover_policy(mars_rover_mdp, current_state, policy, grid_world):
 
         print(f"{text}")
 
-    print("=" * BORDER_SIZE)
+
+def print_mlc_information(step, mlc_execution_contexts, parameter):
+    length = len(str(step))
+
+    is_initial_loop = True
+    for name in mlc_execution_contexts:
+        indicator = step if is_initial_loop else " " * length
+        print(f"{indicator} {name} State: [{mlc_execution_contexts[name]['current_state']}]")
+        is_initial_loop = False
+
+    print(f"{' ' * length} Parameter: [{parameter}]")

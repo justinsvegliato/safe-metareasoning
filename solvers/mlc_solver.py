@@ -27,7 +27,8 @@ def get_severity_state_values(mlc, gamma, epsilon):
             delta = max(delta, math.fabs(best_severity_value - severity_state_values[state]))
             severity_state_values[state] = best_severity_value
 
-        print('Delta:', delta)
+        # print('Delta:', delta)
+
         if delta < epsilon:
             return severity_state_values
 
@@ -50,7 +51,8 @@ def get_interference_state_values(mlc, gamma, epsilon, policy):
             delta = max(delta, math.fabs(new_interference_value - interference_state_values[state]))
             interference_state_values[state] = new_interference_value
 
-        print('Delta:', delta)
+        # print('Delta:', delta)
+
         if delta < epsilon:
             return interference_state_values
 
