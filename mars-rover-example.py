@@ -4,7 +4,7 @@ import time
 
 import utils
 from mlc.traction_loss_mlc import TractionLossMlc
-from olp.mars_rover_mdp import GOAL_STATE, MarsRoverMdp
+from olp.mars_rover_mdp import GOAL_STATE, MarsRoverMdp, MOVEMENT_ACTION_DETAILS
 from printers import mdp_printer
 from solvers import mdp_solver
 from ssas import Ssas
@@ -79,28 +79,13 @@ def main():
 
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
-        print("===== Safety ".ljust(150, '='))
+        if current_action in MOVEMENT_ACTION_DETAILS:
+            print("===== Safety ".ljust(150, '='))
 
-        for name in mlc_execution_contexts:
-            mlc_instance = mlc_execution_contexts[name]['instance']
-
-            current_mlc_state = random.choice(mlc_instance.start_states())
-            current_mlc_preference = ssas.recommend(mlc_instance, current_mlc_state)
-
-            mlc_execution_contexts[name]['current_state'] = current_mlc_state
-            mlc_execution_contexts[name]['current_preference'] = current_mlc_preference
-
-        preferences = [mlc_execution_contexts[name]['current_preference'] for name in mlc_execution_contexts]
-        parameter = ssas.resolve(preferences)
-
-        mdp_printer.print_mlc_information(0, mlc_execution_contexts, parameter)
-
-        step = 1
-        while step <= action_duration or parameter != 'NONE:NONE':
             for name in mlc_execution_contexts:
                 mlc_instance = mlc_execution_contexts[name]['instance']
 
-                current_mlc_state = utils.get_successor_state(mlc_execution_contexts[name]['current_state'], parameter, mlc_instance)
+                current_mlc_state = random.choice(mlc_instance.start_states())
                 current_mlc_preference = ssas.recommend(mlc_instance, current_mlc_state)
 
                 mlc_execution_contexts[name]['current_state'] = current_mlc_state
@@ -109,10 +94,26 @@ def main():
             preferences = [mlc_execution_contexts[name]['current_preference'] for name in mlc_execution_contexts]
             parameter = ssas.resolve(preferences)
 
-            mdp_printer.print_mlc_information(step, mlc_execution_contexts, parameter)
+            mdp_printer.print_mlc_information(0, mlc_execution_contexts, parameter)
 
-            step += 1
-            time.sleep(MLC_SLEEP_DURATION)
+            step = 1
+            while step <= action_duration or parameter != 'NONE:NONE':
+                for name in mlc_execution_contexts:
+                    mlc_instance = mlc_execution_contexts[name]['instance']
+
+                    current_mlc_state = utils.get_successor_state(mlc_execution_contexts[name]['current_state'], parameter, mlc_instance)
+                    current_mlc_preference = ssas.recommend(mlc_instance, current_mlc_state)
+
+                    mlc_execution_contexts[name]['current_state'] = current_mlc_state
+                    mlc_execution_contexts[name]['current_preference'] = current_mlc_preference
+
+                preferences = [mlc_execution_contexts[name]['current_preference'] for name in mlc_execution_contexts]
+                parameter = ssas.resolve(preferences)
+
+                mdp_printer.print_mlc_information(step, mlc_execution_contexts, parameter)
+
+                step += 1
+                time.sleep(MLC_SLEEP_DURATION)
 
         print("=" * 150)
 
