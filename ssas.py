@@ -1,11 +1,12 @@
 import random
-
 from solvers import mlc_solver
 
 EPSILON = 0.001
 GAMMA = 0.99
 
+POLICY_CACHE_DIRECTORY = 'policies'
 
+# TODO Implement file cache logic
 class Ssas:
     def __init__(self, object_level_process, meta_level_controllers):
         self.object_level_process = object_level_process
@@ -15,8 +16,8 @@ class Ssas:
         self.interference_parameter_value_map = {}
 
         for meta_level_controller in self.meta_level_controllers:
-            in_severity_parameter_value_map = meta_level_controller.name in self.severity_parameter_value_map
-            in_interference_parameter_value_map = meta_level_controller.name in self.interference_parameter_value_map
+            in_severity_parameter_value_map = meta_level_controller.kind in self.severity_parameter_value_map
+            in_interference_parameter_value_map = meta_level_controller.kind in self.interference_parameter_value_map
             is_ready = in_severity_parameter_value_map and in_interference_parameter_value_map
 
             if not is_ready:

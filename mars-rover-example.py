@@ -4,7 +4,7 @@ import time
 
 import utils
 from mlc.obstacle_mlc import ObstacleMlc
-from olp.mars_rover_mdp import GOAL_STATE, MarsRoverMdp, MOVEMENT_ACTION_DETAILS
+from olp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
 from printers import mdp_printer
 from solvers import mdp_solver
 from ssas import Ssas
@@ -33,14 +33,8 @@ MINIMUM_ACTION_DURATION = 1
 MAXIMUM_ACTION_DURATION = 10
 
 META_LEVEL_CONTROLLERS = {
-    'Obstacle_MLC_1': {
-        'constructor': ObstacleMlc,
-        'arguments': []
-    },
-    'Obstacle_MLC_2': {
-        'constructor': ObstacleMlc,
-        'arguments': []
-    }
+    'Obstacle_MLC_1': {'constructor': ObstacleMlc, 'arguments': []},
+    'Obstacle_MLC_2': {'constructor': ObstacleMlc, 'arguments': []}
 }
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-10s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
@@ -49,7 +43,7 @@ logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-10s|%(levelna
 def main():
     start = time.time()
     mdp = MarsRoverMdp(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
-    logging.info("Built the earth observation MDP: [states=%d, actions=%d, time=%f]", len(mdp.states()), len(mdp.actions()), time.time() - start)
+    logging.info("Built the mars rover MDP: [states=%d, actions=%d, time=%f]", len(mdp.states()), len(mdp.actions()), time.time() - start)
 
     mlc_execution_contexts = {}
     for name, details in META_LEVEL_CONTROLLERS.items():
@@ -67,10 +61,11 @@ def main():
     ssas = Ssas(mdp, mlc_instances)
     logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
-    logging.info("Solving the earth observation MDP...")
+    # TODO Implement file cache logic
+    logging.info("Solving the mars rover MDP...")
     start = time.time()
     solutions = mdp_solver.solve(mdp, 0.99)
-    logging.info("Solved the earth observation MDP: [time=%f]", time.time() - start)
+    logging.info("Solved the mars rover MDP: [time=%f]", time.time() - start)
 
     policy = solutions['policy']
 

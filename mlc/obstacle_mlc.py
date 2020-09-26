@@ -1,7 +1,7 @@
 import itertools
 
-VERTICAL_OBSTACLE_POSITION = ['NONE', 'APPROACHING', 'AT']
-HORIZONTAL_OBSTACLE_POSITION = ['NONE', 'LEFT', 'CENTER', 'RIGHT']
+HORIZONTAL_OBSTACLE_POSITION = ['NONE', 'APPROACHING', 'AT']
+VERTICAL_OBSTACLE_POSITION = ['NONE', 'LEFT', 'CENTER', 'RIGHT']
 ROVER_SPEED = ['LOW', 'NORMAL', 'HIGH']
 ROVER_OFFSET = ['LEFT', 'CENTER', 'RIGHT']
 
@@ -54,12 +54,13 @@ class ObstacleMlc:
     identifier = 1
 
     def __init__(self):
+        self.kind = 'Obstacle_MLC'
         self.name = f'Obstacle_MLC_{ObstacleMlc.identifier}'
 
         ObstacleMlc.identifier += 1
 
         self.state_registry = {}
-        for state_tuple in itertools.product(VERTICAL_OBSTACLE_POSITION, HORIZONTAL_OBSTACLE_POSITION, ROVER_SPEED, ROVER_OFFSET):
+        for state_tuple in itertools.product(HORIZONTAL_OBSTACLE_POSITION, VERTICAL_OBSTACLE_POSITION, ROVER_SPEED, ROVER_OFFSET):
             state = ':'.join(state_tuple)
             self.state_registry[state] = {
                 'horizontal_obstacle_position': state_tuple[0],
@@ -127,6 +128,14 @@ class ObstacleMlc:
 
         if state_record['horizontal_obstacle_position'] == 'AT':
             if state_record['vertical_obstacle_position'] == state_record['rover_offset']:
+                if state_record['rover_speed'] == 'LOW':
+                    return 3
+                if state_record['rover_speed'] == 'NORMAL':
+                    return 4
+                if state_record['rover_speed'] == 'HIGH':
+                    return 5
+
+            if state_record['vertical_obstacle_position'] == 'CENTER':
                 if state_record['rover_speed'] == 'LOW':
                     return 2
                 if state_record['rover_speed'] == 'NORMAL':
