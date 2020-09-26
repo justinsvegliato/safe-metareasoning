@@ -3,7 +3,7 @@ import random
 import time
 
 import utils
-from mlc.traction_loss_mlc import TractionLossMlc
+from mlc.obstacle_mlc import ObstacleMlc
 from olp.mars_rover_mdp import GOAL_STATE, MarsRoverMdp, MOVEMENT_ACTION_DETAILS
 from printers import mdp_printer
 from solvers import mdp_solver
@@ -33,8 +33,12 @@ MINIMUM_ACTION_DURATION = 1
 MAXIMUM_ACTION_DURATION = 10
 
 META_LEVEL_CONTROLLERS = {
-    'Traction Loss MLC': {
-        'constructor': TractionLossMlc,
+    'Obstacle_MLC_1': {
+        'constructor': ObstacleMlc,
+        'arguments': []
+    },
+    'Obstacle_MLC_2': {
+        'constructor': ObstacleMlc,
         'arguments': []
     }
 }
@@ -50,12 +54,13 @@ def main():
     mlc_execution_contexts = {}
     for name, details in META_LEVEL_CONTROLLERS.items():
         start = time.time()
-        mlc_execution_contexts[name] = {
-            'instance': details['constructor'](*details['arguments']),
+        mlc = details['constructor'](*details['arguments'])
+        mlc_execution_contexts[mlc.name] = {
+            'instance': mlc,
             'current_state': None,
             'current_preference': None
         }
-        logging.info("Built a meta-level controller: [name=%s, time=%f]", name, time.time() - start)
+        logging.info("Built a meta-level controller: [name=%s, time=%f]", mlc.name, time.time() - start)
 
     start = time.time()
     mlc_instances = [mlc_execution_contexts[name]['instance'] for name in mlc_execution_contexts]
