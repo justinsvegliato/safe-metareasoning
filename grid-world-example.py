@@ -1,6 +1,7 @@
 import random
 import time
 
+import utils
 from mlc.traction_loss_mlc import TractionLossMlc
 from olp.grid_world_mdp import GridWorldMdp
 from printers import mdp_printer
@@ -12,19 +13,6 @@ MLC_SLEEP_DURATION = 0.1
 MINIMUM_ACTION_DURATION = 1
 MAXIMUM_ACTION_DURATION = 10
 
-
-def get_successor_state(current_state, current_action, mdp):
-    probability_threshold = random.random()
-
-    total_probability = 0
-
-    for successor_state in mdp.states():
-        transition_probability = mdp.transition_function(current_state, current_action, successor_state)
-
-        total_probability += transition_probability
-
-        if total_probability >= probability_threshold:
-            return successor_state
 
 
 def main():
@@ -73,7 +61,7 @@ def main():
         while step <= action_duration or traction_loss_parameter != 'NONE:NONE':
             print()
 
-            traction_loss_state = get_successor_state(traction_loss_state, traction_loss_parameter, traction_loss_mlc)
+            traction_loss_state = utils.get_successor_state(traction_loss_state, traction_loss_parameter, traction_loss_mlc)
             traction_loss_preference = ssas.recommend(traction_loss_mlc, traction_loss_state)
             traction_loss_parameter = ssas.resolve([traction_loss_preference])
 
@@ -85,7 +73,7 @@ def main():
             step += 1
             time.sleep(MLC_SLEEP_DURATION)
 
-        current_state = get_successor_state(current_state, current_action, mdp)
+        current_state = utils.get_successor_state(current_state, current_action, mdp)
         time.sleep(OLP_SLEEP_DURATION)
 
 

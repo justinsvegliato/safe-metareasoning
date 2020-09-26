@@ -1,4 +1,7 @@
 import math
+import sys
+
+from termcolor import colored
 
 
 def print_states(mdp):
@@ -61,8 +64,11 @@ def print_start_state_function(mdp):
 
     for state in mdp.states():
         probability = mdp.start_state_function(state)
+
+        if probability > 0:
+            print(f"  State {state}: {probability}")
+        
         total_probability += probability
-        print(f"  State {state}: {probability}")
 
     print(f"  Total Probability: {total_probability}")
 
@@ -125,3 +131,72 @@ def print_grid_world_policy(grid_world, policy):
             text += "  "
 
         print(f"{text}")
+
+
+def print_mars_rover_policy(mars_rover_mdp, current_state, policy, grid_world):
+    BORDER_SIZE = 150
+    symbols = {
+        'NORTH': '\u2191',
+        'EAST': '\u2192',
+        'SOUTH': '\u2193',
+        'WEST': '\u2190',
+        'REBOOT': '\u21BA',
+        'TRANSMIT': '\u21AF',
+        'CHARGE': '\u263C',
+        'ANALYZE': '\u25CE',
+        'NOMINAL': '\u2713',
+        'ERROR': '\u2717',
+        'ANALYZED': '\u2713',
+        'NOT_ANALYZED': '\u2717',
+    }
+
+    height = mars_rover_mdp.height
+    width = mars_rover_mdp.width
+
+    current_state_record = mars_rover_mdp.get_state_record_from_state(current_state).copy()
+
+    print("===== System Metrics ".ljust(BORDER_SIZE, '='))
+
+    remaining_battery = "#" * current_state_record['battery_level']
+    depleted_battery = "-" * (5 - current_state_record['battery_level'])
+    print(f"|{remaining_battery}{depleted_battery}| \u2022 {current_state_record['battery_level']}")
+
+    print(f"Water Analyzer {symbols[current_state_record['water_analyzer_health']]}")
+    print(f"Soil Analyzer  {symbols[current_state_record['soil_analyzer_health']]}")
+
+    print("===== Mission Status ".ljust(BORDER_SIZE, '='))
+
+    for point_of_interest, analysis_status in current_state_record['analysis_status'].items():
+        print(f"{point_of_interest}: {symbols[analysis_status]}")
+
+    print("===== Control Policy ".ljust(BORDER_SIZE, '='))
+
+    for row in range(height):
+        text = ""
+
+        for column in range(width):
+            state_record = current_state_record.copy()
+            state_record['row'] = row
+            state_record['column'] = column
+            state = mars_rover_mdp.get_state_from_state_record(state_record)
+
+            factual_state_record = mars_rover_mdp.get_state_record_from_state(state)
+
+            symbol = None
+
+            if grid_world[row][column] == 'W':
+                symbol = "\u25A0"
+            else:
+                symbol = symbols[policy[state]]
+
+            if state_record == current_state_record:
+                symbol = colored(symbol, 'red')
+            elif factual_state_record['weather'] == 'SHADY':
+                symbol = colored(symbol, 'blue', attrs=['dark'])
+
+            text += symbol
+            text += "  "
+
+        print(f"{text}")
+
+    print("=" * BORDER_SIZE)

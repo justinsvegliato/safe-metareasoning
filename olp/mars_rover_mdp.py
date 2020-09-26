@@ -4,7 +4,7 @@ TERRAIN_TYPES = {'W': 'IMPASSABLE', 'O': 'NORMAL'}
 
 WEATHER = ['SUNNY', 'SHADY']
 
-MAXIMUM_BATTERY_LEVEL = 10
+MAXIMUM_BATTERY_LEVEL = 5
 BATTERY_LEVELS = range(0, MAXIMUM_BATTERY_LEVEL + 1)
 
 WATER_ANALYZER_HEALTH = ['NOMINAL', 'ERROR']
@@ -42,10 +42,10 @@ STATIONARY_ACTIONS = ['REBOOT', 'TRANSMIT', 'CHARGE', 'ANALYZE']
 class MarsRoverMdp:
     def __init__(self, grid_world, point_of_interests, shady_locations):
         self.grid_world = grid_world
+        self.point_of_interests = point_of_interests
+
         self.width = len(grid_world[0])
         self.height = len(grid_world)
-
-        self.point_of_interests = point_of_interests
 
         rows = range(self.height)
         cols = range(self.width)
@@ -229,3 +229,14 @@ class MarsRoverMdp:
         # start_states = ['0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED']
 
         return 1.0 / len(start_states) if state in start_states else 0
+
+    def get_state_record_from_state(self, state):
+        return self.state_registry[state]
+
+    def get_state_from_state_record(self, state_record):
+        base_state_factors = [str(state_record['row']), str(state_record['column']), str(state_record['battery_level']), state_record['water_analyzer_health'], state_record['soil_analyzer_health']]
+        analysis_status_state_factors = [state_factor for state_factor in state_record['analysis_status'].values()]
+
+        state_factors = base_state_factors + analysis_status_state_factors
+
+        return ':'.join(state_factors)
