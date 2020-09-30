@@ -1,12 +1,18 @@
+import json
+import logging
+import os
 import random
+
 from solvers import mlc_solver
+
+POLICY_CACHE_DIRECTORY = 'policies'
 
 EPSILON = 0.001
 GAMMA = 0.99
 
-POLICY_CACHE_DIRECTORY = 'policies'
+logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
-# TODO Implement file cache logic
+
 class Ssas:
     def __init__(self, object_level_process, meta_level_controllers):
         self.object_level_process = object_level_process
@@ -16,33 +22,45 @@ class Ssas:
         self.interference_parameter_value_map = {}
 
         for meta_level_controller in self.meta_level_controllers:
-            in_severity_parameter_value_map = meta_level_controller.kind in self.severity_parameter_value_map
-            in_interference_parameter_value_map = meta_level_controller.kind in self.interference_parameter_value_map
-            is_ready = in_severity_parameter_value_map and in_interference_parameter_value_map
+            solution = self.get_solution(meta_level_controller)
+            self.severity_parameter_value_map[meta_level_controller.name] = solution['severity_parameter_values']
+            self.interference_parameter_value_map[meta_level_controller.name] = solution['interference_parameter_values']
 
-            if not is_ready:
-                solution = mlc_solver.solve(meta_level_controller, GAMMA, EPSILON)
-                self.severity_parameter_value_map[meta_level_controller.name] = solution['severity_parameter_values']
-                self.interference_parameter_value_map[meta_level_controller.name] = solution['interference_parameter_values']
+    def get_solution(self, meta_level_controller):
+        file_path = os.path.join(POLICY_CACHE_DIRECTORY, meta_level_controller.kind + ".json")
+
+        if os.path.exists(file_path):
+            logging.info("Loading the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
+            with open(file_path) as file:
+                return json.load(file)
+
+        logging.info("Solving the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
+        solution = mlc_solver.solve(meta_level_controller, GAMMA, EPSILON)
+        with open(file_path, 'w') as file:
+            json.dump(solution, file, indent=4)
+            return solution
 
     def filter(self, parameters, preferences, objective):
-        best_parameters = []
-        best_parameter_value = float('inf')
+        value_matrix = {}
 
         for parameter in parameters:
-            minimum_parameter_value = float('-inf')
-            for preference in preferences:
-                current_parameter_value = preference[parameter][objective]
-                if current_parameter_value > minimum_parameter_value:
-                    minimum_parameter_value = current_parameter_value
+            values = [preference[parameter][objective] for preference in preferences]
+            descending_values = sorted(values, reverse=True)
+            value_matrix[parameter] = descending_values
 
-            if minimum_parameter_value < best_parameter_value:
-                best_parameter_value = minimum_parameter_value
-                best_parameters = [parameter]
-            elif minimum_parameter_value is best_parameter_value:
-                best_parameters.append(parameter)
+        for index in range(len(preferences)):
+            highest_severity_column = [value_matrix[parameter][index] for parameter in value_matrix]
 
-        return best_parameters
+            minimum_value = min(highest_severity_column)
+
+            new_value_matrix = {}
+            for parameter, values in value_matrix.items():
+                if values[index] == minimum_value:
+                    new_value_matrix[parameter] = values
+
+            value_matrix = new_value_matrix
+
+        return list(value_matrix.keys())
 
     def resolve(self, preferences):
         parameters = self.meta_level_controllers[0].parameters()

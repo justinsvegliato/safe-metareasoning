@@ -37,7 +37,7 @@ META_LEVEL_CONTROLLERS = {
     'Obstacle_MLC_2': {'constructor': ObstacleMlc, 'arguments': []}
 }
 
-logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-10s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
+logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 def main():
@@ -80,7 +80,7 @@ def main():
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
         if current_action in MOVEMENT_ACTION_DETAILS:
-            print("===== Safety ".ljust(150, '='))
+            print("===== Safety Monitors".ljust(150, '='))
 
             for name in mlc_execution_contexts:
                 mlc_instance = mlc_execution_contexts[name]['instance']

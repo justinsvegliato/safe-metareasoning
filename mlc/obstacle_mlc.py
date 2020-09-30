@@ -20,43 +20,45 @@ LANE_POSITION_PROBABILITIES = {
 }
 
 SPEED_PROBABILITIES = {
-    'NONE': {
-        'LOW': 0.1,
-        'NORMAL': 0.7,
-        'HIGH': 0.2
-    },
-    'SLOW_DOWN': {
-        'LOW': 1.0,
-        'NORMAL': 0.0,
-        'HIGH': 0.0
-    }
+    'NONE': {'LOW': 0.1, 'NORMAL': 0.7, 'HIGH': 0.2},
+    'SLOW_DOWN': {'LOW': 1.0, 'NORMAL': 0.0, 'HIGH': 0.0}
 }
 VEHICLE_OFFSET_PROBABILITIES = {
-    'NONE': {
-        'LEFT': 0.05,
-        'CENTER': 0.9,
-        'RIGHT': 0.05
+    'NONE': {'LEFT': 0.05, 'CENTER': 0.9, 'RIGHT': 0.05},
+    'SHIFT_LEFT': {'LEFT': 1.0, 'CENTER': 0.0, 'RIGHT': 0.0},
+    'SHIFT_RIGHT': {'LEFT': 0.0, 'CENTER': 0.0, 'RIGHT': 1.0}
+}
+
+SEVERITY_MAP = {
+    'LEFT': {
+        'LOW': {'LEFT': 4, 'CENTER': 2, 'RIGHT': 1},
+        'NORMAL': {'LEFT': 5, 'CENTER': 3, 'RIGHT': 1},
+        'HIGH': {'LEFT': 5, 'CENTER': 3, 'RIGHT': 1}
     },
-    'SHIFT_LEFT': {
-        'LEFT': 1.0,
-        'CENTER': 0.0,
-        'RIGHT': 0.0
+    'CENTER': {
+        'LOW': {'LEFT': 2, 'CENTER': 4, 'RIGHT': 2},
+        'NORMAL': {'LEFT': 3, 'CENTER': 5, 'RIGHT': 3},
+        'HIGH': {'LEFT': 3, 'CENTER': 5, 'RIGHT': 3}
     },
-    'SHIFT_RIGHT': {
-        'LEFT': 0.0,
-        'CENTER': 0.0,
-        'RIGHT': 1.0
+    'RIGHT': {
+        'LOW': {'LEFT': 1, 'CENTER': 2, 'RIGHT': 4},
+        'NORMAL': {'LEFT': 1, 'CENTER': 3, 'RIGHT': 5},
+        'HIGH': {'LEFT': 1, 'CENTER': 3, 'RIGHT': 5},
     }
 }
 
+INTERFERENCE_MAP = {
+    'NONE': {'NONE': 0, 'SHIFT_LEFT': 10, 'SHIFT_RIGHT': 10},
+    'SLOW_DOWN': {'NONE': 5, 'SHIFT_LEFT': 15, 'SHIFT_RIGHT': 15}
+}
 
-# TODO Verify that the policy is correct
+
 class ObstacleMlc:
     identifier = 1
 
     def __init__(self):
-        self.kind = 'Obstacle_MLC'
-        self.name = f'Obstacle_MLC_{ObstacleMlc.identifier}'
+        self.kind = 'obstacle-mlc'
+        self.name = f'obstacle-mlc-{ObstacleMlc.identifier}'
 
         ObstacleMlc.identifier += 1
 
@@ -127,38 +129,24 @@ class ObstacleMlc:
     def severity_function(self, state, _):
         state_record = self.state_registry[state]
 
-        if state_record['horizontal_obstacle_position'] == 'AT':
-            if state_record['vertical_obstacle_position'] == state_record['rover_offset']:
-                if state_record['rover_speed'] == 'LOW':
-                    return 3
-                if state_record['rover_speed'] == 'NORMAL':
-                    return 4
-                if state_record['rover_speed'] == 'HIGH':
-                    return 5
-
-            if state_record['vertical_obstacle_position'] == 'CENTER':
-                if state_record['rover_speed'] == 'LOW':
-                    return 2
-                if state_record['rover_speed'] == 'NORMAL':
-                    return 3
-                if state_record['rover_speed'] == 'HIGH':
-                    return 4
+        if state_record['horizontal_obstacle_position'] == 'AT' and state_record['vertical_obstacle_position'] != 'NONE':
+            vertical_obstacle_position = state_record['vertical_obstacle_position']
+            rover_offset = state_record['rover_offset']
+            rover_speed = state_record['rover_speed']
+            return SEVERITY_MAP[vertical_obstacle_position][rover_speed][rover_offset]
 
         return 1
 
-    def interference_function(self, state, _):
-        state_record = self.state_registry[state]
+    def interference_function(self, _, parameter):
+        # state_record = self.state_registry[state]
+        # rover_speed = state_record['rover_speed']
+        # rover_offset = state_record['rover_offset']
+        # return INTERFERENCE_MAP[rover_speed][rover_offset]
 
-        if state_record['rover_speed'] == 'LOW':
-            return 10
-
-        if state_record['rover_speed'] == 'NORMAL':
-            return 0
-
-        if state_record['rover_speed'] == 'HIGH':
-            return 10
-
-        return 0
+        parameter_record = self.parameter_registry[parameter]
+        speed_parameter = parameter_record['speed_parameter']
+        location_parameter = parameter_record['location_parameter']
+        return INTERFERENCE_MAP[speed_parameter][location_parameter]
 
     def start_states(self):
         start_states = []

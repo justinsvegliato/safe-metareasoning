@@ -207,4 +207,4 @@ def print_mlc_information(step, mlc_execution_contexts, parameter):
         print(f"{indicator} {name} State: [{mlc_execution_contexts[name]['current_state']}]")
         is_initial_loop = False
 
-    print(f"{' ' * length} Parameter: [{parameter}]")
+    print(f"{' ' * length} \u221F Parameter: [{parameter}]")

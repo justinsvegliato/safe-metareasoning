@@ -1,0 +1,2064 @@
+{
+    "severity_state_values": {
+        "NONE:NONE:LOW:LEFT": 110.774,
+        "NONE:NONE:LOW:CENTER": 110.774,
+        "NONE:NONE:LOW:RIGHT": 110.774,
+        "NONE:NONE:NORMAL:LEFT": 110.774,
+        "NONE:NONE:NORMAL:CENTER": 110.774,
+        "NONE:NONE:NORMAL:RIGHT": 110.774,
+        "NONE:NONE:HIGH:LEFT": 110.774,
+        "NONE:NONE:HIGH:CENTER": 110.774,
+        "NONE:NONE:HIGH:RIGHT": 110.774,
+        "NONE:LEFT:LOW:LEFT": 99.902,
+        "NONE:LEFT:LOW:CENTER": 99.902,
+        "NONE:LEFT:LOW:RIGHT": 99.902,
+        "NONE:LEFT:NORMAL:LEFT": 99.902,
+        "NONE:LEFT:NORMAL:CENTER": 99.902,
+        "NONE:LEFT:NORMAL:RIGHT": 99.902,
+        "NONE:LEFT:HIGH:LEFT": 99.902,
+        "NONE:LEFT:HIGH:CENTER": 99.902,
+        "NONE:LEFT:HIGH:RIGHT": 99.902,
+        "NONE:CENTER:LOW:LEFT": 99.902,
+        "NONE:CENTER:LOW:CENTER": 99.902,
+        "NONE:CENTER:LOW:RIGHT": 99.902,
+        "NONE:CENTER:NORMAL:LEFT": 99.902,
+        "NONE:CENTER:NORMAL:CENTER": 99.902,
+        "NONE:CENTER:NORMAL:RIGHT": 99.902,
+        "NONE:CENTER:HIGH:LEFT": 99.902,
+        "NONE:CENTER:HIGH:CENTER": 99.902,
+        "NONE:CENTER:HIGH:RIGHT": 99.902,
+        "NONE:RIGHT:LOW:LEFT": 99.902,
+        "NONE:RIGHT:LOW:CENTER": 99.902,
+        "NONE:RIGHT:LOW:RIGHT": 99.902,
+        "NONE:RIGHT:NORMAL:LEFT": 99.902,
+        "NONE:RIGHT:NORMAL:CENTER": 99.902,
+        "NONE:RIGHT:NORMAL:RIGHT": 99.902,
+        "NONE:RIGHT:HIGH:LEFT": 99.902,
+        "NONE:RIGHT:HIGH:CENTER": 99.902,
+        "NONE:RIGHT:HIGH:RIGHT": 99.902,
+        "APPROACHING:NONE:LOW:LEFT": 99.902,
+        "APPROACHING:NONE:LOW:CENTER": 99.902,
+        "APPROACHING:NONE:LOW:RIGHT": 99.902,
+        "APPROACHING:NONE:NORMAL:LEFT": 99.902,
+        "APPROACHING:NONE:NORMAL:CENTER": 99.902,
+        "APPROACHING:NONE:NORMAL:RIGHT": 99.902,
+        "APPROACHING:NONE:HIGH:LEFT": 99.902,
+        "APPROACHING:NONE:HIGH:CENTER": 99.902,
+        "APPROACHING:NONE:HIGH:RIGHT": 99.902,
+        "APPROACHING:LEFT:LOW:LEFT": 110.35,
+        "APPROACHING:LEFT:LOW:CENTER": 110.35,
+        "APPROACHING:LEFT:LOW:RIGHT": 110.35,
+        "APPROACHING:LEFT:NORMAL:LEFT": 110.35,
+        "APPROACHING:LEFT:NORMAL:CENTER": 110.35,
+        "APPROACHING:LEFT:NORMAL:RIGHT": 110.35,
+        "APPROACHING:LEFT:HIGH:LEFT": 110.35,
+        "APPROACHING:LEFT:HIGH:CENTER": 110.35,
+        "APPROACHING:LEFT:HIGH:RIGHT": 110.35,
+        "APPROACHING:CENTER:LOW:LEFT": 112.291,
+        "APPROACHING:CENTER:LOW:CENTER": 112.291,
+        "APPROACHING:CENTER:LOW:RIGHT": 112.291,
+        "APPROACHING:CENTER:NORMAL:LEFT": 112.291,
+        "APPROACHING:CENTER:NORMAL:CENTER": 112.291,
+        "APPROACHING:CENTER:NORMAL:RIGHT": 112.291,
+        "APPROACHING:CENTER:HIGH:LEFT": 112.291,
+        "APPROACHING:CENTER:HIGH:CENTER": 112.291,
+        "APPROACHING:CENTER:HIGH:RIGHT": 112.291,
+        "APPROACHING:RIGHT:LOW:LEFT": 110.35,
+        "APPROACHING:RIGHT:LOW:CENTER": 110.35,
+        "APPROACHING:RIGHT:LOW:RIGHT": 110.35,
+        "APPROACHING:RIGHT:NORMAL:LEFT": 110.35,
+        "APPROACHING:RIGHT:NORMAL:CENTER": 110.35,
+        "APPROACHING:RIGHT:NORMAL:RIGHT": 110.35,
+        "APPROACHING:RIGHT:HIGH:LEFT": 110.35,
+        "APPROACHING:RIGHT:HIGH:CENTER": 110.35,
+        "APPROACHING:RIGHT:HIGH:RIGHT": 110.35,
+        "AT:NONE:LOW:LEFT": 99.902,
+        "AT:NONE:LOW:CENTER": 99.902,
+        "AT:NONE:LOW:RIGHT": 99.902,
+        "AT:NONE:NORMAL:LEFT": 99.902,
+        "AT:NONE:NORMAL:CENTER": 99.902,
+        "AT:NONE:NORMAL:RIGHT": 99.902,
+        "AT:NONE:HIGH:LEFT": 99.902,
+        "AT:NONE:HIGH:CENTER": 99.902,
+        "AT:NONE:HIGH:RIGHT": 99.902,
+        "AT:LEFT:LOW:LEFT": 113.56,
+        "AT:LEFT:LOW:CENTER": 111.56,
+        "AT:LEFT:LOW:RIGHT": 110.56,
+        "AT:LEFT:NORMAL:LEFT": 114.56,
+        "AT:LEFT:NORMAL:CENTER": 112.56,
+        "AT:LEFT:NORMAL:RIGHT": 110.56,
+        "AT:LEFT:HIGH:LEFT": 114.56,
+        "AT:LEFT:HIGH:CENTER": 112.56,
+        "AT:LEFT:HIGH:RIGHT": 110.56,
+        "AT:CENTER:LOW:LEFT": 112.54,
+        "AT:CENTER:LOW:CENTER": 114.54,
+        "AT:CENTER:LOW:RIGHT": 112.54,
+        "AT:CENTER:NORMAL:LEFT": 113.54,
+        "AT:CENTER:NORMAL:CENTER": 115.54,
+        "AT:CENTER:NORMAL:RIGHT": 113.54,
+        "AT:CENTER:HIGH:LEFT": 113.54,
+        "AT:CENTER:HIGH:CENTER": 115.54,
+        "AT:CENTER:HIGH:RIGHT": 113.54,
+        "AT:RIGHT:LOW:LEFT": 110.56,
+        "AT:RIGHT:LOW:CENTER": 111.56,
+        "AT:RIGHT:LOW:RIGHT": 113.56,
+        "AT:RIGHT:NORMAL:LEFT": 110.56,
+        "AT:RIGHT:NORMAL:CENTER": 112.56,
+        "AT:RIGHT:NORMAL:RIGHT": 114.56,
+        "AT:RIGHT:HIGH:LEFT": 110.56,
+        "AT:RIGHT:HIGH:CENTER": 112.56,
+        "AT:RIGHT:HIGH:RIGHT": 114.56
+    },
+    "severity_parameter_values": {
+        "NONE:NONE:LOW:LEFT": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:LOW:CENTER": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:LOW:RIGHT": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:NORMAL:LEFT": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:NORMAL:CENTER": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:NORMAL:RIGHT": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:HIGH:LEFT": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:HIGH:CENTER": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:NONE:HIGH:RIGHT": {
+            "NONE:NONE": 110.774,
+            "NONE:SHIFT_LEFT": 110.774,
+            "NONE:SHIFT_RIGHT": 110.774,
+            "SLOW_DOWN:NONE": 110.774,
+            "SLOW_DOWN:SHIFT_LEFT": 110.774,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.774
+        },
+        "NONE:LEFT:LOW:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:LOW:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:LOW:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:NORMAL:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:NORMAL:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:NORMAL:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:HIGH:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:HIGH:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:LEFT:HIGH:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:LOW:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:LOW:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:LOW:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:NORMAL:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:NORMAL:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:NORMAL:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:HIGH:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:HIGH:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:CENTER:HIGH:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:LOW:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:LOW:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:LOW:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:NORMAL:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:NORMAL:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:NORMAL:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:HIGH:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:HIGH:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "NONE:RIGHT:HIGH:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:LOW:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:LOW:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:LOW:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:NORMAL:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:NORMAL:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:NORMAL:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:HIGH:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:HIGH:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:NONE:HIGH:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "APPROACHING:LEFT:LOW:LEFT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:LOW:CENTER": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:LOW:RIGHT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:NORMAL:LEFT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:NORMAL:CENTER": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:NORMAL:RIGHT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:HIGH:LEFT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:HIGH:CENTER": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:LEFT:HIGH:RIGHT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 112.281,
+            "NONE:SHIFT_RIGHT": 110.35,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 111.835,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.35
+        },
+        "APPROACHING:CENTER:LOW:LEFT": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:LOW:CENTER": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:LOW:RIGHT": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:NORMAL:LEFT": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:NORMAL:CENTER": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:NORMAL:RIGHT": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:HIGH:LEFT": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:HIGH:CENTER": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:CENTER:HIGH:RIGHT": {
+            "NONE:NONE": 113.628,
+            "NONE:SHIFT_LEFT": 112.737,
+            "NONE:SHIFT_RIGHT": 112.737,
+            "SLOW_DOWN:NONE": 113.182,
+            "SLOW_DOWN:SHIFT_LEFT": 112.291,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.291
+        },
+        "APPROACHING:RIGHT:LOW:LEFT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:LOW:CENTER": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:LOW:RIGHT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:NORMAL:LEFT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:NORMAL:CENTER": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:NORMAL:RIGHT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:HIGH:LEFT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:HIGH:CENTER": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "APPROACHING:RIGHT:HIGH:RIGHT": {
+            "NONE:NONE": 111.293,
+            "NONE:SHIFT_LEFT": 110.35,
+            "NONE:SHIFT_RIGHT": 112.281,
+            "SLOW_DOWN:NONE": 110.87,
+            "SLOW_DOWN:SHIFT_LEFT": 110.35,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.835
+        },
+        "AT:NONE:LOW:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:LOW:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:LOW:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:NORMAL:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:NORMAL:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:NORMAL:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:HIGH:LEFT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:HIGH:CENTER": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:NONE:HIGH:RIGHT": {
+            "NONE:NONE": 99.903,
+            "NONE:SHIFT_LEFT": 99.903,
+            "NONE:SHIFT_RIGHT": 99.903,
+            "SLOW_DOWN:NONE": 99.903,
+            "SLOW_DOWN:SHIFT_LEFT": 99.903,
+            "SLOW_DOWN:SHIFT_RIGHT": 99.903
+        },
+        "AT:LEFT:LOW:LEFT": {
+            "NONE:NONE": 114.503,
+            "NONE:SHIFT_LEFT": 115.491,
+            "NONE:SHIFT_RIGHT": 113.56,
+            "SLOW_DOWN:NONE": 114.08,
+            "SLOW_DOWN:SHIFT_LEFT": 115.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 113.56
+        },
+        "AT:LEFT:LOW:CENTER": {
+            "NONE:NONE": 112.503,
+            "NONE:SHIFT_LEFT": 113.491,
+            "NONE:SHIFT_RIGHT": 111.56,
+            "SLOW_DOWN:NONE": 112.08,
+            "SLOW_DOWN:SHIFT_LEFT": 113.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 111.56
+        },
+        "AT:LEFT:LOW:RIGHT": {
+            "NONE:NONE": 111.503,
+            "NONE:SHIFT_LEFT": 112.491,
+            "NONE:SHIFT_RIGHT": 110.56,
+            "SLOW_DOWN:NONE": 111.08,
+            "SLOW_DOWN:SHIFT_LEFT": 112.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.56
+        },
+        "AT:LEFT:NORMAL:LEFT": {
+            "NONE:NONE": 115.503,
+            "NONE:SHIFT_LEFT": 116.491,
+            "NONE:SHIFT_RIGHT": 114.56,
+            "SLOW_DOWN:NONE": 115.08,
+            "SLOW_DOWN:SHIFT_LEFT": 116.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 114.56
+        },
+        "AT:LEFT:NORMAL:CENTER": {
+            "NONE:NONE": 113.503,
+            "NONE:SHIFT_LEFT": 114.491,
+            "NONE:SHIFT_RIGHT": 112.56,
+            "SLOW_DOWN:NONE": 113.08,
+            "SLOW_DOWN:SHIFT_LEFT": 114.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.56
+        },
+        "AT:LEFT:NORMAL:RIGHT": {
+            "NONE:NONE": 111.503,
+            "NONE:SHIFT_LEFT": 112.491,
+            "NONE:SHIFT_RIGHT": 110.56,
+            "SLOW_DOWN:NONE": 111.08,
+            "SLOW_DOWN:SHIFT_LEFT": 112.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.56
+        },
+        "AT:LEFT:HIGH:LEFT": {
+            "NONE:NONE": 115.503,
+            "NONE:SHIFT_LEFT": 116.491,
+            "NONE:SHIFT_RIGHT": 114.56,
+            "SLOW_DOWN:NONE": 115.08,
+            "SLOW_DOWN:SHIFT_LEFT": 116.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 114.56
+        },
+        "AT:LEFT:HIGH:CENTER": {
+            "NONE:NONE": 113.503,
+            "NONE:SHIFT_LEFT": 114.491,
+            "NONE:SHIFT_RIGHT": 112.56,
+            "SLOW_DOWN:NONE": 113.08,
+            "SLOW_DOWN:SHIFT_LEFT": 114.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.56
+        },
+        "AT:LEFT:HIGH:RIGHT": {
+            "NONE:NONE": 111.503,
+            "NONE:SHIFT_LEFT": 112.491,
+            "NONE:SHIFT_RIGHT": 110.56,
+            "SLOW_DOWN:NONE": 111.08,
+            "SLOW_DOWN:SHIFT_LEFT": 112.045,
+            "SLOW_DOWN:SHIFT_RIGHT": 110.56
+        },
+        "AT:CENTER:LOW:LEFT": {
+            "NONE:NONE": 113.877,
+            "NONE:SHIFT_LEFT": 112.986,
+            "NONE:SHIFT_RIGHT": 112.986,
+            "SLOW_DOWN:NONE": 113.431,
+            "SLOW_DOWN:SHIFT_LEFT": 112.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.54
+        },
+        "AT:CENTER:LOW:CENTER": {
+            "NONE:NONE": 115.877,
+            "NONE:SHIFT_LEFT": 114.986,
+            "NONE:SHIFT_RIGHT": 114.986,
+            "SLOW_DOWN:NONE": 115.431,
+            "SLOW_DOWN:SHIFT_LEFT": 114.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 114.54
+        },
+        "AT:CENTER:LOW:RIGHT": {
+            "NONE:NONE": 113.877,
+            "NONE:SHIFT_LEFT": 112.986,
+            "NONE:SHIFT_RIGHT": 112.986,
+            "SLOW_DOWN:NONE": 113.431,
+            "SLOW_DOWN:SHIFT_LEFT": 112.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.54
+        },
+        "AT:CENTER:NORMAL:LEFT": {
+            "NONE:NONE": 114.877,
+            "NONE:SHIFT_LEFT": 113.986,
+            "NONE:SHIFT_RIGHT": 113.986,
+            "SLOW_DOWN:NONE": 114.431,
+            "SLOW_DOWN:SHIFT_LEFT": 113.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 113.54
+        },
+        "AT:CENTER:NORMAL:CENTER": {
+            "NONE:NONE": 116.877,
+            "NONE:SHIFT_LEFT": 115.986,
+            "NONE:SHIFT_RIGHT": 115.986,
+            "SLOW_DOWN:NONE": 116.431,
+            "SLOW_DOWN:SHIFT_LEFT": 115.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 115.54
+        },
+        "AT:CENTER:NORMAL:RIGHT": {
+            "NONE:NONE": 114.877,
+            "NONE:SHIFT_LEFT": 113.986,
+            "NONE:SHIFT_RIGHT": 113.986,
+            "SLOW_DOWN:NONE": 114.431,
+            "SLOW_DOWN:SHIFT_LEFT": 113.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 113.54
+        },
+        "AT:CENTER:HIGH:LEFT": {
+            "NONE:NONE": 114.877,
+            "NONE:SHIFT_LEFT": 113.986,
+            "NONE:SHIFT_RIGHT": 113.986,
+            "SLOW_DOWN:NONE": 114.431,
+            "SLOW_DOWN:SHIFT_LEFT": 113.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 113.54
+        },
+        "AT:CENTER:HIGH:CENTER": {
+            "NONE:NONE": 116.877,
+            "NONE:SHIFT_LEFT": 115.986,
+            "NONE:SHIFT_RIGHT": 115.986,
+            "SLOW_DOWN:NONE": 116.431,
+            "SLOW_DOWN:SHIFT_LEFT": 115.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 115.54
+        },
+        "AT:CENTER:HIGH:RIGHT": {
+            "NONE:NONE": 114.877,
+            "NONE:SHIFT_LEFT": 113.986,
+            "NONE:SHIFT_RIGHT": 113.986,
+            "SLOW_DOWN:NONE": 114.431,
+            "SLOW_DOWN:SHIFT_LEFT": 113.54,
+            "SLOW_DOWN:SHIFT_RIGHT": 113.54
+        },
+        "AT:RIGHT:LOW:LEFT": {
+            "NONE:NONE": 111.503,
+            "NONE:SHIFT_LEFT": 110.56,
+            "NONE:SHIFT_RIGHT": 112.491,
+            "SLOW_DOWN:NONE": 111.08,
+            "SLOW_DOWN:SHIFT_LEFT": 110.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.045
+        },
+        "AT:RIGHT:LOW:CENTER": {
+            "NONE:NONE": 112.503,
+            "NONE:SHIFT_LEFT": 111.56,
+            "NONE:SHIFT_RIGHT": 113.491,
+            "SLOW_DOWN:NONE": 112.08,
+            "SLOW_DOWN:SHIFT_LEFT": 111.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 113.045
+        },
+        "AT:RIGHT:LOW:RIGHT": {
+            "NONE:NONE": 114.503,
+            "NONE:SHIFT_LEFT": 113.56,
+            "NONE:SHIFT_RIGHT": 115.491,
+            "SLOW_DOWN:NONE": 114.08,
+            "SLOW_DOWN:SHIFT_LEFT": 113.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 115.045
+        },
+        "AT:RIGHT:NORMAL:LEFT": {
+            "NONE:NONE": 111.503,
+            "NONE:SHIFT_LEFT": 110.56,
+            "NONE:SHIFT_RIGHT": 112.491,
+            "SLOW_DOWN:NONE": 111.08,
+            "SLOW_DOWN:SHIFT_LEFT": 110.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.045
+        },
+        "AT:RIGHT:NORMAL:CENTER": {
+            "NONE:NONE": 113.503,
+            "NONE:SHIFT_LEFT": 112.56,
+            "NONE:SHIFT_RIGHT": 114.491,
+            "SLOW_DOWN:NONE": 113.08,
+            "SLOW_DOWN:SHIFT_LEFT": 112.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 114.045
+        },
+        "AT:RIGHT:NORMAL:RIGHT": {
+            "NONE:NONE": 115.503,
+            "NONE:SHIFT_LEFT": 114.56,
+            "NONE:SHIFT_RIGHT": 116.491,
+            "SLOW_DOWN:NONE": 115.08,
+            "SLOW_DOWN:SHIFT_LEFT": 114.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 116.045
+        },
+        "AT:RIGHT:HIGH:LEFT": {
+            "NONE:NONE": 111.503,
+            "NONE:SHIFT_LEFT": 110.56,
+            "NONE:SHIFT_RIGHT": 112.491,
+            "SLOW_DOWN:NONE": 111.08,
+            "SLOW_DOWN:SHIFT_LEFT": 110.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 112.045
+        },
+        "AT:RIGHT:HIGH:CENTER": {
+            "NONE:NONE": 113.503,
+            "NONE:SHIFT_LEFT": 112.56,
+            "NONE:SHIFT_RIGHT": 114.491,
+            "SLOW_DOWN:NONE": 113.08,
+            "SLOW_DOWN:SHIFT_LEFT": 112.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 114.045
+        },
+        "AT:RIGHT:HIGH:RIGHT": {
+            "NONE:NONE": 115.503,
+            "NONE:SHIFT_LEFT": 114.56,
+            "NONE:SHIFT_RIGHT": 116.491,
+            "SLOW_DOWN:NONE": 115.08,
+            "SLOW_DOWN:SHIFT_LEFT": 114.56,
+            "SLOW_DOWN:SHIFT_RIGHT": 116.045
+        }
+    },
+    "policy": {
+        "NONE:NONE:LOW:LEFT": "NONE:NONE",
+        "NONE:NONE:LOW:CENTER": "NONE:NONE",
+        "NONE:NONE:LOW:RIGHT": "NONE:NONE",
+        "NONE:NONE:NORMAL:LEFT": "NONE:NONE",
+        "NONE:NONE:NORMAL:CENTER": "NONE:NONE",
+        "NONE:NONE:NORMAL:RIGHT": "NONE:NONE",
+        "NONE:NONE:HIGH:LEFT": "NONE:NONE",
+        "NONE:NONE:HIGH:CENTER": "NONE:NONE",
+        "NONE:NONE:HIGH:RIGHT": "NONE:NONE",
+        "NONE:LEFT:LOW:LEFT": "NONE:NONE",
+        "NONE:LEFT:LOW:CENTER": "NONE:NONE",
+        "NONE:LEFT:LOW:RIGHT": "NONE:NONE",
+        "NONE:LEFT:NORMAL:LEFT": "NONE:NONE",
+        "NONE:LEFT:NORMAL:CENTER": "NONE:NONE",
+        "NONE:LEFT:NORMAL:RIGHT": "NONE:NONE",
+        "NONE:LEFT:HIGH:LEFT": "NONE:NONE",
+        "NONE:LEFT:HIGH:CENTER": "NONE:NONE",
+        "NONE:LEFT:HIGH:RIGHT": "NONE:NONE",
+        "NONE:CENTER:LOW:LEFT": "NONE:NONE",
+        "NONE:CENTER:LOW:CENTER": "NONE:NONE",
+        "NONE:CENTER:LOW:RIGHT": "NONE:NONE",
+        "NONE:CENTER:NORMAL:LEFT": "NONE:NONE",
+        "NONE:CENTER:NORMAL:CENTER": "NONE:NONE",
+        "NONE:CENTER:NORMAL:RIGHT": "NONE:NONE",
+        "NONE:CENTER:HIGH:LEFT": "NONE:NONE",
+        "NONE:CENTER:HIGH:CENTER": "NONE:NONE",
+        "NONE:CENTER:HIGH:RIGHT": "NONE:NONE",
+        "NONE:RIGHT:LOW:LEFT": "NONE:NONE",
+        "NONE:RIGHT:LOW:CENTER": "NONE:NONE",
+        "NONE:RIGHT:LOW:RIGHT": "NONE:NONE",
+        "NONE:RIGHT:NORMAL:LEFT": "NONE:NONE",
+        "NONE:RIGHT:NORMAL:CENTER": "NONE:NONE",
+        "NONE:RIGHT:NORMAL:RIGHT": "NONE:NONE",
+        "NONE:RIGHT:HIGH:LEFT": "NONE:NONE",
+        "NONE:RIGHT:HIGH:CENTER": "NONE:NONE",
+        "NONE:RIGHT:HIGH:RIGHT": "NONE:NONE",
+        "APPROACHING:NONE:LOW:LEFT": "NONE:NONE",
+        "APPROACHING:NONE:LOW:CENTER": "NONE:NONE",
+        "APPROACHING:NONE:LOW:RIGHT": "NONE:NONE",
+        "APPROACHING:NONE:NORMAL:LEFT": "NONE:NONE",
+        "APPROACHING:NONE:NORMAL:CENTER": "NONE:NONE",
+        "APPROACHING:NONE:NORMAL:RIGHT": "NONE:NONE",
+        "APPROACHING:NONE:HIGH:LEFT": "NONE:NONE",
+        "APPROACHING:NONE:HIGH:CENTER": "NONE:NONE",
+        "APPROACHING:NONE:HIGH:RIGHT": "NONE:NONE",
+        "APPROACHING:LEFT:LOW:LEFT": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:LOW:CENTER": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:LOW:RIGHT": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:NORMAL:LEFT": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:NORMAL:CENTER": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:NORMAL:RIGHT": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:HIGH:LEFT": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:HIGH:CENTER": "NONE:SHIFT_RIGHT",
+        "APPROACHING:LEFT:HIGH:RIGHT": "NONE:SHIFT_RIGHT",
+        "APPROACHING:CENTER:LOW:LEFT": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:LOW:CENTER": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:LOW:RIGHT": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:NORMAL:LEFT": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:NORMAL:CENTER": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:NORMAL:RIGHT": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:HIGH:LEFT": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:HIGH:CENTER": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:CENTER:HIGH:RIGHT": "SLOW_DOWN:SHIFT_LEFT",
+        "APPROACHING:RIGHT:LOW:LEFT": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:LOW:CENTER": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:LOW:RIGHT": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:NORMAL:LEFT": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:NORMAL:CENTER": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:NORMAL:RIGHT": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:HIGH:LEFT": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:HIGH:CENTER": "NONE:SHIFT_LEFT",
+        "APPROACHING:RIGHT:HIGH:RIGHT": "NONE:SHIFT_LEFT",
+        "AT:NONE:LOW:LEFT": "NONE:NONE",
+        "AT:NONE:LOW:CENTER": "NONE:NONE",
+        "AT:NONE:LOW:RIGHT": "NONE:NONE",
+        "AT:NONE:NORMAL:LEFT": "NONE:NONE",
+        "AT:NONE:NORMAL:CENTER": "NONE:NONE",
+        "AT:NONE:NORMAL:RIGHT": "NONE:NONE",
+        "AT:NONE:HIGH:LEFT": "NONE:NONE",
+        "AT:NONE:HIGH:CENTER": "NONE:NONE",
+        "AT:NONE:HIGH:RIGHT": "NONE:NONE",
+        "AT:LEFT:LOW:LEFT": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:LOW:CENTER": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:LOW:RIGHT": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:NORMAL:LEFT": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:NORMAL:CENTER": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:NORMAL:RIGHT": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:HIGH:LEFT": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:HIGH:CENTER": "NONE:SHIFT_RIGHT",
+        "AT:LEFT:HIGH:RIGHT": "NONE:SHIFT_RIGHT",
+        "AT:CENTER:LOW:LEFT": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:LOW:CENTER": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:LOW:RIGHT": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:NORMAL:LEFT": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:NORMAL:CENTER": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:NORMAL:RIGHT": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:HIGH:LEFT": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:HIGH:CENTER": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:CENTER:HIGH:RIGHT": "SLOW_DOWN:SHIFT_LEFT",
+        "AT:RIGHT:LOW:LEFT": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:LOW:CENTER": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:LOW:RIGHT": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:NORMAL:LEFT": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:NORMAL:CENTER": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:NORMAL:RIGHT": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:HIGH:LEFT": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:HIGH:CENTER": "NONE:SHIFT_LEFT",
+        "AT:RIGHT:HIGH:RIGHT": "NONE:SHIFT_LEFT"
+    },
+    "interference_state_values": {
+        "NONE:NONE:LOW:LEFT": 546.258,
+        "NONE:NONE:LOW:CENTER": 546.258,
+        "NONE:NONE:LOW:RIGHT": 546.258,
+        "NONE:NONE:NORMAL:LEFT": 546.258,
+        "NONE:NONE:NORMAL:CENTER": 546.258,
+        "NONE:NONE:NORMAL:RIGHT": 546.259,
+        "NONE:NONE:HIGH:LEFT": 546.259,
+        "NONE:NONE:HIGH:CENTER": 546.259,
+        "NONE:NONE:HIGH:RIGHT": 546.259,
+        "NONE:LEFT:LOW:LEFT": 0.0,
+        "NONE:LEFT:LOW:CENTER": 0.0,
+        "NONE:LEFT:LOW:RIGHT": 0.0,
+        "NONE:LEFT:NORMAL:LEFT": 0.0,
+        "NONE:LEFT:NORMAL:CENTER": 0.0,
+        "NONE:LEFT:NORMAL:RIGHT": 0.0,
+        "NONE:LEFT:HIGH:LEFT": 0.0,
+        "NONE:LEFT:HIGH:CENTER": 0.0,
+        "NONE:LEFT:HIGH:RIGHT": 0.0,
+        "NONE:CENTER:LOW:LEFT": 0.0,
+        "NONE:CENTER:LOW:CENTER": 0.0,
+        "NONE:CENTER:LOW:RIGHT": 0.0,
+        "NONE:CENTER:NORMAL:LEFT": 0.0,
+        "NONE:CENTER:NORMAL:CENTER": 0.0,
+        "NONE:CENTER:NORMAL:RIGHT": 0.0,
+        "NONE:CENTER:HIGH:LEFT": 0.0,
+        "NONE:CENTER:HIGH:CENTER": 0.0,
+        "NONE:CENTER:HIGH:RIGHT": 0.0,
+        "NONE:RIGHT:LOW:LEFT": 0.0,
+        "NONE:RIGHT:LOW:CENTER": 0.0,
+        "NONE:RIGHT:LOW:RIGHT": 0.0,
+        "NONE:RIGHT:NORMAL:LEFT": 0.0,
+        "NONE:RIGHT:NORMAL:CENTER": 0.0,
+        "NONE:RIGHT:NORMAL:RIGHT": 0.0,
+        "NONE:RIGHT:HIGH:LEFT": 0.0,
+        "NONE:RIGHT:HIGH:CENTER": 0.0,
+        "NONE:RIGHT:HIGH:RIGHT": 0.0,
+        "APPROACHING:NONE:LOW:LEFT": 0.0,
+        "APPROACHING:NONE:LOW:CENTER": 0.0,
+        "APPROACHING:NONE:LOW:RIGHT": 0.0,
+        "APPROACHING:NONE:NORMAL:LEFT": 0.0,
+        "APPROACHING:NONE:NORMAL:CENTER": 0.0,
+        "APPROACHING:NONE:NORMAL:RIGHT": 0.0,
+        "APPROACHING:NONE:HIGH:LEFT": 0.0,
+        "APPROACHING:NONE:HIGH:CENTER": 0.0,
+        "APPROACHING:NONE:HIGH:RIGHT": 0.0,
+        "APPROACHING:LEFT:LOW:LEFT": 564.048,
+        "APPROACHING:LEFT:LOW:CENTER": 564.048,
+        "APPROACHING:LEFT:LOW:RIGHT": 564.048,
+        "APPROACHING:LEFT:NORMAL:LEFT": 564.048,
+        "APPROACHING:LEFT:NORMAL:CENTER": 564.048,
+        "APPROACHING:LEFT:NORMAL:RIGHT": 564.048,
+        "APPROACHING:LEFT:HIGH:LEFT": 564.049,
+        "APPROACHING:LEFT:HIGH:CENTER": 564.049,
+        "APPROACHING:LEFT:HIGH:RIGHT": 564.049,
+        "APPROACHING:CENTER:LOW:LEFT": 583.653,
+        "APPROACHING:CENTER:LOW:CENTER": 583.654,
+        "APPROACHING:CENTER:LOW:RIGHT": 583.654,
+        "APPROACHING:CENTER:NORMAL:LEFT": 583.654,
+        "APPROACHING:CENTER:NORMAL:CENTER": 583.654,
+        "APPROACHING:CENTER:NORMAL:RIGHT": 583.654,
+        "APPROACHING:CENTER:HIGH:LEFT": 583.654,
+        "APPROACHING:CENTER:HIGH:CENTER": 583.654,
+        "APPROACHING:CENTER:HIGH:RIGHT": 583.654,
+        "APPROACHING:RIGHT:LOW:LEFT": 564.048,
+        "APPROACHING:RIGHT:LOW:CENTER": 564.048,
+        "APPROACHING:RIGHT:LOW:RIGHT": 564.048,
+        "APPROACHING:RIGHT:NORMAL:LEFT": 564.048,
+        "APPROACHING:RIGHT:NORMAL:CENTER": 564.048,
+        "APPROACHING:RIGHT:NORMAL:RIGHT": 564.048,
+        "APPROACHING:RIGHT:HIGH:LEFT": 564.048,
+        "APPROACHING:RIGHT:HIGH:CENTER": 564.048,
+        "APPROACHING:RIGHT:HIGH:RIGHT": 564.048,
+        "AT:NONE:LOW:LEFT": 0.0,
+        "AT:NONE:LOW:CENTER": 0.0,
+        "AT:NONE:LOW:RIGHT": 0.0,
+        "AT:NONE:NORMAL:LEFT": 0.0,
+        "AT:NONE:NORMAL:CENTER": 0.0,
+        "AT:NONE:NORMAL:RIGHT": 0.0,
+        "AT:NONE:HIGH:LEFT": 0.0,
+        "AT:NONE:HIGH:CENTER": 0.0,
+        "AT:NONE:HIGH:RIGHT": 0.0,
+        "AT:LEFT:LOW:LEFT": 555.243,
+        "AT:LEFT:LOW:CENTER": 555.243,
+        "AT:LEFT:LOW:RIGHT": 555.243,
+        "AT:LEFT:NORMAL:LEFT": 555.243,
+        "AT:LEFT:NORMAL:CENTER": 555.243,
+        "AT:LEFT:NORMAL:RIGHT": 555.243,
+        "AT:LEFT:HIGH:LEFT": 555.243,
+        "AT:LEFT:HIGH:CENTER": 555.243,
+        "AT:LEFT:HIGH:RIGHT": 555.243,
+        "AT:CENTER:LOW:LEFT": 565.143,
+        "AT:CENTER:LOW:CENTER": 565.144,
+        "AT:CENTER:LOW:RIGHT": 565.144,
+        "AT:CENTER:NORMAL:LEFT": 565.144,
+        "AT:CENTER:NORMAL:CENTER": 565.144,
+        "AT:CENTER:NORMAL:RIGHT": 565.144,
+        "AT:CENTER:HIGH:LEFT": 565.144,
+        "AT:CENTER:HIGH:CENTER": 565.144,
+        "AT:CENTER:HIGH:RIGHT": 565.144,
+        "AT:RIGHT:LOW:LEFT": 555.243,
+        "AT:RIGHT:LOW:CENTER": 555.243,
+        "AT:RIGHT:LOW:RIGHT": 555.243,
+        "AT:RIGHT:NORMAL:LEFT": 555.243,
+        "AT:RIGHT:NORMAL:CENTER": 555.243,
+        "AT:RIGHT:NORMAL:RIGHT": 555.243,
+        "AT:RIGHT:HIGH:LEFT": 555.243,
+        "AT:RIGHT:HIGH:CENTER": 555.243,
+        "AT:RIGHT:HIGH:RIGHT": 555.243
+    },
+    "interference_parameter_values": {
+        "NONE:NONE:LOW:LEFT": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:LOW:CENTER": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:LOW:RIGHT": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:NORMAL:LEFT": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:NORMAL:CENTER": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:NORMAL:RIGHT": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:HIGH:LEFT": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:HIGH:CENTER": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:NONE:HIGH:RIGHT": {
+            "NONE:NONE": 546.259,
+            "NONE:SHIFT_LEFT": 556.259,
+            "NONE:SHIFT_RIGHT": 556.26,
+            "SLOW_DOWN:NONE": 551.259,
+            "SLOW_DOWN:SHIFT_LEFT": 561.259,
+            "SLOW_DOWN:SHIFT_RIGHT": 561.259
+        },
+        "NONE:LEFT:LOW:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:LOW:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:LOW:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:NORMAL:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:NORMAL:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:NORMAL:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:HIGH:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:HIGH:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:LEFT:HIGH:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:LOW:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:LOW:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:LOW:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:NORMAL:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:NORMAL:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:NORMAL:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:HIGH:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:HIGH:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:CENTER:HIGH:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:LOW:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:LOW:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:LOW:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:NORMAL:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:NORMAL:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:NORMAL:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:HIGH:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:HIGH:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "NONE:RIGHT:HIGH:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:LOW:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:LOW:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:LOW:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:NORMAL:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:NORMAL:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:NORMAL:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:HIGH:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:HIGH:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:NONE:HIGH:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "APPROACHING:LEFT:LOW:LEFT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:LOW:CENTER": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:LOW:RIGHT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:NORMAL:LEFT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:NORMAL:CENTER": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:NORMAL:RIGHT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:HIGH:LEFT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:HIGH:CENTER": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:LEFT:HIGH:RIGHT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:CENTER:LOW:LEFT": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:LOW:CENTER": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:LOW:RIGHT": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:NORMAL:LEFT": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:NORMAL:CENTER": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:NORMAL:RIGHT": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:HIGH:LEFT": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:HIGH:CENTER": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:CENTER:HIGH:RIGHT": {
+            "NONE:NONE": 568.655,
+            "NONE:SHIFT_LEFT": 578.655,
+            "NONE:SHIFT_RIGHT": 578.655,
+            "SLOW_DOWN:NONE": 573.655,
+            "SLOW_DOWN:SHIFT_LEFT": 583.654,
+            "SLOW_DOWN:SHIFT_RIGHT": 583.655
+        },
+        "APPROACHING:RIGHT:LOW:LEFT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:LOW:CENTER": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:LOW:RIGHT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:NORMAL:LEFT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:NORMAL:CENTER": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:NORMAL:RIGHT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:HIGH:LEFT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:HIGH:CENTER": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "APPROACHING:RIGHT:HIGH:RIGHT": {
+            "NONE:NONE": 554.049,
+            "NONE:SHIFT_LEFT": 564.049,
+            "NONE:SHIFT_RIGHT": 564.049,
+            "SLOW_DOWN:NONE": 559.049,
+            "SLOW_DOWN:SHIFT_LEFT": 569.049,
+            "SLOW_DOWN:SHIFT_RIGHT": 569.049
+        },
+        "AT:NONE:LOW:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:LOW:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:LOW:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:NORMAL:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:NORMAL:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:NORMAL:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:HIGH:LEFT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:HIGH:CENTER": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:NONE:HIGH:RIGHT": {
+            "NONE:NONE": 0.0,
+            "NONE:SHIFT_LEFT": 10.0,
+            "NONE:SHIFT_RIGHT": 10.0,
+            "SLOW_DOWN:NONE": 5.0,
+            "SLOW_DOWN:SHIFT_LEFT": 15.0,
+            "SLOW_DOWN:SHIFT_RIGHT": 15.0
+        },
+        "AT:LEFT:LOW:LEFT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:LOW:CENTER": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:LOW:RIGHT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:NORMAL:LEFT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:NORMAL:CENTER": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:NORMAL:RIGHT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:HIGH:LEFT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:HIGH:CENTER": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:LEFT:HIGH:RIGHT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:CENTER:LOW:LEFT": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:LOW:CENTER": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:LOW:RIGHT": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:NORMAL:LEFT": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:NORMAL:CENTER": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:NORMAL:RIGHT": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:HIGH:LEFT": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:HIGH:CENTER": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:CENTER:HIGH:RIGHT": {
+            "NONE:NONE": 550.144,
+            "NONE:SHIFT_LEFT": 560.144,
+            "NONE:SHIFT_RIGHT": 560.144,
+            "SLOW_DOWN:NONE": 555.144,
+            "SLOW_DOWN:SHIFT_LEFT": 565.143,
+            "SLOW_DOWN:SHIFT_RIGHT": 565.144
+        },
+        "AT:RIGHT:LOW:LEFT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:LOW:CENTER": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:LOW:RIGHT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:NORMAL:LEFT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:NORMAL:CENTER": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:NORMAL:RIGHT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:HIGH:LEFT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:HIGH:CENTER": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        },
+        "AT:RIGHT:HIGH:RIGHT": {
+            "NONE:NONE": 545.243,
+            "NONE:SHIFT_LEFT": 555.243,
+            "NONE:SHIFT_RIGHT": 555.243,
+            "SLOW_DOWN:NONE": 550.243,
+            "SLOW_DOWN:SHIFT_LEFT": 560.243,
+            "SLOW_DOWN:SHIFT_RIGHT": 560.243
+        }
+    }
+}

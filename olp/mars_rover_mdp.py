@@ -1,7 +1,8 @@
 import itertools
 
-TERRAIN_TYPES = {'W': 'IMPASSABLE', 'O': 'NORMAL'}
+STATE_CONNECTOR = ':'
 
+TERRAIN_TYPES = {'W': 'IMPASSABLE', 'O': 'NORMAL'}
 WEATHER = ['SUNNY', 'SHADY']
 
 MAXIMUM_BATTERY_LEVEL = 5
@@ -38,23 +39,23 @@ MOVEMENT_ACTION_DETAILS = {
 STATIONARY_ACTIONS = ['REBOOT', 'TRANSMIT', 'CHARGE', 'ANALYZE']
 
 
-# TODO Make sure to clean up this class - it's disgusting
 class MarsRoverMdp:
-    def __init__(self, grid_world, point_of_interests, shady_locations):
+    def __init__(self, grid_world, points_of_interest, shady_locations):
         self.grid_world = grid_world
-        self.point_of_interests = point_of_interests
+        self.points_of_interests = points_of_interest
 
         self.width = len(grid_world[0])
         self.height = len(grid_world)
+        self.points_of_interest_size = len(self.points_of_interests)
 
         rows = range(self.height)
         cols = range(self.width)
-        analysis_status = [ANALYSIS_CONDITIONS for _ in point_of_interests]
+        analysis_status = [ANALYSIS_CONDITIONS for _ in points_of_interest]
         state_tuples = itertools.product(rows, cols, BATTERY_LEVELS, WATER_ANALYZER_HEALTH, SOIL_ANALYZER_HEALTH, *analysis_status)
 
         self.state_registry = {}
         for state_tuple in state_tuples:
-            state = ':'.join(str(state_factor) for state_factor in state_tuple)
+            state = STATE_CONNECTOR.join(str(state_factor) for state_factor in state_tuple)
             self.state_registry[state] = {
                 'row': state_tuple[0],
                 'column': state_tuple[1],
@@ -63,8 +64,8 @@ class MarsRoverMdp:
                 'battery_level': state_tuple[2],
                 'water_analyzer_health': state_tuple[3],
                 'soil_analyzer_health': state_tuple[4],
-                'analysis_status': {self.point_of_interests[i]: state_tuple[5 + i] for i in range(len(self.point_of_interests))},
-                'is_point_of_interest': (state_tuple[0], state_tuple[1]) in self.point_of_interests
+                'analysis_status': {self.points_of_interests[i]: state_tuple[5 + i] for i in range(self.points_of_interest_size)},
+                'is_point_of_interest': (state_tuple[0], state_tuple[1]) in self.points_of_interests
             }
 
         self.state_registry[GOAL_STATE] = {
@@ -88,6 +89,7 @@ class MarsRoverMdp:
     def actions(self):
         return self.action_space
 
+    # TODO: Clean up this transition function
     def transition_function(self, state, action, successor_state):
         if state == GOAL_STATE and successor_state == GOAL_STATE:
             return 1
@@ -192,15 +194,15 @@ class MarsRoverMdp:
 
     def reward_function(self, state, action):
         state_record = self.state_registry[state]
-        analysis_status = state_record['analysis_status']
         battery_level = state_record['battery_level']
+        analysis_status = state_record['analysis_status']
 
-        complete_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.point_of_interests}
+        complete_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.points_of_interests}
 
         is_transmitting = action == 'TRANSMIT'
         is_alive = battery_level > 1
-        is_everything_analyzed = analysis_status == complete_analysis_status
-        if is_alive and is_transmitting and is_everything_analyzed:
+        is_analyzed = analysis_status == complete_analysis_status
+        if is_transmitting and is_alive and is_analyzed:
             return 100
 
         return 0
@@ -217,16 +219,14 @@ class MarsRoverMdp:
             analysis_status = state_record['analysis_status']
 
             is_passable = terrain_type != 'IMPASSABLE'
-            is_fully_charged = battery_level == MAXIMUM_BATTERY_LEVEL
+            is_charged = battery_level == MAXIMUM_BATTERY_LEVEL
             is_nominal = water_analyzer_health == 'NOMINAL' and soil_analyzer_health == 'NOMINAL'
 
-            initial_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.point_of_interests}
-            is_everything_analyzed = analysis_status == initial_analysis_status
+            incomplete_analysis_status = {point_of_interest: 'ANALYZED' for point_of_interest in self.points_of_interests}
+            is_analyzed = analysis_status == incomplete_analysis_status
 
-            if is_passable and is_fully_charged and is_nominal and not is_everything_analyzed:
+            if is_passable and is_charged and is_nominal and not is_analyzed:
                 start_states.append(start_state)
-
-        # start_states = ['0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED']
 
         return 1.0 / len(start_states) if state in start_states else 0
 
@@ -234,9 +234,13 @@ class MarsRoverMdp:
         return self.state_registry[state]
 
     def get_state_from_state_record(self, state_record):
-        base_state_factors = [str(state_record['row']), str(state_record['column']), str(state_record['battery_level']), state_record['water_analyzer_health'], state_record['soil_analyzer_health']]
+        base_state_factors = [
+            str(state_record['row']),
+            str(state_record['column']),
+            str(state_record['battery_level']),
+            state_record['water_analyzer_health'],
+            state_record['soil_analyzer_health']
+        ]
         analysis_status_state_factors = [state_factor for state_factor in state_record['analysis_status'].values()]
-
         state_factors = base_state_factors + analysis_status_state_factors
-
-        return ':'.join(state_factors)
+        return STATE_CONNECTOR.join(state_factors)
