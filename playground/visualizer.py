@@ -1,3 +1,6 @@
+import math
+
+
 def print_grid_world_domain(grid_world, current_state):
     height = len(grid_world)
     width = len(grid_world[0])

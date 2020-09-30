@@ -1,5 +1,3 @@
-import math
-
 from termcolor import colored
 
 BORDER_CHARACTER = '='
