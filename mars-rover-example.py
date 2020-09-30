@@ -5,7 +5,7 @@ import time
 import utils
 from mlc.obstacle_mlc import ObstacleMlc
 from olp.mars_rover_olp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverOlp)
-from printers import olp_printer
+from printers import visualizer
 from resolver import Resolver
 from solvers import olp_solver
 
@@ -70,51 +70,46 @@ def main():
     logging.info("Activating the simulator...")
     while current_state != GOAL_STATE:
         logging.info("Performing one step of the simulator: [state=%s, action=%s]", current_state, current_action)
-        olp_printer.print_mars_rover_policy(olp, current_state, policy, GRID_WORLD)
+        visualizer.print_mars_rover_visualization(olp, current_state, policy, GRID_WORLD)
 
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
         if current_action in MOVEMENT_ACTION_DETAILS:
-            print("===== Safety Monitors".ljust(150, '='))
+            visualizer.print_header("Safety Monitors")
 
             for name in execution_contexts:
                 mlc = execution_contexts[name]['instance']
-
                 current_mlc_state = random.choice(mlc.start_states())
                 current_mlc_preference = resolver.recommend(mlc, current_mlc_state)
-
                 execution_contexts[name]['current_state'] = current_mlc_state
                 execution_contexts[name]['current_preference'] = current_mlc_preference
 
             preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
             parameter = resolver.resolve(preferences)
 
-            olp_printer.print_mlc_information(0, execution_contexts, parameter)
+            visualizer.print_mlc_information(0, execution_contexts, parameter)
 
             step = 1
             while step <= action_duration or parameter != 'NONE:NONE':
                 for name in execution_contexts:
                     mlc = execution_contexts[name]['instance']
-
                     current_mlc_state = utils.get_successor_state(execution_contexts[name]['current_state'], parameter, mlc)
                     current_mlc_preference = resolver.recommend(mlc, current_mlc_state)
-
                     execution_contexts[name]['current_state'] = current_mlc_state
                     execution_contexts[name]['current_preference'] = current_mlc_preference
 
                 preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
                 parameter = resolver.resolve(preferences)
 
-                olp_printer.print_mlc_information(step, execution_contexts, parameter)
+                visualizer.print_mlc_information(step, execution_contexts, parameter)
 
                 step += 1
                 time.sleep(MLC_SLEEP_DURATION)
 
-        print("=" * 150)
-
         current_state = utils.get_successor_state(current_state, current_action, olp)
         current_action = policy[current_state]
 
+        visualizer.print_separator()
         time.sleep(OLP_SLEEP_DURATION)
 
 
