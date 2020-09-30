@@ -4,16 +4,14 @@ import time
 import utils
 from mlc.traction_loss_mlc import TractionLossMlc
 from olp.grid_world_mdp import GridWorldMdp
-from printers import mdp_printer
-from solvers import mdp_solver
-from ssas import Ssas
+from printers import olp_printer
+from solvers import olp_solver
+from ssas import Resolver
 
 OLP_SLEEP_DURATION = 0.25
 MLC_SLEEP_DURATION = 0.1
 MINIMUM_ACTION_DURATION = 1
 MAXIMUM_ACTION_DURATION = 10
-
-
 
 def main():
     grid_world = [
@@ -27,13 +25,13 @@ def main():
 
     print("Building and solving the grid world MDP...")
     mdp = GridWorldMdp(grid_world)
-    solution = mdp_solver.solve(mdp, 0.99)
+    solution = olp_solver.solve(mdp, 0.99)
 
     print("Building the traction loss MLC...")
     traction_loss_mlc = TractionLossMlc()
 
     print("Building the SSAS...")
-    ssas = Ssas(mdp, [traction_loss_mlc])
+    ssas = Resolver(mdp, [traction_loss_mlc])
 
     current_state = 0
     current_action = None
@@ -42,7 +40,7 @@ def main():
         current_action = solution['policy'][current_state]
 
         print("========== Object Level Process ========================================")
-        mdp_printer.print_grid_world_domain(grid_world, current_state)
+        olp_printer.print_grid_world_domain(grid_world, current_state)
         print("Action In Progress:", current_action)
 
         print("========== Traction Loss Meta-Level Controller =========================")

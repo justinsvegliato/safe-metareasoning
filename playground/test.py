@@ -5,13 +5,9 @@ def resolve(parameters, preferences):
         severities = [preference[parameter]['severity'] for preference in preferences]
         sorted_severities = sorted(severities, reverse=True)
         severity_matrix[parameter] = sorted_severities
-        # print(f'{parameter}:{sum(sorted_severities)}')
 
     for mlc_index in range(len(preferences)):
-        print('Current Severity Matrix:', severity_matrix)
-
         highest_severity_column = [severity_matrix[parameter][mlc_index] for parameter in severity_matrix]
-
         minimum_severity = min(highest_severity_column)
 
         new_severity_matrix = {}
@@ -60,4 +56,5 @@ def main():
     print('Answer:', severity_matrix)
 
 
-main()
+if __name__ == '__main__':
+    main()

@@ -60,8 +60,6 @@ class ObstacleMlc:
         self.kind = 'obstacle-mlc'
         self.name = f'obstacle-mlc-{ObstacleMlc.identifier}'
 
-        ObstacleMlc.identifier += 1
-
         self.state_registry = {}
         for state_tuple in itertools.product(HORIZONTAL_OBSTACLE_POSITION, VERTICAL_OBSTACLE_POSITION, ROVER_SPEED, ROVER_OFFSET):
             state = ':'.join(state_tuple)
@@ -79,6 +77,8 @@ class ObstacleMlc:
                 'speed_parameter': parameter_tuple[0],
                 'location_parameter': parameter_tuple[1]
             }
+
+        ObstacleMlc.identifier += 1
 
     def states(self):
         return list(self.state_registry.keys())
@@ -138,11 +138,6 @@ class ObstacleMlc:
         return 1
 
     def interference_function(self, _, parameter):
-        # state_record = self.state_registry[state]
-        # rover_speed = state_record['rover_speed']
-        # rover_offset = state_record['rover_offset']
-        # return INTERFERENCE_MAP[rover_speed][rover_offset]
-
         parameter_record = self.parameter_registry[parameter]
         speed_parameter = parameter_record['speed_parameter']
         location_parameter = parameter_record['location_parameter']

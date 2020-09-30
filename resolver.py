@@ -13,9 +13,8 @@ GAMMA = 0.99
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
-class Ssas:
-    def __init__(self, object_level_process, meta_level_controllers):
-        self.object_level_process = object_level_process
+class Resolver:
+    def __init__(self, meta_level_controllers):
         self.meta_level_controllers = meta_level_controllers
 
         self.severity_parameter_value_map = {}
