@@ -148,7 +148,7 @@ class ObstacleMlc:
 
         for vehicle_speed in ROVER_SPEED:
             for vehicle_offset in ROVER_OFFSET:
-                start_state = 'NONE:NONE:{}:{}'.format(vehicle_speed, vehicle_offset)
+                start_state = f'NONE:NONE:{vehicle_speed}:{vehicle_offset}'
                 start_states.append(start_state)
 
         return start_states
