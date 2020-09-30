@@ -70,7 +70,7 @@ def main():
     logging.info("Activating the simulator...")
     while current_state != GOAL_STATE:
         logging.info("Performing one step of the simulator: [state=%s, action=%s]", current_state, current_action)
-        visualizer.print_mars_rover_visualization(olp, current_state, policy, GRID_WORLD)
+        visualizer.print_mars_rover_information(olp, current_state, policy, GRID_WORLD)
 
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 

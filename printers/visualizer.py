@@ -5,7 +5,7 @@ BORDER_STARTER = BORDER_CHARACTER * 5
 BORDER_SIZE = 150
 
 
-def print_mars_rover_visualization(mars_rover_olp, current_state, policy, grid_world):
+def print_mars_rover_information(mars_rover_olp, current_state, policy, grid_world):
     symbols = {
         'NORTH': '\u2191',
         'EAST': '\u2192',
