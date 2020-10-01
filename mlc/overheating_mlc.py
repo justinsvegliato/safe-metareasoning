@@ -76,13 +76,16 @@ class OverheatingMlc:
                 'steering_parameter': parameter_tuple[2]
             }
 
+        self.state_space = list(self.state_registry.keys())
+        self.parameter_space = list(self.parameter_registry.keys())
+
         OverheatingMlc.identifier += 1
 
     def states(self):
-        return list(self.state_registry.keys())
+        return self.state_space
 
     def parameters(self):
-        return list(self.parameter_registry.keys())
+        return self.parameter_space
 
     def transition_function(self, state, parameter, successor_state):
         state_record = self.state_registry[state]
@@ -125,7 +128,7 @@ class OverheatingMlc:
     def severity_function(self, state, _):
         state_record = self.state_registry[state]
         maximum_temperature = max(state_record['wheel_motor_temperature'], state_record['arm_motor_temperature'])
-        return maximum_temperature
+        return maximum_temperature if maximum_temperature > 3 else 1
 
     def interference_function(self, _, parameter):
         parameter_record = self.parameter_registry[parameter]

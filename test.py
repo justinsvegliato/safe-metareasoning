@@ -1,5 +1,8 @@
-from printers import mlc_printer
+import json
+
 from mlc.overheating_mlc import OverheatingMlc
+from printers import mlc_printer
+from solvers import mlc_solver, olp_solver
 
 
 def resolve(parameters, preferences):
@@ -24,8 +27,8 @@ def resolve(parameters, preferences):
     return severity_matrix
 
 
-def main():
-    # parameters = ['SAMER', 'JUSTIN', 'SULIN', 'YUME', 'CONNOR']
+# def main():
+        # parameters = ['SAMER', 'JUSTIN', 'SULIN', 'YUME', 'CONNOR']
     # preferences = [
     #     {
     #         'SAMER': {'severity': 12},
@@ -60,9 +63,9 @@ def main():
     # print('Answer:', severity_matrix)
 
 
+def main():
     mlc = OverheatingMlc()
-    mlc_printer.print_transition_function(mlc)
-
+    # print(json.dumps(olp_solver.solve(mlc, 0.99), indent=4))
 
 
 if __name__ == '__main__':

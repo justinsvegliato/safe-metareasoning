@@ -78,13 +78,16 @@ class ObstacleMlc:
                 'location_parameter': parameter_tuple[1]
             }
 
+        self.state_space = list(self.state_registry.keys())
+        self.parameter_space = list(self.parameter_registry.keys())
+
         ObstacleMlc.identifier += 1
 
     def states(self):
-        return list(self.state_registry.keys())
+        return self.state_space
 
     def parameters(self):
-        return list(self.parameter_registry.keys())
+        return self.parameter_space
 
     def transition_function(self, state, parameter, successor_state):
         state_record = self.state_registry[state]
