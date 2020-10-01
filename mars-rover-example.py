@@ -4,6 +4,7 @@ import time
 
 import utils
 from mlc.obstacle_mlc import ObstacleMlc
+from mlc.overheating_mlc import OverheatingMlc
 from mdp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
 from printers import visualizer
 from resolver import Resolver
@@ -29,12 +30,12 @@ INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
 
 OLP_SLEEP_DURATION = 1.0
 MLC_SLEEP_DURATION = 0.1
-MINIMUM_ACTION_DURATION = 1
-MAXIMUM_ACTION_DURATION = 10
+MINIMUM_ACTION_DURATION = 25
+MAXIMUM_ACTION_DURATION = 30
 
 BUILDERS = [
     {'constructor': ObstacleMlc, 'arguments': []},
-    {'constructor': ObstacleMlc, 'arguments': []}
+    {'constructor': OverheatingMlc, 'arguments': []}
 ]
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
@@ -90,7 +91,7 @@ def main():
             visualizer.print_mlc_information(0, execution_contexts, parameter)
 
             step = 1
-            while step <= action_duration or parameter != 'NONE:NONE':
+            while step <= action_duration or parameter != 'NONE:NONE:NONE':
                 for name in execution_contexts:
                     mlc = execution_contexts[name]['instance']
                     current_mlc_state = utils.get_successor_state(execution_contexts[name]['current_state'], parameter, mlc)
