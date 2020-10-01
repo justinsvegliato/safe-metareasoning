@@ -4,10 +4,10 @@ import time
 
 import utils
 from mlc.obstacle_mlc import ObstacleMlc
-from olp.mars_rover_olp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverOlp)
+from mdp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
 from printers import visualizer
 from resolver import Resolver
-from solvers import olp_solver
+from solvers import mdp_solver
 
 # GRID_WORLD = [
 #     ['O', 'W', 'O', 'O'],
@@ -42,7 +42,7 @@ logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelna
 
 def main():
     start = time.time()
-    olp = MarsRoverOlp(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
+    olp = MarsRoverMdp(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
     logging.info("Built the mars rover OLP: [states=%d, actions=%d, time=%f]", len(olp.states()), len(olp.actions()), time.time() - start)
 
     execution_contexts = {}
@@ -60,7 +60,7 @@ def main():
     # TODO: Implement file cache logic
     logging.info("Solving the mars rover OLP...")
     start = time.time()
-    solution = olp_solver.solve(olp, 0.99)
+    solution = mdp_solver.solve(olp, 0.99)
     policy = solution['policy']
     logging.info("Solved for the policy of the mars rover OLP: [time=%f]", time.time() - start)
 

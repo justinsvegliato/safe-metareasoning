@@ -5,7 +5,7 @@ import utils
 from mlc.traction_loss_mlc import TractionLossMlc
 from olp.grid_world_mdp import GridWorldMdp
 from printers import olp_printer
-from solvers import olp_solver
+from solvers import mdp_solver
 from ssas import Resolver
 
 OLP_SLEEP_DURATION = 0.25
@@ -25,7 +25,7 @@ def main():
 
     print("Building and solving the grid world MDP...")
     mdp = GridWorldMdp(grid_world)
-    solution = olp_solver.solve(mdp, 0.99)
+    solution = mdp_solver.solve(mdp, 0.99)
 
     print("Building the traction loss MLC...")
     traction_loss_mlc = TractionLossMlc()

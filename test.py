@@ -2,7 +2,7 @@ import json
 
 from mlc.overheating_mlc import OverheatingMlc
 from printers import mlc_printer
-from solvers import mlc_solver, olp_solver
+from solvers import mlc_solver, mdp_solver
 
 
 def resolve(parameters, preferences):
