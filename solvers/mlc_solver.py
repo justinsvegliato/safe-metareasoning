@@ -1,5 +1,8 @@
 import math
 
+from solvers import mdp_solver
+from solvers.mdp_container import MdpContainer
+
 ROUNDER = 3
 
 
@@ -27,7 +30,6 @@ def get_severity_state_values(mlc, gamma, epsilon):
             delta = max(delta, math.fabs(best_severity_value - severity_state_values[state]))
             severity_state_values[state] = best_severity_value
 
-        print("Delta", delta)
         if delta < epsilon:
             return severity_state_values
 
@@ -50,7 +52,6 @@ def get_interference_state_values(mlc, gamma, epsilon, policy):
             delta = max(delta, math.fabs(new_interference_value - interference_state_values[state]))
             interference_state_values[state] = new_interference_value
 
-        print("Delta", delta)
         if delta < epsilon:
             return interference_state_values
 
@@ -119,7 +120,10 @@ def round_parameter_values(mlc, parameter_values):
 
 
 def solve(mlc, gamma, epsilon):
-    severity_state_values = round_state_values(mlc, get_severity_state_values(mlc, gamma, epsilon))
+    mdp_container = MdpContainer(mlc)
+    solution = mdp_solver.solve(mdp_container, gamma)
+
+    severity_state_values = round_state_values(mlc, solution['values'])
     severity_parameter_values = round_parameter_values(mlc, get_severity_parameter_values(mlc, gamma, severity_state_values))
 
     policy = get_policy(mlc, severity_parameter_values)

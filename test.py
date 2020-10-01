@@ -2,7 +2,7 @@ import json
 
 from mlc.overheating_mlc import OverheatingMlc
 from printers import mlc_printer
-from solvers import mlc_solver, mdp_solver
+from solvers import mlc_solver, mdp_solver, mdp_container
 
 
 def resolve(parameters, preferences):
@@ -65,7 +65,12 @@ def resolve(parameters, preferences):
 
 def main():
     mlc = OverheatingMlc()
-    # print(json.dumps(olp_solver.solve(mlc, 0.99), indent=4))
+
+    container = mdp_container.MdpContainer(mlc)
+    # mdp_solver.solve(container, 0.99)
+    print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
+
+
 
 
 if __name__ == '__main__':
