@@ -5,7 +5,7 @@ BORDER_STARTER = BORDER_CHARACTER * 5
 BORDER_SIZE = 150
 
 
-def print_mars_rover_information(mars_rover_olp, current_state, policy, grid_world):
+def print_mars_rover_information(mars_rover_mdp, current_state, policy, grid_world):
     symbols = {
         'NORTH': '\u2191',
         'EAST': '\u2192',
@@ -21,10 +21,10 @@ def print_mars_rover_information(mars_rover_olp, current_state, policy, grid_wor
         'NOT_ANALYZED': '\u2717',
     }
 
-    height = mars_rover_olp.height
-    width = mars_rover_olp.width
+    height = mars_rover_mdp.height
+    width = mars_rover_mdp.width
 
-    current_state_record = mars_rover_olp.get_state_record_from_state(current_state)
+    current_state_record = mars_rover_mdp.get_state_record_from_state(current_state)
 
     print_header("System Metrics")
 
@@ -47,9 +47,9 @@ def print_mars_rover_information(mars_rover_olp, current_state, policy, grid_wor
             state_record = current_state_record.copy()
             state_record['row'] = row
             state_record['column'] = column
-            state = mars_rover_olp.get_state_from_state_record(state_record)
+            state = mars_rover_mdp.get_state_from_state_record(state_record)
 
-            factual_state_record = mars_rover_olp.get_state_record_from_state(state)
+            factual_state_record = mars_rover_mdp.get_state_record_from_state(state)
 
             symbol = None
 
