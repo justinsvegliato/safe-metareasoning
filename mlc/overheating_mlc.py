@@ -16,9 +16,9 @@ STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
 TEMPERATURE_PROBABILITIES = {
     'NONE': {'DECREASE': 0.9, 'REMAIN': 0.1, 'INCREASE': 0.0},
-    'LOW': {'DECREASE': 0.1, 'REMAIN': 0.9, 'INCREASE': 0.0},
+    'LOW': {'DECREASE': 0.7, 'REMAIN': 0.3, 'INCREASE': 0.0},
     'NORMAL': {'DECREASE': 0.05, 'REMAIN': 0.9, 'INCREASE': 0.05},
-    'HIGH': {'DECREASE': 0.0, 'REMAIN': 0.9, 'INCREASE': 0.1}
+    'HIGH': {'DECREASE': 0.0, 'REMAIN': 0.3, 'INCREASE': 0.7}
 }
 
 ROTATION_RATE_PROBABILITIES = {
@@ -140,7 +140,7 @@ class OverheatingMlc:
     #     return max(absolute_wheel_motor_temperature_offset, absolute_arm_motor_temperature_offset)
 
     def severity_function(self, state, _):
-        return abs(NOMINAL_TEMPERATURE - self.state_registry[state]['wheel_motor_temperature'])
+        return abs(NOMINAL_TEMPERATURE - self.state_registry[state]['wheel_motor_temperature']) + 1
 
     def interference_function(self, _, parameter):
         parameter_record = self.parameter_registry[parameter]
