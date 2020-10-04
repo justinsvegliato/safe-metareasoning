@@ -1,5 +1,6 @@
 import itertools
 
+NOMINAL_TEMPERATURE = 3
 MINIMUM_TEMPERATURE = 1
 MAXIMUM_TEMPERATURE = 5
 
@@ -9,23 +10,29 @@ ARM_MOTOR_TEMPERATURE = range(MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE + 1)
 WHEEL_ROTATION_RATE = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 ARM_ROTATION_RATE = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 
-WHEEL_ROTATION_PARAMETERS = ['NONE', 'SLOW_DOWN', 'STOP']
-ARM_ROTATION_PARAMETERS = ['NONE', 'SLOW_DOWN', 'STOP']
+WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
+ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
 TEMPERATURE_PROBABILITIES = {
-    'NONE': {'DECREASE': 0.8, 'REMAIN': 0.2, 'INCREASE': 0.0},
-    'LOW': {'DECREASE': 0.15, 'REMAIN': 0.8, 'INCREASE': 0.05},
-    'NORMAL': {'DECREASE': 0.1, 'REMAIN': 0.8, 'INCREASE': 0.1},
-    'HIGH': {'DECREASE': 0.05, 'REMAIN': 0.8, 'INCREASE': 0.15}
+    'NONE': {'DECREASE': 0.9, 'REMAIN': 0.1, 'INCREASE': 0.0},
+    'LOW': {'DECREASE': 0.1, 'REMAIN': 0.9, 'INCREASE': 0.0},
+    'NORMAL': {'DECREASE': 0.05, 'REMAIN': 0.9, 'INCREASE': 0.05},
+    'HIGH': {'DECREASE': 0.0, 'REMAIN': 0.9, 'INCREASE': 0.1}
 }
 
 ROTATION_RATE_PROBABILITIES = {
     'NONE': {
-        'NONE': 0.1,
-        'LOW': 0.3,
-        'NORMAL': 0.5,
-        'HIGH': 0.1
+        'NONE': 0.0,
+        'LOW': 0.0,
+        'NORMAL': 1.0,
+        'HIGH': 0.0
+    },
+    'SPEED_UP': {
+        'NONE': 0.0,
+        'LOW': 0.0,
+        'NORMAL': 0.0,
+        'HIGH': 1.0
     },
     'SLOW_DOWN': {
         'NONE': 0.0,
@@ -43,6 +50,7 @@ ROTATION_RATE_PROBABILITIES = {
 
 INTERFERENCE_MAP = {
     'NONE': 0,
+    'SPEED_UP': 0,
     'SLOW_DOWN': 5,
     'STOP': 10,
     'SHIFT_LEFT': 2,
@@ -125,10 +133,14 @@ class OverheatingMlc:
 
         return wheel_rotation_rate_probability * arm_rotation_rate_probability * wheel_temperature_probability * arm_temperature_probability
 
+    # def severity_function(self, state, _):
+    #     state_record = self.state_registry[state]
+    #     absolute_wheel_motor_temperature_offset = abs(NOMINAL_TEMPERATURE - state_record['wheel_motor_temperature'])
+    #     absolute_arm_motor_temperature_offset = abs(NOMINAL_TEMPERATURE - state_record['arm_motor_temperature'])
+    #     return max(absolute_wheel_motor_temperature_offset, absolute_arm_motor_temperature_offset)
+
     def severity_function(self, state, _):
-        state_record = self.state_registry[state]
-        maximum_temperature = max(state_record['wheel_motor_temperature'], state_record['arm_motor_temperature'])
-        return maximum_temperature if maximum_temperature > 3 else 1
+        return abs(NOMINAL_TEMPERATURE - self.state_registry[state]['wheel_motor_temperature'])
 
     def interference_function(self, _, parameter):
         parameter_record = self.parameter_registry[parameter]

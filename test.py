@@ -1,8 +1,9 @@
 import json
 
+from mlc.obstacle_mlc import ObstacleMlc
 from mlc.overheating_mlc import OverheatingMlc
 from printers import mlc_printer
-from solvers import mlc_solver, mdp_solver, mdp_container
+from solvers import mdp_container, mdp_solver, mlc_solver
 
 
 def resolve(parameters, preferences):
@@ -28,7 +29,7 @@ def resolve(parameters, preferences):
 
 
 # def main():
-        # parameters = ['SAMER', 'JUSTIN', 'SULIN', 'YUME', 'CONNOR']
+    # parameters = ['SAMER', 'JUSTIN', 'SULIN', 'YUME', 'CONNOR']
     # preferences = [
     #     {
     #         'SAMER': {'severity': 12},
@@ -65,12 +66,10 @@ def resolve(parameters, preferences):
 
 def main():
     mlc = OverheatingMlc()
-
-    container = mdp_container.MdpContainer(mlc)
-    # mdp_solver.solve(container, 0.99)
     print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
 
-
+    # mlc = ObstacleMlc()
+    # print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
 
 
 if __name__ == '__main__':

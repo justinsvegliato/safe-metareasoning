@@ -1,5 +1,3 @@
-MAXIMUM_SEVERITY = 5
-
 class MdpContainer:
     def __init__(self, mlc):
         self.mlc = mlc
@@ -14,7 +12,7 @@ class MdpContainer:
         return self.mlc.transition_function(state, action, successor_state)
 
     def reward_function(self, state, action):
-        return MAXIMUM_SEVERITY - self.mlc.severity_function(state, action) + 1
+        return self.mlc.severity_function(state, action)
 
     def start_state_function(self, state):
         start_states = self.mlc.start_states()
