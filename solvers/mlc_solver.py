@@ -11,7 +11,7 @@ ROUNDER = 3
 def value_iteration(memory_mdp, gamma, epsilon):
     states = memory_mdp.states
     actions = memory_mdp.actions
-    reward_matrix = np.array(memory_mdp.rewards).astype('float32')
+    reward_matrix = -1.0 * np.array(memory_mdp.rewards).astype('float32')
     transition_probability_matrix = np.array(memory_mdp.transition_probabilities).astype('float32')
 
     state_values = np.array([0.0 for s in range(len(states))]).astype('float32').reshape(-1, 1)
@@ -22,13 +22,16 @@ def value_iteration(memory_mdp, gamma, epsilon):
 
     while True:
         action_values = reward_matrix + gamma * (np.sum(transition_probability_matrix * state_values.reshape(dimension_array), axis=2))
-        new_state_values = np.amin(action_values, axis=1)
+        new_state_values = np.amax(action_values, axis=1)
 
         if np.max(abs(new_state_values - state_values)) < epsilon:
             state_values = new_state_values
             break
 
         state_values = new_state_values
+
+    state_values *= -1.0
+    action_values *= -1.0
 
     v = {state: float(state_values[state_index]) for state_index, state in enumerate(states)}
     q = {state: {action: float(action_values[state_index][action_index]) for action_index, action in enumerate(actions)} for state_index, state in enumerate(states)}
