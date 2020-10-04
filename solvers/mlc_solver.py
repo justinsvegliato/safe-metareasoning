@@ -8,7 +8,7 @@ from solvers.memory_mdp import MemoryMdp
 ROUNDER = 3
 
 
-def FVI(memory_mdp, gamma, epsilon):
+def value_iteration(memory_mdp, gamma, epsilon):
     states = memory_mdp.states
     actions = memory_mdp.actions
     reward_matrix = np.array(memory_mdp.rewards).astype('float32')
@@ -153,7 +153,7 @@ def round_parameter_values(mlc, parameter_values):
 def solve(mlc, gamma, epsilon):
     mdp_container = MdpContainer(mlc)
     memory_mdp = MemoryMdp(mdp_container)
-    solution = FVI(memory_mdp, gamma, epsilon)
+    solution = value_iteration(memory_mdp, gamma, epsilon)
 
     severity_state_values = round_state_values(mlc, solution['state_values'])
     severity_parameter_values = round_parameter_values(mlc, solution['action_values'])
