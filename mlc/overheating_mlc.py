@@ -9,11 +9,11 @@ ARM_MOTOR_TEMPERATURE = range(MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE + 1)
 WHEEL_ROTATION_RATE = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 ARM_ROTATION_RATE = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 
-WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN']
-ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN']
+WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
+ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
-TEMPERATURE_PROBABILITIES = {
+MOTOR_TEMPERATURE_PROBABILITIES = {
     'NONE': {'DECREASE': 0.9, 'REMAIN': 0.1, 'INCREASE': 0.0},
     'LOW': {'DECREASE': 0.7, 'REMAIN': 0.3, 'INCREASE': 0.0},
     'NORMAL': {'DECREASE': 0.05, 'REMAIN': 0.9, 'INCREASE': 0.05},
@@ -24,12 +24,14 @@ ROTATION_RATE_PROBABILITIES = {
     'NONE': {'DECREASE': 0.0, 'REMAIN': 1.0, 'INCREASE': 0.0},
     'SPEED_UP': {'DECREASE': 0.0, 'REMAIN': 0.05, 'INCREASE': 0.95},
     'SLOW_DOWN': {'DECREASE': 0.95, 'REMAIN': 0.05, 'INCREASE': 0.0},
+    'STOP': {'DECREASE': 1.0, 'REMAIN': 0.0, 'INCREASE': 0.0}
 }
 
 INTERFERENCE_MAP = {
     'NONE': 0,
     'SPEED_UP': 0,
     'SLOW_DOWN': 5,
+    'STOP': 10,
     'SHIFT_LEFT': 2,
     'SHIFT_RIGHT': 2
 }
@@ -119,27 +121,27 @@ class OverheatingMlc:
         
         wheel_temperature_probability = 0
         if state_record['wheel_motor_temperature'] == MINIMUM_TEMPERATURE and state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature']:
-            wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN'] + TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['DECREASE']
+            wheel_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN'] + MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['DECREASE']
         elif state_record['wheel_motor_temperature'] == MAXIMUM_TEMPERATURE and state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature']:
-            wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN'] + TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['INCREASE']
+            wheel_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN'] + MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['INCREASE']
         elif state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature'] + 1:
-            wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['DECREASE']
+            wheel_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['DECREASE']
         elif state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature']:
-            wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN']
+            wheel_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN']
         elif state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature'] - 1:
-            wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['INCREASE']
+            wheel_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['INCREASE']
 
         arm_temperature_probability = 0
         if state_record['arm_motor_temperature'] == MINIMUM_TEMPERATURE and state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature']:
-            arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN'] + TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['DECREASE']
+            arm_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN'] + MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['DECREASE']
         elif state_record['arm_motor_temperature'] == MAXIMUM_TEMPERATURE and state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature']:
-            arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN'] + TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['INCREASE']
+            arm_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN'] + MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['INCREASE']
         elif state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature'] + 1:
-            arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['DECREASE']
+            arm_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['DECREASE']
         elif state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature']:
-            arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN']
+            arm_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN']
         elif state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature'] - 1:
-            arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['INCREASE']
+            arm_temperature_probability = MOTOR_TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['INCREASE']
 
         return wheel_rotation_rate_probability * arm_rotation_rate_probability * wheel_temperature_probability * arm_temperature_probability
 
