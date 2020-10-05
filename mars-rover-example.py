@@ -3,9 +3,10 @@ import random
 import time
 
 import utils
-from mlc.obstacle_mlc import ObstacleMlc
-from mlc.overheating_mlc import OverheatingMlc
 from mdp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
+from mlc.arm_motor_temperature_mlc import ArmMotorTemperatureMlc
+from mlc.obstacle_mlc import ObstacleMlc
+from mlc.wheel_motor_temperature_mlc import WheelMotorTemperatureMlc
 from printers import visualizer
 from resolver import Resolver
 from solvers import mdp_solver
@@ -35,7 +36,8 @@ MAXIMUM_ACTION_DURATION = 30
 
 BUILDERS = [
     {'constructor': ObstacleMlc, 'arguments': []},
-    {'constructor': OverheatingMlc, 'arguments': []}
+    {'constructor': WheelMotorTemperatureMlc, 'arguments': []},
+    {'constructor': ArmMotorTemperatureMlc, 'arguments': []}
 ]
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)

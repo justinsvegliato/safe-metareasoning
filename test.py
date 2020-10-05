@@ -1,13 +1,19 @@
 import json
 
-from mlc.overheating_mlc import OverheatingMlc
+from mlc.wheel_motor_temperature_mlc import WheelMotorTemperatureMlc
+from mlc.arm_motor_temperature_mlc import ArmMotorTemperatureMlc
 from mlc.obstacle_mlc import ObstacleMlc
 from solvers import mlc_solver
 from printers import mlc_printer
 
 def main():
-    mlc = OverheatingMlc()
+    mlc = WheelMotorTemperatureMlc()
+    # mlc_printer.print_transition_function(mlc)
     print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
+
+    # mlc = ArmMotorTemperatureMlc()
+    # mlc_printer.print_transition_function(mlc)
+    # print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
 
     # mlc = ObstacleMlc()
     # print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
