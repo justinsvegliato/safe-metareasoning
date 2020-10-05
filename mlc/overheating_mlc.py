@@ -3,15 +3,14 @@ import itertools
 NOMINAL_TEMPERATURE = 3
 MINIMUM_TEMPERATURE = 1
 MAXIMUM_TEMPERATURE = 5
-
 WHEEL_MOTOR_TEMPERATURE = range(MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE + 1)
 ARM_MOTOR_TEMPERATURE = range(MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE + 1)
 
 WHEEL_ROTATION_RATE = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 ARM_ROTATION_RATE = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 
-WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
-ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
+WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN']
+ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
 TEMPERATURE_PROBABILITIES = {
@@ -22,37 +21,15 @@ TEMPERATURE_PROBABILITIES = {
 }
 
 ROTATION_RATE_PROBABILITIES = {
-    'NONE': {
-        'NONE': 0.0,
-        'LOW': 0.0,
-        'NORMAL': 1.0,
-        'HIGH': 0.0
-    },
-    'SPEED_UP': {
-        'NONE': 0.0,
-        'LOW': 0.0,
-        'NORMAL': 0.0,
-        'HIGH': 1.0
-    },
-    'SLOW_DOWN': {
-        'NONE': 0.0,
-        'LOW': 1.0,
-        'NORMAL': 0.0,
-        'HIGH': 0.0
-    },
-    'STOP': {
-        'NONE': 1.0,
-        'LOW': 0.0,
-        'NORMAL': 0.0,
-        'HIGH': 0.0
-    }
+    'NONE': {'DECREASE': 0.0, 'REMAIN': 1.0, 'INCREASE': 0.0},
+    'SPEED_UP': {'DECREASE': 0.0, 'REMAIN': 0.05, 'INCREASE': 0.95},
+    'SLOW_DOWN': {'DECREASE': 0.95, 'REMAIN': 0.05, 'INCREASE': 0.0},
 }
 
 INTERFERENCE_MAP = {
     'NONE': 0,
     'SPEED_UP': 0,
     'SLOW_DOWN': 5,
-    'STOP': 10,
     'SHIFT_LEFT': 2,
     'SHIFT_RIGHT': 2
 }
@@ -100,9 +77,46 @@ class OverheatingMlc:
         parameter_record = self.parameter_registry[parameter]
         successor_state_record = self.state_registry[successor_state]
 
-        wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['wheel_rotation_rate']]
-        arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']][successor_state_record['arm_rotation_rate']]
+        wheel_rotation_rate_probability = 0
+        if state_record['wheel_rotation_rate'] == 'NONE' and successor_state_record['wheel_rotation_rate'] == 'NONE':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['REMAIN'] + ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['DECREASE']
+        elif state_record['wheel_rotation_rate'] == 'HIGH' and successor_state_record['wheel_rotation_rate'] == 'HIGH':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['REMAIN'] + ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['INCREASE']
+        elif state_record['wheel_rotation_rate'] == 'NONE' and successor_state_record['wheel_rotation_rate'] == 'LOW':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['INCREASE']
+        elif state_record['wheel_rotation_rate'] == 'LOW' and successor_state_record['wheel_rotation_rate'] == 'NORMAL':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['INCREASE']
+        elif state_record['wheel_rotation_rate'] == 'NORMAL' and successor_state_record['wheel_rotation_rate'] == 'HIGH':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['INCREASE']
+        elif state_record['wheel_rotation_rate'] == 'LOW' and successor_state_record['wheel_rotation_rate'] == 'NONE':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['DECREASE']
+        elif state_record['wheel_rotation_rate'] == 'NORMAL' and successor_state_record['wheel_rotation_rate'] == 'LOW':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['DECREASE']
+        elif state_record['wheel_rotation_rate'] == 'HIGH' and successor_state_record['wheel_rotation_rate'] == 'NORMAL':
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['DECREASE']
+        elif state_record['wheel_rotation_rate'] == successor_state_record['wheel_rotation_rate']:
+            wheel_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['REMAIN']
 
+        arm_rotation_rate_probability = 0
+        if state_record['arm_rotation_rate'] == 'NONE' and successor_state_record['arm_rotation_rate'] == 'NONE':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['REMAIN'] + ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['DECREASE']
+        elif state_record['arm_rotation_rate'] == 'HIGH' and successor_state_record['arm_rotation_rate'] == 'HIGH':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['REMAIN'] + ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['INCREASE']
+        elif state_record['arm_rotation_rate'] == 'NONE' and successor_state_record['arm_rotation_rate'] == 'LOW':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['INCREASE']
+        elif state_record['arm_rotation_rate'] == 'LOW' and successor_state_record['arm_rotation_rate'] == 'NORMAL':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['INCREASE']
+        elif state_record['arm_rotation_rate'] == 'NORMAL' and successor_state_record['arm_rotation_rate'] == 'HIGH':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['INCREASE']
+        elif state_record['arm_rotation_rate'] == 'LOW' and successor_state_record['arm_rotation_rate'] == 'NONE':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['DECREASE']
+        elif state_record['arm_rotation_rate'] == 'NORMAL' and successor_state_record['arm_rotation_rate'] == 'LOW':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['DECREASE']
+        elif state_record['arm_rotation_rate'] == 'HIGH' and successor_state_record['arm_rotation_rate'] == 'NORMAL':
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['DECREASE']
+        elif state_record['arm_rotation_rate'] == successor_state_record['arm_rotation_rate']:
+            arm_rotation_rate_probability = ROTATION_RATE_PROBABILITIES[parameter_record['arm_rotation_parameter']]['REMAIN']
+        
         wheel_temperature_probability = 0
         if state_record['wheel_motor_temperature'] == MINIMUM_TEMPERATURE and state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature']:
             wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN'] + TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['DECREASE']
@@ -114,8 +128,6 @@ class OverheatingMlc:
             wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN']
         elif state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature'] - 1:
             wheel_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['INCREASE']
-        else:
-            wheel_temperature_probability = 0
 
         arm_temperature_probability = 0
         if state_record['arm_motor_temperature'] == MINIMUM_TEMPERATURE and state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature']:
@@ -128,19 +140,14 @@ class OverheatingMlc:
             arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['REMAIN']
         elif state_record['arm_motor_temperature'] == successor_state_record['arm_motor_temperature'] - 1:
             arm_temperature_probability = TEMPERATURE_PROBABILITIES[state_record['arm_rotation_rate']]['INCREASE']
-        else:
-            arm_temperature_probability = 0
 
         return wheel_rotation_rate_probability * arm_rotation_rate_probability * wheel_temperature_probability * arm_temperature_probability
 
-    # def severity_function(self, state, _):
-    #     state_record = self.state_registry[state]
-    #     absolute_wheel_motor_temperature_offset = abs(NOMINAL_TEMPERATURE - state_record['wheel_motor_temperature'])
-    #     absolute_arm_motor_temperature_offset = abs(NOMINAL_TEMPERATURE - state_record['arm_motor_temperature'])
-    #     return max(absolute_wheel_motor_temperature_offset, absolute_arm_motor_temperature_offset)
-
     def severity_function(self, state, _):
-        return abs(NOMINAL_TEMPERATURE - self.state_registry[state]['wheel_motor_temperature']) + 1
+        state_record = self.state_registry[state]
+        absolute_wheel_motor_temperature_offset = abs(NOMINAL_TEMPERATURE - state_record['wheel_motor_temperature'])
+        absolute_arm_motor_temperature_offset = abs(NOMINAL_TEMPERATURE - state_record['arm_motor_temperature'])
+        return max(absolute_wheel_motor_temperature_offset, absolute_arm_motor_temperature_offset)
 
     def interference_function(self, _, parameter):
         parameter_record = self.parameter_registry[parameter]
@@ -154,7 +161,7 @@ class OverheatingMlc:
 
         for wheel_rotation_rate in WHEEL_ROTATION_RATE:
             for arm_rotation_rate in ARM_ROTATION_RATE:
-                start_state = f'{MINIMUM_TEMPERATURE}:{MINIMUM_TEMPERATURE}:{wheel_rotation_rate}:{arm_rotation_rate}'
+                start_state = f'{NOMINAL_TEMPERATURE}:{NOMINAL_TEMPERATURE}:{wheel_rotation_rate}:{arm_rotation_rate}'
                 start_states.append(start_state)
 
         return start_states
