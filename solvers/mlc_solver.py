@@ -8,11 +8,21 @@ from solvers.memory_mdp import MemoryMdp
 ROUNDER = 3
 
 
-def value_iteration(memory_mdp, gamma, epsilon):
+def value_iteration(memory_mdp, gamma, epsilon, severity=False, suboptimal_state_action_pairs=False):
     states = memory_mdp.states
     actions = memory_mdp.actions
+
     reward_matrix = -1.0 * np.array(memory_mdp.rewards).astype('float32')
     transition_probability_matrix = np.array(memory_mdp.transition_probabilities).astype('float32')
+
+    if severity:
+        reward_matrix[reward_matrix > -severity] = 0
+        reward_matrix[reward_matrix < -severity] = 0
+        reward_matrix[reward_matrix == -severity] = -1
+
+    if suboptimal_state_action_pairs:
+        for banned_state, banned_action in suboptimal_state_action_pairs:
+            reward_matrix[banned_state, banned_action] = -10000
 
     state_values = np.array([0.0 for s in range(len(states))]).astype('float32').reshape(-1, 1)
     action_values = np.array([[0.0 for a in range(len(actions))] for s in range(len(states))]).astype('float32')
@@ -154,9 +164,27 @@ def round_parameter_values(mlc, parameter_values):
 
 
 def solve(mlc, gamma, epsilon):
-    mdp_container = MdpContainer(mlc)
+    mdp_container = MdpContainer(mlc, True)
     memory_mdp = MemoryMdp(mdp_container)
-    solution = value_iteration(memory_mdp, gamma, epsilon)
+
+    suboptimal_state_action_pairs = set()
+    for severity in range(5, 0, -1):
+        solution = value_iteration(memory_mdp, gamma, epsilon, severity, suboptimal_state_action_pairs)
+
+        severity_state_values = round_state_values(mlc, solution['state_values'])
+        severity_parameter_values = round_parameter_values(mlc, solution['action_values'])
+        policy = solution['policy']
+
+        for state_index, state in enumerate(severity_parameter_values):
+            minimum_severity_value = min(severity_parameter_values[state].values())
+            for action_index, action in enumerate(severity_parameter_values[state]):
+                if severity_parameter_values[state][action] > minimum_severity_value:
+                    suboptimal_state_action_pairs.add((state_index, action_index))
+
+    mdp_container = MdpContainer(mlc, False)
+    memory_mdp = MemoryMdp(mdp_container)
+
+    solution = value_iteration(memory_mdp, gamma, epsilon, False, suboptimal_state_action_pairs)
 
     severity_state_values = round_state_values(mlc, solution['state_values'])
     severity_parameter_values = round_parameter_values(mlc, solution['action_values'])
