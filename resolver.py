@@ -9,6 +9,7 @@ POLICY_CACHE_DIRECTORY = 'policies'
 
 EPSILON = 0.001
 GAMMA = 0.99
+MAXIMUM_SEVERITY = 5
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
@@ -39,11 +40,32 @@ class Resolver:
             json.dump(solution, file, indent=4)
             return solution
 
-    def filter(self, parameters, preferences, objective):
+    def filter_by_severity(self, parameters, preferences):
         value_matrix = {}
 
         for parameter in parameters:
-            values = [preference[parameter][objective] for preference in preferences]
+            value_matrix[parameter] = {severity: 0 for severity in reversed(range(1, MAXIMUM_SEVERITY + 1))}
+            for severity in reversed(range(1, MAXIMUM_SEVERITY + 1)):
+                for preference in preferences:
+                    value_matrix[parameter][severity] += preference[parameter]['severity'][str(severity)]
+
+        available_parameters = set(parameters)
+        eliminated_parameters = set()
+        for severity in reversed(range(1, MAXIMUM_SEVERITY + 1)):
+            minimum_severity = min([value_matrix[parameter][severity] for parameter in available_parameters])
+            for parameter in available_parameters:
+                if value_matrix[parameter][severity] > minimum_severity:
+                    eliminated_parameters.add(parameter)
+
+            available_parameters = available_parameters - eliminated_parameters
+
+        return available_parameters
+
+    def filter_by_interference(self, parameters, preferences):
+        value_matrix = {}
+
+        for parameter in parameters:
+            values = [preference[parameter]['interference'] for preference in preferences]
             descending_values = sorted(values, reverse=True)
             value_matrix[parameter] = descending_values
 
@@ -63,9 +85,9 @@ class Resolver:
 
     def resolve(self, preferences):
         parameters = self.meta_level_controllers[0].parameters()
-        best_severity_parameters = self.filter(parameters, preferences, 'severity')
-        best_severity_interference_parameters = self.filter(best_severity_parameters, preferences, 'interference')
-        return random.choice(best_severity_interference_parameters)
+        best_severity_parameters = self.filter_by_severity(parameters, preferences)
+        best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, preferences)
+        return best_severity_interference_parameters[0]
 
     def recommend(self, meta_level_controller, state, is_nonmyopic=True):
         preference = {}
