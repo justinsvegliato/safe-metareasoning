@@ -1,4 +1,4 @@
-import math
+import logging
 
 import numpy as np
 
@@ -6,6 +6,10 @@ from solvers.mdp_container import MdpContainer
 from solvers.memory_mdp import MemoryMdp
 
 ROUNDER = 3
+MAXIMUM_SEVERITY = 5
+MINIMUM_SEVERITY = 1
+
+logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 def value_iteration(memory_mdp, gamma, epsilon, severity=False, suboptimal_state_action_pairs=False):
@@ -50,152 +54,53 @@ def value_iteration(memory_mdp, gamma, epsilon, severity=False, suboptimal_state
     return {'state_values': v, 'action_values': q, 'policy': policy}
 
 
-# def get_severity_state_values(mlc, gamma, epsilon):
-#     severity_state_values = {state: 0.0 for state in mlc.states()}
-
-#     while True:
-#         delta = 0
-
-#         for state in mlc.states():
-#             best_severity_value = float('inf')
-
-#             for parameter in mlc.parameters():
-#                 immediate_severity = mlc.severity_function(state, parameter)
-
-#                 expected_future_severity = 0
-#                 for successor_state in mlc.states():
-#                     expected_future_severity += mlc.transition_function(state, parameter, successor_state) * severity_state_values[successor_state]
-
-#                 severity_value = immediate_severity + gamma * expected_future_severity
-
-#                 if best_severity_value > severity_value:
-#                     best_severity_value = severity_value
-
-#             delta = max(delta, math.fabs(best_severity_value - severity_state_values[state]))
-#             severity_state_values[state] = best_severity_value
-
-#         if delta < epsilon:
-#             return severity_state_values
+def get_empty_severity_state_values(mlc):
+    return {state: {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))} for state in mlc.states()}
 
 
-# def get_severity_parameter_values(mlc, gamma, severity_state_values):
-#     severity_parameter_values = {}
-
-#     for state in mlc.states():
-#         severity_parameter_values[state] = {}
-
-#         for parameter in mlc.parameters():
-#             immediate_severity = mlc.severity_function(state, parameter)
-
-#             expected_future_severity = 0
-#             for successor_state in mlc.states():
-#                 expected_future_severity += mlc.transition_function(state, parameter, successor_state) * severity_state_values[successor_state]
-
-#             severity_parameter_values[state][parameter] = immediate_severity + gamma * expected_future_severity
-
-#     return severity_parameter_values
-
-
-def get_interference_state_values(mlc, gamma, epsilon, policy):
-    interference_state_values = {state: 0.0 for state in mlc.states()}
-
-    while True:
-        delta = 0
-
-        for state in mlc.states():
-            immediate_interference = mlc.interference_function(state, policy[state])
-
-            expected_future_interference = 0
-            for successor_state in mlc.states():
-                expected_future_interference += mlc.transition_function(state, policy[state], successor_state) * interference_state_values[successor_state]
-
-            new_interference_value = immediate_interference + gamma * expected_future_interference
-
-            delta = max(delta, math.fabs(new_interference_value - interference_state_values[state]))
-            interference_state_values[state] = new_interference_value
-
-        if delta < epsilon:
-            return interference_state_values
-
-
-def get_interference_parameter_values(mlc, gamma, interference_state_values):
-    interference_parameter_values = {}
-
-    for state in mlc.states():
-        interference_parameter_values[state] = {}
-
-        for parameter in mlc.parameters():
-            immediate_interference = mlc.interference_function(state, parameter)
-
-            expected_future_interference = 0
-            for successor_state in mlc.states():
-                expected_future_interference += mlc.transition_function(state, parameter, successor_state) * interference_state_values[successor_state]
-
-            interference_parameter_values[state][parameter] = immediate_interference + gamma * expected_future_interference
-
-    return interference_parameter_values
-
-
-def get_policy(mlc, severity_parameter_values):
-    policy = {}
-
-    for state in mlc.states():
-        best_parameter = None
-        best_parameter_value = None
-
-        for parameter in mlc.parameters():
-            parameter_value = severity_parameter_values[state][parameter]
-
-            if best_parameter_value is None or parameter_value < best_parameter_value:
-                best_parameter = parameter
-                best_parameter_value = parameter_value
-
-        policy[state] = best_parameter
-
-    return policy
-
-
-def round_state_values(mlc, state_values):
-    return {state: round(state_values[state], ROUNDER) for state in mlc.states()}
-
-
-def round_parameter_values(mlc, parameter_values):
-    return {state: {parameter: round(parameter_values[state][parameter], ROUNDER) for parameter in mlc.parameters()} for state in mlc.states()}
+def get_empty_severity_parameter_values(mlc):
+    return {state: {parameter: {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))} for parameter in mlc.parameters()} for state in mlc.states()}
 
 
 def solve(mlc, gamma, epsilon):
     mdp_container = MdpContainer(mlc, True)
     memory_mdp = MemoryMdp(mdp_container)
 
-    suboptimal_state_action_pairs = set()
-    for severity in range(5, 0, -1):
-        solution = value_iteration(memory_mdp, gamma, epsilon, severity, suboptimal_state_action_pairs)
+    severity_state_values = get_empty_severity_state_values(mlc)
+    severity_parameter_values = get_empty_severity_parameter_values(mlc)
 
-        severity_state_values = round_state_values(mlc, solution['state_values'])
-        severity_parameter_values = round_parameter_values(mlc, solution['action_values'])
+    suboptimal_state_action_pairs = set()
+    for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1)):
+        logging.info("Performing value iteration for severity: [%d]", severity)
+
+        solution = value_iteration(memory_mdp, gamma, epsilon, severity, suboptimal_state_action_pairs)
+        state_values = solution['state_values']
+        action_values = solution['action_values']
         policy = solution['policy']
 
+        for state in mlc.states():
+            severity_state_values[state][severity] = round(state_values[state], ROUNDER)
+            for parameter in mlc.parameters():
+                severity_parameter_values[state][parameter][severity] = round(action_values[state][parameter], ROUNDER)
+
         for state_index, state in enumerate(severity_parameter_values):
-            minimum_severity_value = min(severity_parameter_values[state].values())
-            for action_index, action in enumerate(severity_parameter_values[state]):
-                if severity_parameter_values[state][action] > minimum_severity_value:
-                    suboptimal_state_action_pairs.add((state_index, action_index))
+            minimum_severity_value = min([severity_parameter_values[state][parameter][severity] for parameter in severity_parameter_values[state]])
+            for parameter_index, parameter in enumerate(severity_parameter_values[state]):
+                if severity_parameter_values[state][parameter][severity] > minimum_severity_value:
+                    suboptimal_state_action_pairs.add((state_index, parameter_index))
+
+        logging.info("Suboptimal state action pairs: [%d]", len(suboptimal_state_action_pairs))
 
     mdp_container = MdpContainer(mlc, False)
     memory_mdp = MemoryMdp(mdp_container)
 
     solution = value_iteration(memory_mdp, gamma, epsilon, False, suboptimal_state_action_pairs)
-
-    severity_state_values = round_state_values(mlc, solution['state_values'])
-    severity_parameter_values = round_parameter_values(mlc, solution['action_values'])
+    state_values = solution['state_values']
+    action_values = solution['action_values']
     policy = solution['policy']
 
-    # severity_state_values = round_state_values(mlc, get_severity_state_values(mlc, gamma, epsilon))
-    # severity_parameter_values = round_parameter_values(mlc, get_severity_parameter_values(mlc, gamma, severity_state_values))
-    # policy = get_policy(mlc, severity_parameter_values)
-
-    interference_state_values = round_state_values(mlc, get_interference_state_values(mlc, gamma, epsilon, policy))
-    interference_parameter_values = round_parameter_values(mlc, get_interference_parameter_values(mlc, gamma, interference_state_values))
+    interference_state_values = {state: round(state_values[state], ROUNDER) for state in mlc.states()}
+    interference_parameter_values = {state: {parameter: round(action_values[state][parameter], ROUNDER) for parameter in mlc.parameters()} for state in mlc.states()}
 
     return {
         'severity_state_values': severity_state_values,
