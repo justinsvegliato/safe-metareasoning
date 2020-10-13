@@ -1,14 +1,15 @@
 import json
 import logging
 import os
-import random
 
 from solvers import mlc_solver
 
 POLICY_CACHE_DIRECTORY = 'policies'
+POLICY_CACHE_EXTENSION = '.json'
 
 EPSILON = 0.001
 GAMMA = 0.99
+MINIMUM_SEVERITY = 1
 MAXIMUM_SEVERITY = 5
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
@@ -27,34 +28,36 @@ class Resolver:
             self.interference_parameter_value_map[meta_level_controller.name] = solution['interference_parameter_values']
 
     def get_solution(self, meta_level_controller):
-        file_path = os.path.join(POLICY_CACHE_DIRECTORY, meta_level_controller.kind + ".json")
+        file_path = os.path.join(POLICY_CACHE_DIRECTORY, meta_level_controller.kind + POLICY_CACHE_EXTENSION)
 
         if os.path.exists(file_path):
             logging.info("Loading the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
             with open(file_path) as file:
                 return json.load(file)
 
-        logging.info("Solving the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
         solution = mlc_solver.solve(meta_level_controller, GAMMA, EPSILON)
+
+        logging.info("Saving the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
         with open(file_path, 'w') as file:
             json.dump(solution, file, indent=4)
             return solution
 
+    # TODO: Fix severity being a string instead of an integer
     def filter_by_severity(self, parameters, preferences):
-        value_matrix = {}
+        severity_count_matrix = {}
 
         for parameter in parameters:
-            value_matrix[parameter] = {severity: 0 for severity in reversed(range(1, MAXIMUM_SEVERITY + 1))}
-            for severity in reversed(range(1, MAXIMUM_SEVERITY + 1)):
+            severity_count_matrix[parameter] = {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))}
+            for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1)):
                 for preference in preferences:
-                    value_matrix[parameter][severity] += preference[parameter]['severity'][str(severity)]
+                    severity_count_matrix[parameter][severity] += preference[parameter]['severity'][str(severity)]
 
         available_parameters = set(parameters)
         eliminated_parameters = set()
-        for severity in reversed(range(1, MAXIMUM_SEVERITY + 1)):
-            minimum_severity = min([value_matrix[parameter][severity] for parameter in available_parameters])
+        for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1)):
+            minimum_severity = min([severity_count_matrix[parameter][severity] for parameter in available_parameters])
             for parameter in available_parameters:
-                if value_matrix[parameter][severity] > minimum_severity:
+                if severity_count_matrix[parameter][severity] > minimum_severity:
                     eliminated_parameters.add(parameter)
 
             available_parameters = available_parameters - eliminated_parameters
@@ -62,27 +65,29 @@ class Resolver:
         return available_parameters
 
     def filter_by_interference(self, parameters, preferences):
-        value_matrix = {}
+        interference_matrix = {}
 
         for parameter in parameters:
             values = [preference[parameter]['interference'] for preference in preferences]
             descending_values = sorted(values, reverse=True)
-            value_matrix[parameter] = descending_values
+            interference_matrix[parameter] = descending_values
 
         for index in range(len(preferences)):
-            highest_severity_column = [value_matrix[parameter][index] for parameter in value_matrix]
+            highest_severity_column = [interference_matrix[parameter][index] for parameter in interference_matrix]
 
             minimum_value = min(highest_severity_column)
 
             new_value_matrix = {}
-            for parameter, values in value_matrix.items():
+            for parameter, values in interference_matrix.items():
                 if values[index] == minimum_value:
                     new_value_matrix[parameter] = values
 
-            value_matrix = new_value_matrix
+            interference_matrix = new_value_matrix
 
-        return list(value_matrix.keys())
+        return list(interference_matrix.keys())
 
+    # TODO: Avoid relying on a specific MLC
+    # TODO: Choose a parameter randomly once the code performs well
     def resolve(self, preferences):
         parameters = self.meta_level_controllers[0].parameters()
         best_severity_parameters = self.filter_by_severity(parameters, preferences)

@@ -43,6 +43,8 @@ BUILDERS = [
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
+# TODO: Implement file caching logic
+# TODO: Give the system a better name
 def main():
     start = time.time()
     olp = MarsRoverMdp(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
@@ -60,7 +62,6 @@ def main():
     resolver = Resolver(mlcs)
     logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
-    # TODO: Implement file cache logic
     logging.info("Solving the mars rover OLP...")
     start = time.time()
     solution = mdp_solver.solve(olp, 0.99)

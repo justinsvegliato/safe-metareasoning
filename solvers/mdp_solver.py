@@ -1,7 +1,7 @@
 import cplex
 import numpy as np
 
-from solvers.memory_mdp import MemoryMdp
+from solvers.memory_mdp_container import MemoryMdpContainer
 
 IS_VERBOSE = False
 IS_RECORDING = False
@@ -10,26 +10,26 @@ LOWER_BOUND = -10000
 UPPER_BOUND = 10000
 
 
-def validate(memory_mdp, constant_state_values):
-    assert memory_mdp.n_states is not None
-    assert memory_mdp.n_actions is not None
+def validate(memory_mdp_container, constant_state_values):
+    assert memory_mdp_container.n_states is not None
+    assert memory_mdp_container.n_actions is not None
 
-    assert memory_mdp.states is not None
-    assert memory_mdp.actions is not None
-    assert memory_mdp.rewards is not None
-    assert memory_mdp.transition_probabilities is not None
-    assert memory_mdp.start_state_probabilities is not None
+    assert memory_mdp_container.states is not None
+    assert memory_mdp_container.actions is not None
+    assert memory_mdp_container.rewards is not None
+    assert memory_mdp_container.transition_probabilities is not None
+    assert memory_mdp_container.start_state_probabilities is not None
 
-    assert memory_mdp.rewards.shape == (memory_mdp.n_states, memory_mdp.n_actions)
-    assert memory_mdp.transition_probabilities.shape == (memory_mdp.n_states, memory_mdp.n_actions, memory_mdp.n_states)
-    assert memory_mdp.start_state_probabilities.shape == (memory_mdp.n_states,)
+    assert memory_mdp_container.rewards.shape == (memory_mdp_container.n_states, memory_mdp_container.n_actions)
+    assert memory_mdp_container.transition_probabilities.shape == (memory_mdp_container.n_states, memory_mdp_container.n_actions, memory_mdp_container.n_states)
+    assert memory_mdp_container.start_state_probabilities.shape == (memory_mdp_container.n_states,)
 
-    assert all(state in memory_mdp.states for state in constant_state_values)
+    assert all(state in memory_mdp_container.states for state in constant_state_values)
 
 
 # TODO: Determine if we need lower and upper bounds in this function
-def set_variables(problem, memory_mdp, constant_state_values):
-    n_variable_states = memory_mdp.n_states - len(constant_state_values)
+def set_variables(problem, memory_mdp_container, constant_state_values):
+    n_variable_states = memory_mdp_container.n_states - len(constant_state_values)
 
     if IS_VERBOSE:
         print("Variable State Count: {}".format(n_variable_states))
@@ -41,14 +41,14 @@ def set_variables(problem, memory_mdp, constant_state_values):
     problem.variables.add(types=types, lb=lower_bound, ub=upper_bound)
 
 
-def set_objective(problem, memory_mdp, constant_state_values):
-    n_variable_states = memory_mdp.n_states - len(constant_state_values)
+def set_objective(problem, memory_mdp_container, constant_state_values):
+    n_variable_states = memory_mdp_container.n_states - len(constant_state_values)
 
     variable_state_coefficients = []
-    for i in range(memory_mdp.n_states):
-        state = memory_mdp.states[i]
+    for i in range(memory_mdp_container.n_states):
+        state = memory_mdp_container.states[i]
         if state not in constant_state_values:
-            variable_state_coefficients.append(memory_mdp.start_state_probabilities[i])
+            variable_state_coefficients.append(memory_mdp_container.start_state_probabilities[i])
 
     if IS_VERBOSE:
         print("Constant States: {}".format(constant_state_values.keys()))
@@ -61,21 +61,21 @@ def set_objective(problem, memory_mdp, constant_state_values):
     problem.objective.set_sense(problem.objective.sense.minimize)
 
 
-def set_constraints(problem, memory_mdp, gamma, constant_state_values):
+def set_constraints(problem, memory_mdp_container, gamma, constant_state_values):
     linear_expressions = []
     right_hand_sides = []
     names = []
 
-    n_variable_states = memory_mdp.n_states - len(constant_state_values)
+    n_variable_states = memory_mdp_container.n_states - len(constant_state_values)
     variables = range(n_variable_states)
 
     # Create a linear constraint for each state-action pair
-    for i in range(memory_mdp.n_states):
-        for j in range(memory_mdp.n_actions):
+    for i in range(memory_mdp_container.n_states):
+        for j in range(memory_mdp_container.n_actions):
             # Define a linear constraint for the state-action pair
-            right_hand_side = memory_mdp.rewards[i, j]
+            right_hand_side = memory_mdp_container.rewards[i, j]
 
-            state = memory_mdp.states[i]
+            state = memory_mdp_container.states[i]
 
             # Discount its value from the right hand side of the constraint if the start state is a constant
             if state in constant_state_values:
@@ -85,20 +85,20 @@ def set_constraints(problem, memory_mdp, gamma, constant_state_values):
             # (a) setting the coefficients of the variable to correspond to variables states
             # (b) modifying the right hand side for constant states
             coefficients = []
-            for k in range(memory_mdp.n_states):
-                successor_state = memory_mdp.states[k]
+            for k in range(memory_mdp_container.n_states):
+                successor_state = memory_mdp_container.states[k]
 
                 # Use the value and the transition probability of the successor state to modify the right hand side of the constraint
                 if successor_state in constant_state_values:
-                    right_hand_side += gamma * memory_mdp.transition_probabilities[i, j, k] * constant_state_values[successor_state]
+                    right_hand_side += gamma * memory_mdp_container.transition_probabilities[i, j, k] * constant_state_values[successor_state]
                 # Set the coefficient of the successor state's variable
                 else:
                     # Check if the successor state is not the start state
                     if k != i:
-                        coefficient = - gamma * memory_mdp.transition_probabilities[i, j, k]
+                        coefficient = - gamma * memory_mdp_container.transition_probabilities[i, j, k]
                     # Check if the successor state is the start state
                     else:
-                        coefficient = 1 - gamma * memory_mdp.transition_probabilities[i, j, k]
+                        coefficient = 1 - gamma * memory_mdp_container.transition_probabilities[i, j, k]
                     coefficients.append(coefficient)
 
             # TODO: Determine why this problem happens
@@ -113,7 +113,7 @@ def set_constraints(problem, memory_mdp, gamma, constant_state_values):
             # TODO: Do we need to cast the right hand side as a float - seems not needed
             linear_expressions.append([variables, coefficients])
             right_hand_sides.append(float(right_hand_side))
-            names.append(f'{state}_{memory_mdp.actions[j]}')
+            names.append(f'{state}_{memory_mdp_container.actions[j]}')
 
     senses = ['G'] * len(linear_expressions)
 
@@ -122,15 +122,15 @@ def set_constraints(problem, memory_mdp, gamma, constant_state_values):
 
 
 # TODO: Clean this up - there might be a better way to do it
-def get_policy(values, memory_mdp, gamma, constant_state_values):
+def get_policy(values, memory_mdp_container, gamma, constant_state_values):
     policy = []
 
-    n_variable_states = memory_mdp.n_states - len(constant_state_values)
+    n_variable_states = memory_mdp_container.n_states - len(constant_state_values)
     variables = range(n_variable_states)
 
     variable_state_indices = []
-    for i in range(memory_mdp.n_states):
-        if memory_mdp.states[i] not in constant_state_values:
+    for i in range(memory_mdp_container.n_states):
+        if memory_mdp_container.states[i] not in constant_state_values:
             variable_state_indices.append(i)
 
     assert len(variables) == len(values) == len(variable_state_indices)
@@ -139,8 +139,8 @@ def get_policy(values, memory_mdp, gamma, constant_state_values):
         best_action = None
         best_action_value = None
 
-        for j in range(memory_mdp.n_actions):
-            action_value = memory_mdp.rewards[i, j] + gamma * np.sum(memory_mdp.transition_probabilities[i, j][variable_state_indices] * values)
+        for j in range(memory_mdp_container.n_actions):
+            action_value = memory_mdp_container.rewards[i, j] + gamma * np.sum(memory_mdp_container.transition_probabilities[i, j][variable_state_indices] * values)
 
             if best_action_value is None or action_value > best_action_value:
                 best_action = j
@@ -151,16 +151,16 @@ def get_policy(values, memory_mdp, gamma, constant_state_values):
     return policy
 
 
-def create_problem(memory_mdp, gamma, constant_state_values):
+def create_problem(memory_mdp_container, gamma, constant_state_values):
     problem = cplex.Cplex()
 
     if not IS_VERBOSE:
         problem.set_log_stream(None)
         problem.set_results_stream(None)
 
-    set_variables(problem, memory_mdp, constant_state_values)
-    set_objective(problem, memory_mdp, constant_state_values)
-    set_constraints(problem, memory_mdp, gamma, constant_state_values)
+    set_variables(problem, memory_mdp_container, constant_state_values)
+    set_objective(problem, memory_mdp_container, constant_state_values)
+    set_constraints(problem, memory_mdp_container, gamma, constant_state_values)
 
     if IS_VERBOSE:
         print("Variable Count:", problem.variables.get_num())
@@ -215,11 +215,11 @@ def solve_feasibly(problem):
 
 
 def solve(mdp, gamma, constant_state_values={}, relax_infeasible=False):
-    memory_mdp = MemoryMdp(mdp)
+    memory_mdp_container = MemoryMdpContainer(mdp)
 
-    validate(memory_mdp, constant_state_values)
+    validate(memory_mdp_container, constant_state_values)
 
-    problem = create_problem(memory_mdp, gamma, constant_state_values)
+    problem = create_problem(memory_mdp_container, gamma, constant_state_values)
 
     if IS_RECORDING and hasattr(mdp, 'name'):
         print(f"Saving the problem to the file mdp-{mdp.name}.lp...")
@@ -233,12 +233,12 @@ def solve(mdp, gamma, constant_state_values={}, relax_infeasible=False):
     if status == 'SUCCESS':
         objective_value = problem.solution.get_objective_value()
         values = problem.solution.get_values()
-        policy = get_policy(values, memory_mdp, gamma, constant_state_values)
+        policy = get_policy(values, memory_mdp_container, gamma, constant_state_values)
 
         # TODO: Clean up all of this stuff
         variable_states = []
-        for i in range(memory_mdp.n_states):
-            state = memory_mdp.states[i]
+        for i in range(memory_mdp_container.n_states):
+            state = memory_mdp_container.states[i]
             if state not in constant_state_values:
                 variable_states.append(state)
 
@@ -247,7 +247,7 @@ def solve(mdp, gamma, constant_state_values={}, relax_infeasible=False):
         return {
             'objective_value': objective_value,
             'values': {variable_states[i]: value for i, value in enumerate(values)},
-            'policy': {variable_states[i]: memory_mdp.actions[j] for i, j in enumerate(policy)}
+            'policy': {variable_states[i]: memory_mdp_container.actions[j] for i, j in enumerate(policy)}
         }
 
     return None

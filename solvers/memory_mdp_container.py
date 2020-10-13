@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class MemoryMdp:
+class MemoryMdpContainer:
     def __init__(self, mdp):
         self.states = mdp.states()
         self.actions = mdp.actions()
