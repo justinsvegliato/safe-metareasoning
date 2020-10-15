@@ -1,7 +1,7 @@
 import itertools
 
-HORIZONTAL_OBSTACLE_POSITION = ['NONE', 'APPROACHING', 'AT']
-VERTICAL_OBSTACLE_POSITION = ['NONE', 'LEFT', 'CENTER', 'RIGHT']
+HORIZONTAL_CREVICE_POSITION = ['NONE', 'APPROACHING', 'AT']
+VERTICAL_CREVICE_POSITION = ['NONE', 'LEFT', 'CENTER', 'RIGHT']
 ROVER_SPEED = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 ROVER_OFFSET = ['LEFT', 'CENTER', 'RIGHT']
 
@@ -61,19 +61,19 @@ INTERFERENCE_MAP = {
 }
 
 
-class ObstacleMlc:
+class CreviceMlc:
     identifier = 1
 
     def __init__(self):
-        self.kind = 'obstacle-mlc'
-        self.name = f'obstacle-mlc-{ObstacleMlc.identifier}'
+        self.kind = 'crevice-mlc'
+        self.name = f'crevice-mlc-{CreviceMlc.identifier}'
 
         self.state_registry = {}
-        for state_tuple in itertools.product(HORIZONTAL_OBSTACLE_POSITION, VERTICAL_OBSTACLE_POSITION, ROVER_SPEED, ROVER_OFFSET):
+        for state_tuple in itertools.product(HORIZONTAL_CREVICE_POSITION, VERTICAL_CREVICE_POSITION, ROVER_SPEED, ROVER_OFFSET):
             state = ':'.join(state_tuple)
             self.state_registry[state] = {
-                'horizontal_obstacle_position': state_tuple[0],
-                'vertical_obstacle_position': state_tuple[1],
+                'horizontal_crevice_position': state_tuple[0],
+                'vertical_crevice_position': state_tuple[1],
                 'rover_speed': state_tuple[2],
                 'rover_offset': state_tuple[3]
             }
@@ -90,7 +90,7 @@ class ObstacleMlc:
         self.state_space = list(self.state_registry.keys())
         self.parameter_space = list(self.parameter_registry.keys())
 
-        ObstacleMlc.identifier += 1
+        CreviceMlc.identifier += 1
 
     def states(self):
         return self.state_space
@@ -103,35 +103,35 @@ class ObstacleMlc:
         parameter_record = self.parameter_registry[parameter]
         successor_state_record = self.state_registry[successor_state]
 
-        if state_record['horizontal_obstacle_position'] == 'NONE' and state_record['vertical_obstacle_position'] != 'NONE':
+        if state_record['horizontal_crevice_position'] == 'NONE' and state_record['vertical_crevice_position'] != 'NONE':
             return 1 if state == successor_state else 0
 
-        if state_record['horizontal_obstacle_position'] != 'NONE' and state_record['vertical_obstacle_position'] == 'NONE':
+        if state_record['horizontal_crevice_position'] != 'NONE' and state_record['vertical_crevice_position'] == 'NONE':
             return 1 if state == successor_state else 0
 
-        if state_record['horizontal_obstacle_position'] == 'NONE':
-            if successor_state_record['horizontal_obstacle_position'] == 'NONE' and successor_state_record['vertical_obstacle_position'] == 'NONE':
+        if state_record['horizontal_crevice_position'] == 'NONE':
+            if successor_state_record['horizontal_crevice_position'] == 'NONE' and successor_state_record['vertical_crevice_position'] == 'NONE':
                 return (1 - APPROACHING_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
-            if successor_state_record['horizontal_obstacle_position'] == 'APPROACHING':
-                return APPROACHING_PROBABILITY * VERTICAL_OBSTACLE_POSITION_PROBABILITIES[successor_state_record['vertical_obstacle_position']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+            if successor_state_record['horizontal_crevice_position'] == 'APPROACHING':
+                return APPROACHING_PROBABILITY * VERTICAL_OBSTACLE_POSITION_PROBABILITIES[successor_state_record['vertical_crevice_position']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
 
-        if state_record['horizontal_obstacle_position'] == 'APPROACHING':
-            if successor_state_record['horizontal_obstacle_position'] == 'APPROACHING' and state_record['vertical_obstacle_position'] == successor_state_record['vertical_obstacle_position']:
+        if state_record['horizontal_crevice_position'] == 'APPROACHING':
+            if successor_state_record['horizontal_crevice_position'] == 'APPROACHING' and state_record['vertical_crevice_position'] == successor_state_record['vertical_crevice_position']:
                 return (1 - AT_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
-            if successor_state_record['horizontal_obstacle_position'] == 'AT' and state_record['vertical_obstacle_position'] == successor_state_record['vertical_obstacle_position']:
+            if successor_state_record['horizontal_crevice_position'] == 'AT' and state_record['vertical_crevice_position'] == successor_state_record['vertical_crevice_position']:
                 return AT_PROBABILITY * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
 
-        if state_record['horizontal_obstacle_position'] == 'AT':
-            if successor_state_record['horizontal_obstacle_position'] == 'AT' and state_record['vertical_obstacle_position'] == successor_state_record['vertical_obstacle_position']:
+        if state_record['horizontal_crevice_position'] == 'AT':
+            if successor_state_record['horizontal_crevice_position'] == 'AT' and state_record['vertical_crevice_position'] == successor_state_record['vertical_crevice_position']:
                 return (1 - PASS_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
-            if successor_state_record['horizontal_obstacle_position'] == 'NONE' and successor_state_record['vertical_obstacle_position'] == 'NONE':
+            if successor_state_record['horizontal_crevice_position'] == 'NONE' and successor_state_record['vertical_crevice_position'] == 'NONE':
                 return PASS_PROBABILITY * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
@@ -141,11 +141,11 @@ class ObstacleMlc:
     def severity_function(self, state, _):
         state_record = self.state_registry[state]
 
-        if state_record['horizontal_obstacle_position'] == 'AT' and state_record['vertical_obstacle_position'] != 'NONE':
-            vertical_obstacle_position = state_record['vertical_obstacle_position']
+        if state_record['horizontal_crevice_position'] == 'AT' and state_record['vertical_crevice_position'] != 'NONE':
+            vertical_crevice_position = state_record['vertical_crevice_position']
             rover_speed = state_record['rover_speed']
             rover_offset = state_record['rover_offset']
-            return SEVERITY_MAP[vertical_obstacle_position][rover_speed][rover_offset]
+            return SEVERITY_MAP[vertical_crevice_position][rover_speed][rover_offset]
 
         return 1
 

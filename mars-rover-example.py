@@ -5,7 +5,7 @@ import time
 import utils
 from mdp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
 from mlc.arm_motor_temperature_mlc import ArmMotorTemperatureMlc
-from mlc.obstacle_mlc import ObstacleMlc
+from mlc.crevice_mlc import CreviceMlc
 from mlc.wheel_motor_temperature_mlc import WheelMotorTemperatureMlc
 from printers import visualizer
 from resolver import Resolver
@@ -35,7 +35,7 @@ MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
 BUILDERS = [
-    {'constructor': ObstacleMlc, 'arguments': []},
+    {'constructor': CreviceMlc, 'arguments': []},
     {'constructor': WheelMotorTemperatureMlc, 'arguments': []},
     {'constructor': ArmMotorTemperatureMlc, 'arguments': []}
 ]
