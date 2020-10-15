@@ -24,6 +24,7 @@ WHEEL_ROTATION_RATE_PROBABILITIES = {
     'SLOW_DOWN': {'DECREASE': 0.95, 'REMAIN': 0.05, 'INCREASE': 0.0}
 }
 
+# TODO: Fix the zero severities here
 SEVERITY_MAP = {
     1: 5,
     2: 4,

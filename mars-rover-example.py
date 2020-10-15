@@ -6,6 +6,7 @@ import utils
 from mdp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
 from mlc.arm_motor_temperature_mlc import ArmMotorTemperatureMlc
 from mlc.crevice_mlc import CreviceMlc
+from mlc.dust_storm_mlc import DustStormMlc
 from mlc.wheel_motor_temperature_mlc import WheelMotorTemperatureMlc
 from printers import visualizer
 from resolver import Resolver
@@ -37,7 +38,8 @@ MAXIMUM_ACTION_DURATION = 30
 BUILDERS = [
     {'constructor': CreviceMlc, 'arguments': []},
     {'constructor': WheelMotorTemperatureMlc, 'arguments': []},
-    {'constructor': ArmMotorTemperatureMlc, 'arguments': []}
+    {'constructor': ArmMotorTemperatureMlc, 'arguments': []},
+    {'constructor': DustStormMlc, 'arguments': []}
 ]
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
