@@ -24,16 +24,15 @@ WHEEL_ROTATION_RATE_PROBABILITIES = {
     'SLOW_DOWN': {'DECREASE': 0.95, 'REMAIN': 0.05, 'INCREASE': 0.0}
 }
 
-# TODO: Fix the zero severities here
 SEVERITY_MAP = {
     1: 5,
     2: 4,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-    7: 0,
-    8: 0,
+    3: 1,
+    4: 1,
+    5: 1,
+    6: 1,
+    7: 1,
+    8: 1,
     9: 4,
     10: 5
 }
@@ -59,7 +58,7 @@ class WheelMotorTemperatureMlc:
         for state_tuple in itertools.product(WHEEL_MOTOR_TEMPERATURE, WHEEL_ROTATION_RATE):
             state = ':'.join((str(state_factor) for state_factor in state_tuple))
             self.state_registry[state] = {
-                'wheel_motor_temperature': state_tuple[0], 
+                'wheel_motor_temperature': state_tuple[0],
                 'wheel_rotation_rate': state_tuple[1]
             }
 
@@ -109,7 +108,7 @@ class WheelMotorTemperatureMlc:
             wheel_rotation_rate_probability = WHEEL_ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['DECREASE']
         elif state_record['wheel_rotation_rate'] == successor_state_record['wheel_rotation_rate']:
             wheel_rotation_rate_probability = WHEEL_ROTATION_RATE_PROBABILITIES[parameter_record['wheel_rotation_parameter']]['REMAIN']
-        
+
         wheel_temperature_probability = 0
         if state_record['wheel_motor_temperature'] == MINIMUM_TEMPERATURE and state_record['wheel_motor_temperature'] == successor_state_record['wheel_motor_temperature']:
             wheel_temperature_probability = WHEEL_MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['REMAIN'] + WHEEL_MOTOR_TEMPERATURE_PROBABILITIES[state_record['wheel_rotation_rate']]['DECREASE']

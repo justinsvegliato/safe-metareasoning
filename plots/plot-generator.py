@@ -5,14 +5,14 @@ from matplotlib.patches import Patch
 
 FILENAME = 'anticipated-experimental-results.pdf'
 
-WIDTH = 0.15
+WIDTH = 0.16
 
 PRIMARY_ALPHA = 1.0
 SECONDARY_ALPHA = 0.85
 TERTIARY_ALPHA = 0.70
 QUADRARY_ALPHA = 0.55
 
-SYSTEM_COUNT = 5
+SYSTEM_COUNT = 4
 SYSTEMS = range(SYSTEM_COUNT)
 
 SEVERITY_LEVEL_COUNT = 5
@@ -28,42 +28,81 @@ CUMULATIVE_INTERFERENCE_INCREMENT = 50
 CUMULATIVE_SEVERITY_LEVEL_MINIMUM = 0
 CUMULATIVE_SEVERITY_LEVEL_MAXIMUM = 2500
 
+# # PROBLEM_SPECIFICATION = {
+#     4: [
+#         [200, 5, 5, 5, 5],
+#         [200, 200, 5, 5, 5],
+#         [200, 200, 200, 5, 5],
+#         [200, 200, 200, 200, 5],
+#     ],
+#     3: [
+#         [150, 10, 10, 10, 10],
+#         [150, 150, 10, 10, 10],
+#         [150, 150, 150, 10, 10],
+#         [150, 150, 150, 150, 10],
+#     ],
+#     2: [
+#         [100, 100, 100, 100, 100],
+#         [100, 100, 100, 100, 100],
+#         [100, 100, 100, 100, 100],
+#         [100, 100, 100, 100, 100],
+#     ],
+#     1: [
+#         [50, 200, 200, 200, 200],
+#         [50, 50, 200, 200, 200],
+#         [50, 50, 50, 200, 200],
+#         [50, 50, 50, 50, 200],
+#     ],
+#     0: [
+#         [300, 500, 500, 500, 500],
+#         [300, 300, 500, 500, 500],
+#         [300, 300, 300, 500, 500],
+#         [300, 300, 300, 300, 500],
+#     ],
+#     999: [
+#         [10, 212, 243, 217, 222],
+#         [10, 0, 241, 220, 219],
+#         [10, 0, 0, 223, 235],
+#         [10, 0, 0, 0, 223],
+#     ]
+# }
+
 PROBLEM_SPECIFICATION = {
     4: [
-        [200, 5, 5, 5, 5],
-        [200, 200, 5, 5, 5],
-        [200, 200, 200, 5, 5],
-        [200, 200, 200, 200, 5],
+        [200, 5, 5, 5],
+        [200, 200, 5, 5],
+        [200, 200, 200, 5],
+        [200, 200, 200, 200],
     ],
     3: [
-        [150, 10, 10, 10, 10],
-        [150, 150, 10, 10, 10],
-        [150, 150, 150, 10, 10],
-        [150, 150, 150, 150, 10],
+        [150, 10, 10, 10],
+        [150, 150, 10, 10],
+        [150, 150, 150, 10],
+        [150, 150, 150, 150],
     ],
     2: [
-        [100, 100, 100, 100, 100],
-        [100, 100, 100, 100, 100],
-        [100, 100, 100, 100, 100],
-        [100, 100, 100, 100, 100],
+        [100, 100, 100, 100],
+        [100, 100, 100, 100],
+        [100, 100, 100, 100],
+        [100, 100, 100, 100],
     ],
     1: [
-        [50, 200, 200, 200, 200],
-        [50, 50, 200, 200, 200],
-        [50, 50, 50, 200, 200],
-        [50, 50, 50, 50, 200],
+        [50, 200, 200, 200],
+        [50, 50, 200, 200],
+        [50, 50, 50, 200],
+        [50, 50, 50, 50],
     ],
     0: [
-        [300, 500, 500, 500, 500],
-        [300, 300, 500, 500, 500],
-        [300, 300, 300, 500, 500],
-        [300, 300, 300, 300, 500],
+        [300, 500, 500, 500],
+        [300, 300, 500, 500],
+        [300, 300, 300, 500],
+        [300, 300, 300, 300],
     ],
     999: [
-        [10, 212, 243, 217, 222],
-        [10, 0, 241, 220, 219],
-        [10, 0, 0, 223, 235],
-        [10, 0, 0, 0, 223],
+        [10, 212, 243, 217],
+        [10, 0, 241, 220],
+        [10, 0, 0, 223],
+        [10, 0, 0, 0],
     ]
 }
 
@@ -81,11 +120,13 @@ def main():
     figure = plt.figure(figsize=(7, 3.5))
     plt.rcParams["font.family"] = "serif"
     plt.rcParams["font.serif"] = "Times New Roman"
-    plt.rcParams["font.size"] = 12
+    plt.rcParams["font.size"] = 15
     plt.xlabel("Safe Metareasoning System")
     plt.ylabel("Cumulative Severity Level")
+    plt.margins(x=0.01, y=0.05)
 
-    plt.xticks(range(5), (r'$r_0$', r'$r_1$', r'$r_2$', r'$r_3$', r'$r_4$',))
+    # plt.xticks(range(5), (r'$r_0$', r'$r_1$', r'$r_2$', r'$r_3$', r'$r_4$',))
+    plt.xticks(range(5), (r'$r_0$', r'$r_1$', r'$r_2$', r'$r_3$'))
 
     axis = plt.gca()
     axis.set_ylim(CUMULATIVE_SEVERITY_LEVEL_MINIMUM, CUMULATIVE_SEVERITY_LEVEL_MAXIMUM)
@@ -106,8 +147,8 @@ def main():
         accumulator = [a + b for a, b in zip(accumulator, PROBLEM_SPECIFICATION[key][1])]
         plt.bar(HELPER[key]['domain'], PROBLEM_SPECIFICATION[key][2], bottom=accumulator, width=WIDTH, alpha=TERTIARY_ALPHA, color=HELPER[key]['color'], align='edge')
 
-        accumulator = [a + b for a, b in zip(accumulator, PROBLEM_SPECIFICATION[key][2])]
-        plt.bar(HELPER[key]['domain'], PROBLEM_SPECIFICATION[key][3], bottom=accumulator, width=WIDTH, alpha=QUADRARY_ALPHA, color=HELPER[key]['color'], align='edge')
+        # accumulator = [a + b for a, b in zip(accumulator, PROBLEM_SPECIFICATION[key][2])]
+        # plt.bar(HELPER[key]['domain'], PROBLEM_SPECIFICATION[key][3], bottom=accumulator, width=WIDTH, alpha=QUADRARY_ALPHA, color=HELPER[key]['color'], align='edge')
 
     elements = [
         Patch(facecolor=HELPER[4]['color'], edgecolor=HELPER[4]['color']),
