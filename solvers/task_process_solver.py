@@ -214,16 +214,16 @@ def solve_feasibly(problem):
     return None
 
 
-def solve(mdp, gamma, constant_state_values={}, relax_infeasible=False):
-    memory_mdp_container = MemoryMdpContainer(mdp)
+def solve(task_process, gamma, constant_state_values={}, relax_infeasible=False):
+    memory_mdp_container = MemoryMdpContainer(task_process)
 
     validate(memory_mdp_container, constant_state_values)
 
     problem = create_problem(memory_mdp_container, gamma, constant_state_values)
 
-    if IS_RECORDING and hasattr(mdp, 'name'):
-        print(f"Saving the problem to the file mdp-{mdp.name}.lp...")
-        problem.write(f'logs/mdp-{mdp.name}.lp')
+    if IS_RECORDING and hasattr(task_process, 'name'):
+        print(f"Saving the problem to the file {task_process.name}.lp...")
+        problem.write(f'logs/{task_process.name}.lp')
 
     status = solve_optimally(problem)
 
@@ -235,7 +235,7 @@ def solve(mdp, gamma, constant_state_values={}, relax_infeasible=False):
         values = problem.solution.get_values()
         policy = get_policy(values, memory_mdp_container, gamma, constant_state_values)
 
-        # TODO: Clean up all of this stuff
+        # TODO: Clean up this stuff
         variable_states = []
         for i in range(memory_mdp_container.n_states):
             state = memory_mdp_container.states[i]

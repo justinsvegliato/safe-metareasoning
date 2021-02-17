@@ -7,7 +7,7 @@ from printers import visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from selector import Selector
-from solvers import mdp_solver
+from solvers import task_process_solver
 from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
 # GRID_WORLD = [
@@ -62,7 +62,7 @@ def main():
 
     logging.info("Solving the planetary rover task process...")
     start = time.time()
-    solution = mdp_solver.solve(task_process, 0.99)
+    solution = task_process_solver.solve(task_process, 0.99)
     policy = solution['policy']
     logging.info("Solved for the policy of the planetary rover task process: [time=%f]", time.time() - start)
 
