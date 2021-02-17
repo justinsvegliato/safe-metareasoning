@@ -31,13 +31,13 @@ class Resolver:
         file_path = os.path.join(POLICY_CACHE_DIRECTORY, safety_process.kind + POLICY_CACHE_EXTENSION)
 
         if os.path.exists(file_path):
-            logging.info("Loading the policy: [mlc=%s, file=%s]", safety_process.kind, file_path)
+            logging.info("Loading the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
             with open(file_path) as file:
                 return json.load(file)
 
         solution = safety_process_solver.solve(safety_process, GAMMA, EPSILON)
 
-        logging.info("Saving the policy: [mlc=%s, file=%s]", safety_process.kind, file_path)
+        logging.info("Saving the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
         with open(file_path, 'w') as file:
             json.dump(solution, file, indent=4)
             return solution
@@ -86,7 +86,7 @@ class Resolver:
 
         return list(interference_matrix.keys())
 
-    # TODO: Avoid relying on a specific MLC
+    # TODO: Avoid relying on a specific safety process
     # TODO: Choose a parameter randomly once the code performs well
     def resolve(self, preferences):
         parameters = self.safety_processes[0].parameters()
