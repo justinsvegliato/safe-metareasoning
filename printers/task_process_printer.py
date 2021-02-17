@@ -1,30 +1,30 @@
-def print_states(mdp):
+def print_states(task_process):
     print("States:")
 
-    for index, state in enumerate(mdp.states()):
+    for index, state in enumerate(task_process.states()):
         print(f"  State {index}: {state}")
 
 
-def print_actions(mdp):
+def print_actions(task_process):
     print("Actions:")
 
-    for index, action in enumerate(mdp.actions()):
+    for index, action in enumerate(task_process.actions()):
         print(f"  Action {index}: {action}")
 
 
-def print_transition_function(mdp):
+def print_transition_function(task_process):
     print("Transition Function:")
 
     is_valid = True
 
-    for state in mdp.states():
-        for action in mdp.actions():
+    for state in task_process.states():
+        for action in task_process.actions():
             print(f"  Transition: ({state}, {action})")
 
             total_probability = 0
 
-            for successor_state in mdp.states():
-                probability = mdp.transition_function(state, action, successor_state)
+            for successor_state in task_process.states():
+                probability = task_process.transition_function(state, action, successor_state)
 
                 total_probability += probability
 
@@ -40,24 +40,24 @@ def print_transition_function(mdp):
     print(f"  Is Valid: {is_valid}")
 
 
-def print_reward_function(mdp):
+def print_reward_function(task_process):
     print("Reward Function:")
 
-    for state in mdp.states():
+    for state in task_process.states():
         print(f"  State: {state}")
 
-        for action in mdp.actions():
-            reward = mdp.reward_function(state, action)
+        for action in task_process.actions():
+            reward = task_process.reward_function(state, action)
             print(f"    Action: {action} -> {reward}")
 
 
-def print_start_state_function(mdp):
+def print_start_state_function(task_process):
     print("Start State Function:")
 
     total_probability = 0
 
-    for state in mdp.states():
-        probability = mdp.start_state_function(state)
+    for state in task_process.states():
+        probability = task_process.start_state_function(state)
 
         if probability > 0:
             print(f"  State {state}: {probability}")
@@ -70,9 +70,9 @@ def print_start_state_function(mdp):
     print(f"  Is Valid: {is_valid}")
 
 
-def print_mdp(mdp):
-    print_states(mdp)
-    print_actions(mdp)
-    print_transition_function(mdp)
-    print_reward_function(mdp)
-    print_start_state_function(mdp)
+def print_task_process(task_process):
+    print_states(task_process)
+    print_actions(task_process)
+    print_transition_function(task_process)
+    print_reward_function(task_process)
+    print_start_state_function(task_process)

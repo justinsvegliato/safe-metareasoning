@@ -39,7 +39,7 @@ MOVEMENT_ACTION_DETAILS = {
 STATIONARY_ACTIONS = ['REBOOT', 'TRANSMIT', 'CHARGE', 'ANALYZE']
 
 
-class MarsRoverMdp:
+class PlanetaryRoverTaskProcess:
     def __init__(self, grid_world, points_of_interest, shady_locations):
         self.grid_world = grid_world
         self.points_of_interests = points_of_interest

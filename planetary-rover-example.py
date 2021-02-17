@@ -3,7 +3,7 @@ import random
 import time
 
 import utils
-from task_processes.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
+from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from printers import visualizer
@@ -28,7 +28,7 @@ POINTS_OF_INTERESTS = [(1, 1)]
 SHADY_LOCATIONS = [(1, 0)]
 INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
 
-OLP_SLEEP_DURATION = 1.0
+TASK_PROCESS_SLEEP_DURATION = 1.0
 SAFETY_PROCESS_SLEEP_DURATION = 0.1
 MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
@@ -45,8 +45,8 @@ logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelna
 # TODO: Give the system a better name
 def main():
     start = time.time()
-    olp = MarsRoverMdp(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
-    logging.info("Built the mars rover task process: [states=%d, actions=%d, time=%f]", len(olp.states()), len(olp.actions()), time.time() - start)
+    task_process = PlanetaryRoverTaskProcess(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
+    logging.info("Built the planetary rover task process: [states=%d, actions=%d, time=%f]", len(task_process.states()), len(task_process.actions()), time.time() - start)
 
     execution_contexts = {}
     for builder in BUILDERS:
@@ -60,11 +60,11 @@ def main():
     resolver = Resolver(safety_processes)
     logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
-    logging.info("Solving the mars rover OLP...")
+    logging.info("Solving the planetary rover task process...")
     start = time.time()
-    solution = mdp_solver.solve(olp, 0.99)
+    solution = mdp_solver.solve(task_process, 0.99)
     policy = solution['policy']
-    logging.info("Solved for the policy of the mars rover OLP: [time=%f]", time.time() - start)
+    logging.info("Solved for the policy of the planetary rover task process: [time=%f]", time.time() - start)
 
     current_state = INITIAL_STATE
     current_action = policy[current_state]
@@ -72,7 +72,7 @@ def main():
     logging.info("Activating the simulator...")
     while current_state != GOAL_STATE:
         logging.info("Performing one step of the simulator: [state=%s, action=%s]", current_state, current_action)
-        visualizer.print_mars_rover_information(olp, current_state, policy, GRID_WORLD)
+        visualizer.print_planetary_rover_information(task_process, current_state, policy, GRID_WORLD)
 
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
@@ -108,11 +108,11 @@ def main():
                 step += 1
                 time.sleep(SAFETY_PROCESS_SLEEP_DURATION)
 
-        current_state = utils.get_successor_state(current_state, current_action, olp)
+        current_state = utils.get_successor_state(current_state, current_action, task_process)
         current_action = policy[current_state]
 
         visualizer.print_separator()
-        time.sleep(OLP_SLEEP_DURATION)
+        time.sleep(TASK_PROCESS_SLEEP_DURATION)
 
 
 if __name__ == '__main__':
