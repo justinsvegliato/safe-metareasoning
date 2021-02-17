@@ -37,12 +37,12 @@ INTERFERENCE_MAP = {
     'SHIFT_RIGHT': 2
 }
 
-class DustStormMlc:
+class DustStormSafetyProcess:
     identifier = 1
 
     def __init__(self):
-        self.kind = 'dust-storm-mlc'
-        self.name = f'dust-storm-mlc-{DustStormMlc.identifier}'
+        self.kind = 'dust-storm-safety-process'
+        self.name = f'dust-storm-safety-process-{DustStormSafetyProcess.identifier}'
 
         self.state_registry = {}
         for state_tuple in itertools.product(DUST_STORM_LEVEL, ROVER_MODE):
@@ -64,7 +64,7 @@ class DustStormMlc:
         self.state_space = list(self.state_registry.keys())
         self.parameter_space = list(self.parameter_registry.keys())
 
-        DustStormMlc.identifier += 1
+        DustStormSafetyProcess.identifier += 1
 
     def states(self):
         return self.state_space

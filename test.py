@@ -1,25 +1,17 @@
 import json
 
-from mlc.arm_motor_temperature_mlc import ArmMotorTemperatureMlc
-from mlc.crevice_mlc import CreviceMlc
-from mlc.dust_storm_mlc import DustStormMlc
-from mlc.wheel_motor_temperature_mlc import WheelMotorTemperatureMlc
-from printers import mlc_printer
-from solvers import mlc_solver
+from safety_processes.crevice_safety_process import CreviceSafetyProcess
+from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
+from printers import safety_process_printer
+from solvers import safety_process_solver
 
 
 def main():
-    # mlc = ArmMotorTemperatureMlc()
-    # print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
+    safety_process = CreviceSafetyProcess()
+    print(json.dumps(safety_process_solver.solve(safety_process, 0.99, 0.001), indent=4))
 
-    # mlc = CreviceMlc()
-    # print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
-
-    mlc = DustStormMlc()
-    print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
-
-    # mlc = WheelMotorTemperatureMlc()
-    # print(json.dumps(mlc_solver.solve(mlc, 0.99, 0.001), indent=4))
+    # safety_process = DustStormSafetyProcess()
+    # print(json.dumps(safety_process_solver.solve(safety_process, 0.99, 0.001), indent=4))
 
 
 if __name__ == '__main__':

@@ -3,11 +3,9 @@ import random
 import time
 
 import utils
-from mdp.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
-from mlc.arm_motor_temperature_mlc import ArmMotorTemperatureMlc
-from mlc.crevice_mlc import CreviceMlc
-from mlc.dust_storm_mlc import DustStormMlc
-from mlc.wheel_motor_temperature_mlc import WheelMotorTemperatureMlc
+from task_processes.mars_rover_mdp import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, MarsRoverMdp)
+from safety_processes.crevice_safety_process import CreviceSafetyProcess
+from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from printers import visualizer
 from resolver import Resolver
 from solvers import mdp_solver
@@ -31,15 +29,13 @@ SHADY_LOCATIONS = [(1, 0)]
 INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
 
 OLP_SLEEP_DURATION = 1.0
-MLC_SLEEP_DURATION = 0.1
+SAFETY_PROCESS_SLEEP_DURATION = 0.1
 MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
 BUILDERS = [
-    {'constructor': CreviceMlc, 'arguments': []},
-    {'constructor': WheelMotorTemperatureMlc, 'arguments': []},
-    {'constructor': ArmMotorTemperatureMlc, 'arguments': []},
-    {'constructor': DustStormMlc, 'arguments': []}
+    {'constructor': CreviceSafetyProcess, 'arguments': []},
+    {'constructor': DustStormSafetyProcess, 'arguments': []}
 ]
 
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
@@ -50,18 +46,18 @@ logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelna
 def main():
     start = time.time()
     olp = MarsRoverMdp(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
-    logging.info("Built the mars rover OLP: [states=%d, actions=%d, time=%f]", len(olp.states()), len(olp.actions()), time.time() - start)
+    logging.info("Built the mars rover task process: [states=%d, actions=%d, time=%f]", len(olp.states()), len(olp.actions()), time.time() - start)
 
     execution_contexts = {}
     for builder in BUILDERS:
         start = time.time()
-        mlc = builder['constructor'](*builder['arguments'])
-        execution_contexts[mlc.name] = {'instance': mlc, 'current_state': None, 'current_preference': None}
-        logging.info("Built a meta-level controller: [name=%s, time=%f]", mlc.name, time.time() - start)
+        safety_process = builder['constructor'](*builder['arguments'])
+        execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_preference': None}
+        logging.info("Built a safety process: [name=%s, time=%f]", safety_process.name, time.time() - start)
 
     start = time.time()
-    mlcs = [execution_contexts[name]['instance'] for name in execution_contexts]
-    resolver = Resolver(mlcs)
+    safety_processes = [execution_contexts[name]['instance'] for name in execution_contexts]
+    resolver = Resolver(safety_processes)
     logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
     logging.info("Solving the mars rover OLP...")
@@ -84,33 +80,33 @@ def main():
             visualizer.print_header("Safety Monitors")
 
             for name in execution_contexts:
-                mlc = execution_contexts[name]['instance']
-                current_mlc_state = random.choice(mlc.start_states())
-                current_mlc_preference = resolver.recommend(mlc, current_mlc_state)
-                execution_contexts[name]['current_state'] = current_mlc_state
-                execution_contexts[name]['current_preference'] = current_mlc_preference
+                safety_process = execution_contexts[name]['instance']
+                current_safety_process_state = random.choice(safety_process.start_states())
+                current_safety_process_preference = resolver.recommend(safety_process, current_safety_process_state)
+                execution_contexts[name]['current_state'] = current_safety_process_state
+                execution_contexts[name]['current_preference'] = current_safety_process_preference
 
             preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
             parameter = resolver.resolve(preferences)
 
-            visualizer.print_mlc_information(0, execution_contexts, parameter)
+            visualizer.print_safety_process_information(0, execution_contexts, parameter)
 
             step = 1
             while step <= action_duration or parameter != 'NONE:NONE:NONE':
                 for name in execution_contexts:
-                    mlc = execution_contexts[name]['instance']
-                    current_mlc_state = utils.get_successor_state(execution_contexts[name]['current_state'], parameter, mlc)
-                    current_mlc_preference = resolver.recommend(mlc, current_mlc_state)
-                    execution_contexts[name]['current_state'] = current_mlc_state
-                    execution_contexts[name]['current_preference'] = current_mlc_preference
+                    safety_process = execution_contexts[name]['instance']
+                    current_safety_process_state = utils.get_successor_state(execution_contexts[name]['current_state'], parameter, safety_process)
+                    current_safety_process_preference = resolver.recommend(safety_process, current_safety_process_state)
+                    execution_contexts[name]['current_state'] = current_safety_process_state
+                    execution_contexts[name]['current_preference'] = current_safety_process_preference
 
                 preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
                 parameter = resolver.resolve(preferences)
 
-                visualizer.print_mlc_information(step, execution_contexts, parameter)
+                visualizer.print_safety_process_information(step, execution_contexts, parameter)
 
                 step += 1
-                time.sleep(MLC_SLEEP_DURATION)
+                time.sleep(SAFETY_PROCESS_SLEEP_DURATION)
 
         current_state = utils.get_successor_state(current_state, current_action, olp)
         current_action = policy[current_state]

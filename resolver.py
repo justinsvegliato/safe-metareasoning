@@ -2,7 +2,7 @@ import json
 import logging
 import os
 
-from solvers import mlc_solver
+from solvers import safety_process_solver
 
 POLICY_CACHE_DIRECTORY = 'policies'
 POLICY_CACHE_EXTENSION = '.json'
@@ -16,28 +16,28 @@ logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelna
 
 
 class Resolver:
-    def __init__(self, meta_level_controllers):
-        self.meta_level_controllers = meta_level_controllers
+    def __init__(self, safety_processes):
+        self.safety_processes = safety_processes
 
         self.severity_parameter_value_map = {}
         self.interference_parameter_value_map = {}
 
-        for meta_level_controller in self.meta_level_controllers:
-            solution = self.get_solution(meta_level_controller)
-            self.severity_parameter_value_map[meta_level_controller.name] = solution['severity_parameter_values']
-            self.interference_parameter_value_map[meta_level_controller.name] = solution['interference_parameter_values']
+        for safety_process in self.safety_processes:
+            solution = self.get_solution(safety_process)
+            self.severity_parameter_value_map[safety_process.name] = solution['severity_parameter_values']
+            self.interference_parameter_value_map[safety_process.name] = solution['interference_parameter_values']
 
-    def get_solution(self, meta_level_controller):
-        file_path = os.path.join(POLICY_CACHE_DIRECTORY, meta_level_controller.kind + POLICY_CACHE_EXTENSION)
+    def get_solution(self, safety_process):
+        file_path = os.path.join(POLICY_CACHE_DIRECTORY, safety_process.kind + POLICY_CACHE_EXTENSION)
 
         if os.path.exists(file_path):
-            logging.info("Loading the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
+            logging.info("Loading the policy: [mlc=%s, file=%s]", safety_process.kind, file_path)
             with open(file_path) as file:
                 return json.load(file)
 
-        solution = mlc_solver.solve(meta_level_controller, GAMMA, EPSILON)
+        solution = safety_process_solver.solve(safety_process, GAMMA, EPSILON)
 
-        logging.info("Saving the policy: [mlc=%s, file=%s]", meta_level_controller.kind, file_path)
+        logging.info("Saving the policy: [mlc=%s, file=%s]", safety_process.kind, file_path)
         with open(file_path, 'w') as file:
             json.dump(solution, file, indent=4)
             return solution
@@ -89,25 +89,25 @@ class Resolver:
     # TODO: Avoid relying on a specific MLC
     # TODO: Choose a parameter randomly once the code performs well
     def resolve(self, preferences):
-        parameters = self.meta_level_controllers[0].parameters()
+        parameters = self.safety_processes[0].parameters()
         best_severity_parameters = self.filter_by_severity(parameters, preferences)
         best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, preferences)
         return best_severity_interference_parameters[0]
 
-    def recommend(self, meta_level_controller, state, is_nonmyopic=True):
+    def recommend(self, safety_process, state, is_nonmyopic=True):
         preference = {}
 
         if is_nonmyopic:
-            for parameter in meta_level_controller.parameters():
+            for parameter in safety_process.parameters():
                 preference[parameter] = {
-                    'severity': self.severity_parameter_value_map[meta_level_controller.name][state][parameter],
-                    'interference': self.interference_parameter_value_map[meta_level_controller.name][state][parameter]
+                    'severity': self.severity_parameter_value_map[safety_process.name][state][parameter],
+                    'interference': self.interference_parameter_value_map[safety_process.name][state][parameter]
                 }
         else:
-            for parameter in meta_level_controller.parameters():
+            for parameter in safety_process.parameters():
                 preference[parameter] = {
-                    'severity': meta_level_controller.severity_function(state, parameter),
-                    'interference': meta_level_controller.interference_function(state, parameter)
+                    'severity': safety_process.severity_function(state, parameter),
+                    'interference': safety_process.interference_function(state, parameter)
                 }
 
         return preference

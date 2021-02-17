@@ -54,29 +54,29 @@ def value_iteration(memory_mdp_container, gamma, epsilon, severity=False, forbid
     }
 
 
-def get_empty_severity_state_values(mlc):
-    return {state: {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))} for state in mlc.states()}
+def get_empty_severity_state_values(safety_process):
+    return {state: {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))} for state in safety_process.states()}
 
 
-def get_empty_severity_parameter_values(mlc):
-    return {state: {parameter: {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))} for parameter in mlc.parameters()} for state in mlc.states()}
+def get_empty_severity_parameter_values(safety_process):
+    return {state: {parameter: {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))} for parameter in safety_process.parameters()} for state in safety_process.states()}
 
 
-def get_rounded_interference_state_values(mlc, state_values):
-    return {state: round(state_values[state], ROUNDER) for state in mlc.states()}
+def get_rounded_interference_state_values(safety_process, state_values):
+    return {state: round(state_values[state], ROUNDER) for state in safety_process.states()}
 
 
-def get_rounded_interference_parameter_values(mlc, action_values):
-    return {state: {parameter: round(action_values[state][parameter], ROUNDER) for parameter in mlc.parameters()} for state in mlc.states()}
+def get_rounded_interference_parameter_values(safety_process, action_values):
+    return {state: {parameter: round(action_values[state][parameter], ROUNDER) for parameter in safety_process.parameters()} for state in safety_process.states()}
 
 
-def solve(mlc, gamma, epsilon):
-    logging.info("Solving the meta-level controller: [mlc=%s]", mlc.kind)
+def solve(safety_process, gamma, epsilon):
+    logging.info("Solving the safety process: [safety_process=%s]", safety_process.kind)
 
-    severity_state_values = get_empty_severity_state_values(mlc)
-    severity_parameter_values = get_empty_severity_parameter_values(mlc)
+    severity_state_values = get_empty_severity_state_values(safety_process)
+    severity_parameter_values = get_empty_severity_parameter_values(safety_process)
 
-    severity_memory_mdp_container = MemoryMdpContainer(MdpContainer(mlc, 'severity'))
+    severity_memory_mdp_container = MemoryMdpContainer(MdpContainer(safety_process, 'severity'))
     size = severity_memory_mdp_container.n_states * severity_memory_mdp_container.n_actions
 
     forbidden_state_action_pairs = set()
@@ -85,9 +85,9 @@ def solve(mlc, gamma, epsilon):
 
         solution = value_iteration(severity_memory_mdp_container, gamma, epsilon, severity, forbidden_state_action_pairs)
 
-        for state in mlc.states():
+        for state in safety_process.states():
             severity_state_values[state][severity] = round(solution['state_values'][state], ROUNDER)
-            for parameter in mlc.parameters():
+            for parameter in safety_process.parameters():
                 severity_parameter_values[state][parameter][severity] = round(solution['action_values'][state][parameter], ROUNDER)
 
         for state_index, state in enumerate(severity_parameter_values):
@@ -98,11 +98,11 @@ def solve(mlc, gamma, epsilon):
 
     logging.info("Performing value iteration: [interference, size=%d]", size - len(forbidden_state_action_pairs))
 
-    interference_memory_mdp_container = MemoryMdpContainer(MdpContainer(mlc, 'interference'))
+    interference_memory_mdp_container = MemoryMdpContainer(MdpContainer(safety_process, 'interference'))
     solution = value_iteration(interference_memory_mdp_container, gamma, epsilon, False, forbidden_state_action_pairs)
 
-    interference_state_values = get_rounded_interference_state_values(mlc, solution['state_values'])
-    interference_parameter_values = get_rounded_interference_parameter_values(mlc, solution['action_values'])
+    interference_state_values = get_rounded_interference_state_values(safety_process, solution['state_values'])
+    interference_parameter_values = get_rounded_interference_parameter_values(safety_process, solution['action_values'])
 
     return {
         'severity_state_values': severity_state_values,

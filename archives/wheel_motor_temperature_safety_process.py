@@ -47,12 +47,12 @@ INTERFERENCE_MAP = {
 }
 
 
-class WheelMotorTemperatureMlc:
+class WheelMotorTemperatureSafetyProcess:
     identifier = 1
 
     def __init__(self):
-        self.kind = 'wheel-motor-temperature-mlc'
-        self.name = f'wheel-motor-temperature-mlc-{WheelMotorTemperatureMlc.identifier}'
+        self.kind = 'wheel-motor-temperature-safety-process'
+        self.name = f'wheel-motor-temperature-safety-process-{WheelMotorTemperatureSafetyProcess.identifier}'
 
         self.state_registry = {}
         for state_tuple in itertools.product(WHEEL_MOTOR_TEMPERATURE, WHEEL_ROTATION_RATE):
@@ -74,7 +74,7 @@ class WheelMotorTemperatureMlc:
         self.state_space = list(self.state_registry.keys())
         self.parameter_space = list(self.parameter_registry.keys())
 
-        WheelMotorTemperatureMlc.identifier += 1
+        WheelMotorTemperatureSafetyProcess.identifier += 1
 
     def states(self):
         return self.state_space

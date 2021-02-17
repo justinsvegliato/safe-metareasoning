@@ -69,7 +69,7 @@ def print_mars_rover_information(mars_rover_mdp, current_state, policy, grid_wor
         print(f"{text}")
 
 
-def print_mlc_information(step, execution_contexts, parameter):
+def print_safety_process_information(step, execution_contexts, parameter):
     length = len(str(step))
 
     is_initial_loop = True

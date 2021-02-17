@@ -61,12 +61,12 @@ INTERFERENCE_MAP = {
 }
 
 
-class CreviceMlc:
+class CreviceSafetyProcess:
     identifier = 1
 
     def __init__(self):
-        self.kind = 'crevice-mlc'
-        self.name = f'crevice-mlc-{CreviceMlc.identifier}'
+        self.kind = 'crevice-safety-process'
+        self.name = f'crevice-safety-process-{CreviceSafetyProcess.identifier}'
 
         self.state_registry = {}
         for state_tuple in itertools.product(HORIZONTAL_CREVICE_POSITION, VERTICAL_CREVICE_POSITION, ROVER_SPEED, ROVER_OFFSET):
@@ -90,7 +90,7 @@ class CreviceMlc:
         self.state_space = list(self.state_registry.keys())
         self.parameter_space = list(self.parameter_registry.keys())
 
-        CreviceMlc.identifier += 1
+        CreviceSafetyProcess.identifier += 1
 
     def states(self):
         return self.state_space
