@@ -15,7 +15,7 @@ MAXIMUM_SEVERITY = 5
 logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
-class Resolver:
+class Selector:
     def __init__(self, safety_processes):
         self.safety_processes = safety_processes
 
@@ -88,7 +88,7 @@ class Resolver:
 
     # TODO: Avoid relying on a specific safety process
     # TODO: Choose a parameter randomly once the code performs well
-    def resolve(self, preferences):
+    def select(self, preferences):
         parameters = self.safety_processes[0].parameters()
         best_severity_parameters = self.filter_by_severity(parameters, preferences)
         best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, preferences)

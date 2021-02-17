@@ -7,7 +7,7 @@ from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_AC
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from printers import visualizer
-from resolver import Resolver
+from selector import Selector
 from solvers import mdp_solver
 
 # GRID_WORLD = [
@@ -57,7 +57,7 @@ def main():
 
     start = time.time()
     safety_processes = [execution_contexts[name]['instance'] for name in execution_contexts]
-    resolver = Resolver(safety_processes)
+    selector = Selector(safety_processes)
     logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
     logging.info("Solving the planetary rover task process...")
@@ -82,12 +82,12 @@ def main():
             for name in execution_contexts:
                 safety_process = execution_contexts[name]['instance']
                 current_safety_process_state = random.choice(safety_process.start_states())
-                current_safety_process_preference = resolver.recommend(safety_process, current_safety_process_state)
+                current_safety_process_preference = selector.recommend(safety_process, current_safety_process_state)
                 execution_contexts[name]['current_state'] = current_safety_process_state
                 execution_contexts[name]['current_preference'] = current_safety_process_preference
 
             preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
-            parameter = resolver.resolve(preferences)
+            parameter = selector.select(preferences)
 
             visualizer.print_safety_process_information(0, execution_contexts, parameter)
 
@@ -96,12 +96,12 @@ def main():
                 for name in execution_contexts:
                     safety_process = execution_contexts[name]['instance']
                     current_safety_process_state = utils.get_successor_state(execution_contexts[name]['current_state'], parameter, safety_process)
-                    current_safety_process_preference = resolver.recommend(safety_process, current_safety_process_state)
+                    current_safety_process_preference = selector.recommend(safety_process, current_safety_process_state)
                     execution_contexts[name]['current_state'] = current_safety_process_state
                     execution_contexts[name]['current_preference'] = current_safety_process_preference
 
                 preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
-                parameter = resolver.resolve(preferences)
+                parameter = selector.select(preferences)
 
                 visualizer.print_safety_process_information(step, execution_contexts, parameter)
 
