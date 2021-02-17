@@ -3,12 +3,12 @@ import random
 import time
 
 import utils
-from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
+from printers import visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
-from printers import visualizer
 from selector import Selector
 from solvers import mdp_solver
+from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
 # GRID_WORLD = [
 #     ['O', 'W', 'O', 'O'],
