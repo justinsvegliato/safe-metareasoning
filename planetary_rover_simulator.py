@@ -7,7 +7,6 @@ from printers import visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from selector import Selector
-from solvers import task_process_solver
 from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
 # GRID_WORLD = [
@@ -28,21 +27,37 @@ POINTS_OF_INTERESTS = [(1, 1)]
 SHADY_LOCATIONS = [(1, 0)]
 INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
 
-TASK_PROCESS_SLEEP_DURATION = 0 #1.0
-SAFETY_PROCESS_SLEEP_DURATION = 0 #0.1
+TASK_PROCESS_SLEEP_DURATION = 0 # 1.0
+SAFETY_PROCESS_SLEEP_DURATION = 0 # 0.1
 MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
-BUILDERS = [
-    {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
-    {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
-]
+VERBOSE = False
+
+EXPERIMENT_BUILDERS = {
+    'ACTIVE:ACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
+    ],
+    'ACTIVE:INACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
+    ],
+    'INACTIVE:ACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
+    ],
+    'INACTIVE:INACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
+    ]
+}
+EXPERIMENT_SIMULATIONS = 100
 
 logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
-# TODO: Implement file caching logic
-def main():
+def run_simulation(builders):
     statistics = {
         'cumulative_severity_level_count_1': 0,
         'cumulative_severity_level_count_2': 0,
@@ -57,7 +72,7 @@ def main():
     logging.info("Built the planetary rover task process: [states=%d, actions=%d, time=%f]", len(task_process.states()), len(task_process.actions()), time.time() - start)
 
     execution_contexts = {}
-    for builder in BUILDERS:
+    for builder in builders:
         start = time.time()
         safety_process = builder['constructor'](*builder['arguments'])
         execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_rating': None, 'is_active': builder['is_active']}
@@ -69,7 +84,7 @@ def main():
 
     logging.info("Solving the planetary rover task process...")
     start = time.time()
-    policy = task_process_solver.solve(task_process, 0.99)['policy']
+    policy = utils.get_task_process_solution(task_process)['policy']
     logging.info("Solved for the policy of the planetary rover task process: [time=%f]", time.time() - start)
 
     current_state = INITIAL_STATE
@@ -136,7 +151,31 @@ def main():
         visualizer.print_separator()
         time.sleep(TASK_PROCESS_SLEEP_DURATION)
     
-    visualizer.print_statistics(statistics)
+    return statistics
+
+
+def main():
+    for experiment_builder_key in EXPERIMENT_BUILDERS:
+        logging.info("Running the experiment [%s]", experiment_builder_key)
+
+        results = {
+            'cumulative_severity_level_count_1': 0,
+            'cumulative_severity_level_count_2': 0,
+            'cumulative_severity_level_count_3': 0,
+            'cumulative_severity_level_count_4': 0,
+            'cumulative_severity_level_count_5': 0,
+            'cumulative_interference': 0
+        }
+
+        for _ in range(EXPERIMENT_SIMULATIONS):
+            statistics = run_simulation(EXPERIMENT_BUILDERS[experiment_builder_key])
+            for key in results:
+                results[key] += statistics[key]
+        
+        for key in results:
+            results[key] /= EXPERIMENT_SIMULATIONS
+
+        visualizer.print_results(results)
 
 
 if __name__ == '__main__':

@@ -89,7 +89,7 @@ def print_separator():
     print("=" * BORDER_SIZE)
 
 
-def print_statistics(statistics):
+def print_results(statistics):
     print(f"Cumulative Severity Level 5 Count: {statistics['cumulative_severity_level_count_5']}")
     print(f"Cumulative Severity Level 4 Count: {statistics['cumulative_severity_level_count_4']}")
     print(f"Cumulative Severity Level 3 Count: {statistics['cumulative_severity_level_count_3']}")

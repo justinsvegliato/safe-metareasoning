@@ -1,18 +1,9 @@
-import json
-import logging
-import os
-
-from solvers import safety_process_solver
-
-POLICY_CACHE_DIRECTORY = 'policies'
-POLICY_CACHE_EXTENSION = '.json'
+import utils
 
 EPSILON = 0.001
-GAMMA = 0.99
+
 MINIMUM_SEVERITY = 1
 MAXIMUM_SEVERITY = 5
-
-logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 class Selector:
@@ -23,23 +14,9 @@ class Selector:
         self.interference_parameter_value_map = {}
 
         for safety_process in self.safety_processes:
-            solution = self.get_solution(safety_process)
+            solution = utils.get_safety_process_solution(safety_process, EPSILON)
             self.severity_parameter_value_map[safety_process.name] = solution['severity_parameter_values']
             self.interference_parameter_value_map[safety_process.name] = solution['interference_parameter_values']
-
-    def get_solution(self, safety_process):
-        file_path = os.path.join(POLICY_CACHE_DIRECTORY, safety_process.kind + POLICY_CACHE_EXTENSION)
-
-        if not os.path.exists(file_path):
-            solution = safety_process_solver.solve(safety_process, GAMMA, EPSILON)
-
-            logging.info("Saving the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
-            with open(file_path, 'w') as file:
-                json.dump(solution, file, indent=4)
-
-        logging.info("Loading the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
-        with open(file_path) as file:
-            return json.load(file)
 
     def filter_by_severity(self, parameters, ratings):
         severity_count_matrix = {}

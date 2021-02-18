@@ -48,6 +48,8 @@ class PlanetaryRoverTaskProcess:
         self.height = len(grid_world)
         self.points_of_interest_size = len(self.points_of_interests)
 
+        self.kind = f'planetary-rover-task-process-{self.width}x{self.height}@{self.points_of_interest_size}'
+
         rows = range(self.height)
         cols = range(self.width)
         analysis_status = [ANALYSIS_CONDITIONS for _ in points_of_interest]
