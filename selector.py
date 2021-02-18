@@ -41,7 +41,6 @@ class Selector:
         with open(file_path) as file:
             return json.load(file)
 
-    # TODO: Fix severity being a string instead of an integer
     def filter_by_severity(self, parameters, ratings):
         severity_count_matrix = {}
 
@@ -85,8 +84,6 @@ class Selector:
 
         return list(interference_matrix.keys())
 
-    # TODO: Avoid relying on a specific safety process
-    # TODO: Choose a parameter randomly once the code performs well
     def select(self, ratings):
         parameters = self.safety_processes[0].parameters()
         best_severity_parameters = self.filter_by_severity(parameters, ratings)
