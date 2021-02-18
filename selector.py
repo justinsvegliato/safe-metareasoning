@@ -30,17 +30,16 @@ class Selector:
     def get_solution(self, safety_process):
         file_path = os.path.join(POLICY_CACHE_DIRECTORY, safety_process.kind + POLICY_CACHE_EXTENSION)
 
-        if os.path.exists(file_path):
-            logging.info("Loading the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
-            with open(file_path) as file:
-                return json.load(file)
+        if not os.path.exists(file_path):
+            solution = safety_process_solver.solve(safety_process, GAMMA, EPSILON)
 
-        solution = safety_process_solver.solve(safety_process, GAMMA, EPSILON)
+            logging.info("Saving the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
+            with open(file_path, 'w') as file:
+                json.dump(solution, file, indent=4)
 
-        logging.info("Saving the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
-        with open(file_path, 'w') as file:
-            json.dump(solution, file, indent=4)
-            return solution
+        logging.info("Loading the policy: [safety_process=%s, file=%s]", safety_process.kind, file_path)
+        with open(file_path) as file:
+            return json.load(file)
 
     # TODO: Fix severity being a string instead of an integer
     def filter_by_severity(self, parameters, ratings):
@@ -50,7 +49,7 @@ class Selector:
             severity_count_matrix[parameter] = {severity: 0 for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1))}
             for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1)):
                 for rating in ratings:
-                    severity_count_matrix[parameter][severity] += rating[parameter]['severity'][str(severity)]
+                    severity_count_matrix[parameter][severity] += rating[parameter]['severity'][f'{severity}']
 
         available_parameters = set(parameters)
         eliminated_parameters = set()
