@@ -3,7 +3,7 @@ import random
 import time
 
 import utils
-from printers import visualizer
+from printers.visualizer import Visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from selector import Selector
@@ -32,7 +32,7 @@ SAFETY_PROCESS_SLEEP_DURATION = 0 # 0.1
 MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
-VERBOSE = False
+VISUALIZER = Visualizer(is_verbose=False)
 
 EXPERIMENT_BUILDERS = {
     'ACTIVE:ACTIVE': [
@@ -69,36 +69,36 @@ def run_simulation(builders):
 
     start = time.time()
     task_process = PlanetaryRoverTaskProcess(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
-    logging.info("Built the planetary rover task process: [states=%d, actions=%d, time=%f]", len(task_process.states()), len(task_process.actions()), time.time() - start)
+    logging.debug("Built the planetary rover task process: [states=%d, actions=%d, time=%f]", len(task_process.states()), len(task_process.actions()), time.time() - start)
 
     execution_contexts = {}
     for builder in builders:
         start = time.time()
         safety_process = builder['constructor'](*builder['arguments'])
         execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_rating': None, 'is_active': builder['is_active']}
-        logging.info("Built a safety process: [name=%s, time=%f]", safety_process.name, time.time() - start)
+        logging.debug("Built a safety process: [name=%s, time=%f]", safety_process.name, time.time() - start)
 
     start = time.time()
     selector = Selector([execution_contexts[name]['instance'] for name in execution_contexts])
-    logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
+    logging.debug("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
-    logging.info("Solving the planetary rover task process...")
+    logging.debug("Solving the planetary rover task process...")
     start = time.time()
     policy = utils.get_task_process_solution(task_process)['policy']
-    logging.info("Solved for the policy of the planetary rover task process: [time=%f]", time.time() - start)
+    logging.debug("Solved for the policy of the planetary rover task process: [time=%f]", time.time() - start)
 
     current_state = INITIAL_STATE
     current_action = policy[current_state]
 
-    logging.info("Activating the simulator...")
+    logging.debug("Activating the simulator...")
     while current_state != GOAL_STATE:
-        logging.info("Performing one step of the simulator: [state=%s, action=%s]", current_state, current_action)
-        visualizer.print_planetary_rover_information(task_process, current_state, policy, GRID_WORLD)
+        logging.debug("Performing one step of the simulator: [state=%s, action=%s]", current_state, current_action)
+        VISUALIZER.print_planetary_rover_information(task_process, current_state, policy, GRID_WORLD)
 
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
         if current_action in MOVEMENT_ACTION_DETAILS:
-            visualizer.print_header("Safety Monitors")
+            VISUALIZER.print_header("Safety Monitors")
 
             for name in execution_contexts:
                 safety_process = execution_contexts[name]['instance']
@@ -118,7 +118,7 @@ def run_simulation(builders):
                 interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                 statistics[f'cumulative_interference'] += interference
 
-            visualizer.print_safety_process_information(0, execution_contexts, parameter)
+            VISUALIZER.print_safety_process_information(0, execution_contexts, parameter)
 
             step = 1
             while step <= action_duration or parameter != 'NONE:NONE':
@@ -140,7 +140,7 @@ def run_simulation(builders):
                     interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                     statistics[f'cumulative_interference'] += interference
 
-                visualizer.print_safety_process_information(step, execution_contexts, parameter)
+                VISUALIZER.print_safety_process_information(step, execution_contexts, parameter)
 
                 step += 1
                 time.sleep(SAFETY_PROCESS_SLEEP_DURATION)
@@ -148,7 +148,7 @@ def run_simulation(builders):
         current_state = utils.get_successor_state(current_state, current_action, task_process)
         current_action = policy[current_state]
 
-        visualizer.print_separator()
+        VISUALIZER.print_separator()
         time.sleep(TASK_PROCESS_SLEEP_DURATION)
     
     return statistics
@@ -175,7 +175,7 @@ def main():
         for key in results:
             results[key] /= EXPERIMENT_SIMULATIONS
 
-        visualizer.print_results(results)
+        VISUALIZER.print_results(results)
 
 
 if __name__ == '__main__':
