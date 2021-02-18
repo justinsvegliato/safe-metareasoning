@@ -28,28 +28,27 @@ POINTS_OF_INTERESTS = [(1, 1)]
 SHADY_LOCATIONS = [(1, 0)]
 INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
 
-TASK_PROCESS_SLEEP_DURATION = 1.0
-SAFETY_PROCESS_SLEEP_DURATION = 0.1
+TASK_PROCESS_SLEEP_DURATION = 0 #1.0
+SAFETY_PROCESS_SLEEP_DURATION = 0 #0.1
 MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
 BUILDERS = [
-    {'constructor': CreviceSafetyProcess, 'arguments': []},
-    {'constructor': DustStormSafetyProcess, 'arguments': []}
+    {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+    {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
 ]
 
 logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 # TODO: Implement file caching logic
-# TODO: Give the system a better name
 def main():
     statistics = {
-        'cumulative_severity_level_1': 0,
-        'cumulative_severity_level_2': 0,
-        'cumulative_severity_level_3': 0,
-        'cumulative_severity_level_4': 0,
-        'cumulative_severity_level_5': 0,
+        'cumulative_severity_level_count_1': 0,
+        'cumulative_severity_level_count_2': 0,
+        'cumulative_severity_level_count_3': 0,
+        'cumulative_severity_level_count_4': 0,
+        'cumulative_severity_level_count_5': 0,
         'cumulative_interference': 0
     }
 
@@ -61,18 +60,16 @@ def main():
     for builder in BUILDERS:
         start = time.time()
         safety_process = builder['constructor'](*builder['arguments'])
-        execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_rating': None}
+        execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_rating': None, 'is_active': builder['is_active']}
         logging.info("Built a safety process: [name=%s, time=%f]", safety_process.name, time.time() - start)
 
     start = time.time()
-    safety_processes = [execution_contexts[name]['instance'] for name in execution_contexts]
-    selector = Selector(safety_processes)
+    selector = Selector([execution_contexts[name]['instance'] for name in execution_contexts])
     logging.info("Built a safety-sensitive autonomous system: [time=%f]", time.time() - start)
 
     logging.info("Solving the planetary rover task process...")
     start = time.time()
-    solution = task_process_solver.solve(task_process, 0.99)
-    policy = solution['policy']
+    policy = task_process_solver.solve(task_process, 0.99)['policy']
     logging.info("Solved for the policy of the planetary rover task process: [time=%f]", time.time() - start)
 
     current_state = INITIAL_STATE
@@ -95,8 +92,16 @@ def main():
                 execution_contexts[name]['current_state'] = current_safety_process_state
                 execution_contexts[name]['current_rating'] = current_safety_process_rating
 
-            ratings = [execution_contexts[name]['current_rating'] for name in execution_contexts]
-            parameter = selector.select(ratings)
+            active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
+            ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
+            parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
+
+            for name in execution_contexts:
+                safety_process = execution_contexts[name]['instance']
+                severity = safety_process.severity_function(execution_contexts[name]['current_state'], parameter)
+                statistics[f'cumulative_severity_level_count_{severity}'] += 1
+                interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
+                statistics[f'cumulative_interference'] += interference
 
             visualizer.print_safety_process_information(0, execution_contexts, parameter)
 
@@ -109,8 +114,16 @@ def main():
                     execution_contexts[name]['current_state'] = current_safety_process_state
                     execution_contexts[name]['current_rating'] = current_safety_process_rating
 
-                ratings = [execution_contexts[name]['current_rating'] for name in execution_contexts]
-                parameter = selector.select(ratings)
+                active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
+                ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
+                parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
+
+                for name in execution_contexts:
+                    safety_process = execution_contexts[name]['instance']                
+                    severity = safety_process.severity_function(execution_contexts[name]['current_state'], parameter)
+                    statistics[f'cumulative_severity_level_count_{severity}'] += 1
+                    interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
+                    statistics[f'cumulative_interference'] += interference
 
                 visualizer.print_safety_process_information(step, execution_contexts, parameter)
 
@@ -122,6 +135,8 @@ def main():
 
         visualizer.print_separator()
         time.sleep(TASK_PROCESS_SLEEP_DURATION)
+    
+    visualizer.print_statistics(statistics)
 
 
 if __name__ == '__main__':
