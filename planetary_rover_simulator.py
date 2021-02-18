@@ -9,23 +9,23 @@ from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from selector import Selector
 from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
-# GRID_WORLD = [
-#     ['O', 'W', 'O', 'O'],
-#     ['O', 'O', 'O', 'W'],
-#     ['O', 'W', 'O', 'W'],
-#     ['O', 'W', 'O', 'O']
-# ]
-# POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
-# SHADY_LOCATIONS = [(1, 1), (1, 2)]
-# INITIAL_STATE = '1:0:5:NOMINAL:NOMINAL:NOT_ANALYZED:NOT_ANALYZED'
-
 GRID_WORLD = [
-    ['O', 'W'],
-    ['O', 'O'],
+    ['O', 'W', 'O', 'O'],
+    ['O', 'O', 'O', 'W'],
+    ['O', 'W', 'O', 'W'],
+    ['O', 'W', 'O', 'O']
 ]
-POINTS_OF_INTERESTS = [(1, 1)]
-SHADY_LOCATIONS = [(1, 0)]
-INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
+POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
+SHADY_LOCATIONS = [(1, 1), (1, 2)]
+INITIAL_STATE = '1:0:5:NOMINAL:NOMINAL:NOT_ANALYZED:NOT_ANALYZED'
+
+# GRID_WORLD = [
+#     ['O', 'W'],
+#     ['O', 'O'],
+# ]
+# POINTS_OF_INTERESTS = [(1, 1)]
+# SHADY_LOCATIONS = [(1, 0)]
+# INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
 
 TASK_PROCESS_SLEEP_DURATION = 0 # 1.0
 SAFETY_PROCESS_SLEEP_DURATION = 0 # 0.1

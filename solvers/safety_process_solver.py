@@ -71,7 +71,7 @@ def get_rounded_interference_parameter_values(safety_process, action_values):
 
 
 def solve(safety_process, gamma, epsilon):
-    logging.info("Solving the safety process: [safety_process=%s]", safety_process.kind)
+    logging.debug("Solving the safety process: [safety_process=%s]", safety_process.kind)
 
     severity_state_values = get_empty_severity_state_values(safety_process)
     severity_parameter_values = get_empty_severity_parameter_values(safety_process)
@@ -81,7 +81,7 @@ def solve(safety_process, gamma, epsilon):
 
     forbidden_state_action_pairs = set()
     for severity in reversed(range(MINIMUM_SEVERITY, MAXIMUM_SEVERITY + 1)):
-        logging.info("Performing value iteration: [severity=%d, size=%d]", severity, size - len(forbidden_state_action_pairs))
+        logging.debug("Performing value iteration: [severity=%d, size=%d]", severity, size - len(forbidden_state_action_pairs))
 
         solution = value_iteration(severity_memory_mdp_container, gamma, epsilon, severity, forbidden_state_action_pairs)
 
@@ -96,7 +96,7 @@ def solve(safety_process, gamma, epsilon):
                 if severity_parameter_values[state][parameter][severity] > minimum_severity_value:
                     forbidden_state_action_pairs.add((state_index, parameter_index))
 
-    logging.info("Performing value iteration: [interference, size=%d]", size - len(forbidden_state_action_pairs))
+    logging.debug("Performing value iteration: [interference, size=%d]", size - len(forbidden_state_action_pairs))
 
     interference_memory_mdp_container = MemoryMdpContainer(MdpContainer(safety_process, 'interference'))
     solution = value_iteration(interference_memory_mdp_container, gamma, epsilon, False, forbidden_state_action_pairs)
