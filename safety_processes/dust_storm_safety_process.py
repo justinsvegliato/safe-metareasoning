@@ -1,6 +1,6 @@
 import itertools
 
-NOMINAL_DUST_STORM_LEVEL = 10
+NOMINAL_DUST_STORM_LEVEL = 5
 MINIMUM_DUST_STORM_LEVEL = 1
 MAXIMUM_DUST_STORM_LEVEL = 10
 DUST_STORM_LEVEL = range(MINIMUM_DUST_STORM_LEVEL, MAXIMUM_DUST_STORM_LEVEL + 1)
@@ -8,7 +8,6 @@ DUST_STORM_LEVEL = range(MINIMUM_DUST_STORM_LEVEL, MAXIMUM_DUST_STORM_LEVEL + 1)
 ROVER_MODE = ['IS_NOT_STOPPED', 'IS_STOPPED']
 
 WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
-ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
 DUST_STORM_INCREASE_PROBABILITY = 0.1
@@ -22,7 +21,7 @@ SEVERITY_MAP = {
     4: 1,
     5: 1,
     6: 1,
-    7: 2,
+    7: 1,
     8: 3,
     9: 4,
     10: 5
@@ -53,12 +52,11 @@ class DustStormSafetyProcess:
             }
 
         self.parameter_registry = {}
-        for parameter_tuple in itertools.product(WHEEL_ROTATION_PARAMETERS, ARM_ROTATION_PARAMETERS, STEERING_PARAMETERS):
+        for parameter_tuple in itertools.product(WHEEL_ROTATION_PARAMETERS, STEERING_PARAMETERS):
             parameter = ':'.join(parameter_tuple)
             self.parameter_registry[parameter] = {
                 'wheel_rotation_parameter': parameter_tuple[0],
-                'arm_rotation_parameter': parameter_tuple[1],
-                'steering_parameter': parameter_tuple[2]
+                'steering_parameter': parameter_tuple[1]
             }
 
         self.state_space = list(self.state_registry.keys())

@@ -9,7 +9,7 @@ ROUNDER = 3
 MINIMUM_SEVERITY = 1
 MAXIMUM_SEVERITY = 5
 
-logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
+logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 def value_iteration(memory_mdp_container, gamma, epsilon, severity=False, forbidden_state_action_pairs=False):

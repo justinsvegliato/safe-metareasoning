@@ -38,12 +38,21 @@ BUILDERS = [
     {'constructor': DustStormSafetyProcess, 'arguments': []}
 ]
 
-logging.basicConfig(format='[%(asctime)s|%(module)-20s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
+logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 # TODO: Implement file caching logic
 # TODO: Give the system a better name
 def main():
+    statistics = {
+        'cumulative_severity_level_1': 0,
+        'cumulative_severity_level_2': 0,
+        'cumulative_severity_level_3': 0,
+        'cumulative_severity_level_4': 0,
+        'cumulative_severity_level_5': 0,
+        'cumulative_interference': 0
+    }
+
     start = time.time()
     task_process = PlanetaryRoverTaskProcess(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
     logging.info("Built the planetary rover task process: [states=%d, actions=%d, time=%f]", len(task_process.states()), len(task_process.actions()), time.time() - start)
@@ -52,7 +61,7 @@ def main():
     for builder in BUILDERS:
         start = time.time()
         safety_process = builder['constructor'](*builder['arguments'])
-        execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_preference': None}
+        execution_contexts[safety_process.name] = {'instance': safety_process, 'current_state': None, 'current_rating': None}
         logging.info("Built a safety process: [name=%s, time=%f]", safety_process.name, time.time() - start)
 
     start = time.time()
@@ -82,26 +91,26 @@ def main():
             for name in execution_contexts:
                 safety_process = execution_contexts[name]['instance']
                 current_safety_process_state = random.choice(safety_process.start_states())
-                current_safety_process_preference = selector.recommend(safety_process, current_safety_process_state)
+                current_safety_process_rating = selector.recommend(safety_process, current_safety_process_state)
                 execution_contexts[name]['current_state'] = current_safety_process_state
-                execution_contexts[name]['current_preference'] = current_safety_process_preference
+                execution_contexts[name]['current_rating'] = current_safety_process_rating
 
-            preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
-            parameter = selector.select(preferences)
+            ratings = [execution_contexts[name]['current_rating'] for name in execution_contexts]
+            parameter = selector.select(ratings)
 
             visualizer.print_safety_process_information(0, execution_contexts, parameter)
 
             step = 1
-            while step <= action_duration or parameter != 'NONE:NONE:NONE':
+            while step <= action_duration or parameter != 'NONE:NONE':
                 for name in execution_contexts:
                     safety_process = execution_contexts[name]['instance']
                     current_safety_process_state = utils.get_successor_state(execution_contexts[name]['current_state'], parameter, safety_process)
-                    current_safety_process_preference = selector.recommend(safety_process, current_safety_process_state)
+                    current_safety_process_rating = selector.recommend(safety_process, current_safety_process_state)
                     execution_contexts[name]['current_state'] = current_safety_process_state
-                    execution_contexts[name]['current_preference'] = current_safety_process_preference
+                    execution_contexts[name]['current_rating'] = current_safety_process_rating
 
-                preferences = [execution_contexts[name]['current_preference'] for name in execution_contexts]
-                parameter = selector.select(preferences)
+                ratings = [execution_contexts[name]['current_rating'] for name in execution_contexts]
+                parameter = selector.select(ratings)
 
                 visualizer.print_safety_process_information(step, execution_contexts, parameter)
 

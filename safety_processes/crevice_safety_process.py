@@ -6,7 +6,6 @@ ROVER_SPEED = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 ROVER_OFFSET = ['LEFT', 'CENTER', 'RIGHT']
 
 WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
-ARM_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
 APPROACHING_PROBABILITY = 0.2
@@ -79,12 +78,11 @@ class CreviceSafetyProcess:
             }
 
         self.parameter_registry = {}
-        for parameter_tuple in itertools.product(WHEEL_ROTATION_PARAMETERS, ARM_ROTATION_PARAMETERS, STEERING_PARAMETERS):
+        for parameter_tuple in itertools.product(WHEEL_ROTATION_PARAMETERS, STEERING_PARAMETERS):
             parameter = ':'.join(parameter_tuple)
             self.parameter_registry[parameter] = {
                 'wheel_rotation_parameter': parameter_tuple[0],
-                'arm_rotation_parameter': parameter_tuple[1],
-                'steering_parameter': parameter_tuple[2]
+                'steering_parameter': parameter_tuple[1]
             }
 
         self.state_space = list(self.state_registry.keys())
