@@ -34,8 +34,8 @@ MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
 BUILDERS = [
-    {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
-    {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
+    {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
+    {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
 ]
 
 logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
