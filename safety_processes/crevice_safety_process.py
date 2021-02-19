@@ -31,7 +31,6 @@ VEHICLE_OFFSET_PROBABILITIES = {
     'SHIFT_RIGHT': {'LEFT': 0.0, 'CENTER': 0.0, 'RIGHT': 1.0}
 }
 
-# return SEVERITY_MAP[vertical_crevice_position][rover_speed][rover_offset]
 SEVERITY_MAP = {
     'LEFT': {
         'NONE': {'LEFT': 5, 'CENTER': 3, 'RIGHT': 1},

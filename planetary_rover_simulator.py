@@ -2,12 +2,18 @@ import logging
 import random
 import time
 
+from matplotlib.pyplot import plot
+
+import plotter
 import utils
 from printers.visualizer import Visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
 from selector import Selector
-from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
+from task_processes.planetary_rover_task_process import (
+    GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
+
+RESULTS_DIRECTORY = 'results'
 
 GRID_WORLD = [
     ['O', 'W', 'O', 'O'],
@@ -19,25 +25,20 @@ POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
 SHADY_LOCATIONS = [(1, 1), (1, 2)]
 INITIAL_STATE = '1:0:5:NOMINAL:NOMINAL:NOT_ANALYZED:NOT_ANALYZED'
 
-# GRID_WORLD = [
-#     ['O', 'W'],
-#     ['O', 'O'],
-# ]
-# POINTS_OF_INTERESTS = [(1, 1)]
-# SHADY_LOCATIONS = [(1, 0)]
-# INITIAL_STATE = '0:0:5:NOMINAL:NOMINAL:NOT_ANALYZED'
+SAFETY_PROCESSES = 2
 
-TASK_PROCESS_SLEEP_DURATION = 0 # 1.0
-SAFETY_PROCESS_SLEEP_DURATION = 0 # 0.1
+TASK_PROCESS_SLEEP_DURATION = 0
+SAFETY_PROCESS_SLEEP_DURATION = 0
 MINIMUM_ACTION_DURATION = 25
 MAXIMUM_ACTION_DURATION = 30
 
-VISUALIZER = Visualizer(is_verbose=False)
+IS_VERBOSE = False
+VISUALIZER = Visualizer(is_verbose=IS_VERBOSE)
 
-EXPERIMENT_BUILDERS = {
-    'ACTIVE:ACTIVE': [
-        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
-        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
+EXPERIMENTS = {
+    'INACTIVE:INACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
     ],
     'ACTIVE:INACTIVE': [
         {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
@@ -47,24 +48,24 @@ EXPERIMENT_BUILDERS = {
         {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
         {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
     ],
-    'INACTIVE:INACTIVE': [
-        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
-        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
+    'ACTIVE:ACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
     ]
 }
-EXPERIMENT_SIMULATIONS = 100
+SIMULATIONS = 5
 
 logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
 def run_simulation(builders):
-    statistics = {
-        'cumulative_severity_level_count_1': 0,
-        'cumulative_severity_level_count_2': 0,
-        'cumulative_severity_level_count_3': 0,
-        'cumulative_severity_level_count_4': 0,
-        'cumulative_severity_level_count_5': 0,
-        'cumulative_interference': 0
+    simulation_results = {
+        'severity_level_5': [0] * SAFETY_PROCESSES,
+        'severity_level_4': [0] * SAFETY_PROCESSES,
+        'severity_level_3': [0] * SAFETY_PROCESSES,
+        'severity_level_2': [0] * SAFETY_PROCESSES,
+        'severity_level_1': [0] * SAFETY_PROCESSES,
+        'interference': [0] * SAFETY_PROCESSES
     }
 
     start = time.time()
@@ -111,12 +112,12 @@ def run_simulation(builders):
             ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
             parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
 
-            for name in execution_contexts:
+            for index, name in enumerate(execution_contexts):
                 safety_process = execution_contexts[name]['instance']
                 severity = safety_process.severity_function(execution_contexts[name]['current_state'], parameter)
-                statistics[f'cumulative_severity_level_count_{severity}'] += 1
+                simulation_results[f'severity_level_{severity}'][index] += 1
                 interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
-                statistics[f'cumulative_interference'] += interference
+                simulation_results[f'interference'][index] += interference
 
             VISUALIZER.print_safety_process_information(0, execution_contexts, parameter)
 
@@ -133,12 +134,12 @@ def run_simulation(builders):
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
                 parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
 
-                for name in execution_contexts:
+                for index, name in enumerate(execution_contexts):
                     safety_process = execution_contexts[name]['instance']                
                     severity = safety_process.severity_function(execution_contexts[name]['current_state'], parameter)
-                    statistics[f'cumulative_severity_level_count_{severity}'] += 1
+                    simulation_results[f'severity_level_{severity}'][index] += 1
                     interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
-                    statistics[f'cumulative_interference'] += interference
+                    simulation_results[f'interference'][index] += interference
 
                 VISUALIZER.print_safety_process_information(step, execution_contexts, parameter)
 
@@ -151,31 +152,55 @@ def run_simulation(builders):
         VISUALIZER.print_separator()
         time.sleep(TASK_PROCESS_SLEEP_DURATION)
     
-    return statistics
+    return simulation_results
 
 
 def main():
-    for experiment_builder_key in EXPERIMENT_BUILDERS:
-        logging.info("Running the experiment [%s]", experiment_builder_key)
-
-        results = {
-            'cumulative_severity_level_count_1': 0,
-            'cumulative_severity_level_count_2': 0,
-            'cumulative_severity_level_count_3': 0,
-            'cumulative_severity_level_count_4': 0,
-            'cumulative_severity_level_count_5': 0,
-            'cumulative_interference': 0
+    experiment_results_container = []
+ 
+    for name in EXPERIMENTS:
+        logging.info("Running the experiment [%s]", name)
+        
+        experiment_results = {
+            'severity_level_5': [0] * SAFETY_PROCESSES,
+            'severity_level_4': [0] * SAFETY_PROCESSES,
+            'severity_level_3': [0] * SAFETY_PROCESSES,
+            'severity_level_2': [0] * SAFETY_PROCESSES,
+            'severity_level_1': [0] * SAFETY_PROCESSES,
+            'interference': [0] * SAFETY_PROCESSES
         }
 
-        for _ in range(EXPERIMENT_SIMULATIONS):
-            statistics = run_simulation(EXPERIMENT_BUILDERS[experiment_builder_key])
-            for key in results:
-                results[key] += statistics[key]
+        for _ in range(SIMULATIONS):
+            simulation_results = run_simulation(EXPERIMENTS[name])
+            for key in experiment_results:
+                for index in range(SAFETY_PROCESSES):
+                    experiment_results[key][index] += simulation_results[key][index]
         
-        for key in results:
-            results[key] /= EXPERIMENT_SIMULATIONS
+        for key in experiment_results:
+            for index in range(SAFETY_PROCESSES):
+                experiment_results[key][index] /= SIMULATIONS
+        
+        experiment_results_container.append(experiment_results)
 
-        VISUALIZER.print_results(results)
+    plot_specification = {
+        4: [[] for _ in range(SAFETY_PROCESSES)],
+        3: [[] for _ in range(SAFETY_PROCESSES)],
+        2: [[] for _ in range(SAFETY_PROCESSES)],
+        1: [[] for _ in range(SAFETY_PROCESSES)],
+        0: [[] for _ in range(SAFETY_PROCESSES)],
+        999: [[] for _ in range(SAFETY_PROCESSES)]
+    }
+
+    for experimental_results in experiment_results_container:
+        for safety_process in range(SAFETY_PROCESSES):
+            plot_specification[4][safety_process].append(experimental_results['severity_level_5'][safety_process])
+            plot_specification[3][safety_process].append(experimental_results['severity_level_4'][safety_process])
+            plot_specification[2][safety_process].append(experimental_results['severity_level_3'][safety_process])
+            plot_specification[1][safety_process].append(experimental_results['severity_level_2'][safety_process])
+            plot_specification[0][safety_process].append(experimental_results['severity_level_1'][safety_process])
+            plot_specification[999][safety_process].append(experimental_results['interference'][safety_process])
+
+    plotter.plot(plot_specification)
 
 
 if __name__ == '__main__':
