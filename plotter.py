@@ -3,7 +3,8 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
-FILENAME = 'anticipated-experimental-results.pdf'
+PLOT_DIRECTORY = "plots"
+FILENAME = 'test.pdf'
 
 WIDTH = 0.16
 
@@ -70,4 +71,4 @@ def plot(plot_specification):
 
     plt.tight_layout()
 
-    figure.savefig(FILENAME, bbox_inches="tight")
+    figure.savefig(f'{PLOT_DIRECTORY}/{FILENAME}', bbox_inches='tight')
