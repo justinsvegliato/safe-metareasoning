@@ -31,7 +31,7 @@ def print_transition_function(task_process):
                 if probability > 0:
                     print(f"    Successor State: {successor_state} -> {probability}")
 
-            is_valid = is_valid and 0.99 <= total_probability <= 1.01
+            is_valid = is_valid and 0.99 <= total_probability <= 1.025
             print(f"    Total Probability: {total_probability}")
 
             if not is_valid:

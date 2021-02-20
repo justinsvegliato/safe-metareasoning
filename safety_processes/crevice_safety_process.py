@@ -12,7 +12,7 @@ APPROACHING_PROBABILITY = 0.2
 AT_PROBABILITY = 0.5
 PASS_PROBABILITY = 0.5
 
-VERTICAL_OBSTACLE_POSITION_PROBABILITIES = {
+VERTICAL_CREVICE_POSITION_PROBABILITIES = {
     'NONE': 0.0,
     'LEFT': 0.25,
     'CENTER': 0.5,
@@ -112,7 +112,7 @@ class CreviceSafetyProcess:
                 return (1 - APPROACHING_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             if successor_state_record['horizontal_crevice_position'] == 'APPROACHING':
-                return APPROACHING_PROBABILITY * VERTICAL_OBSTACLE_POSITION_PROBABILITIES[successor_state_record['vertical_crevice_position']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return APPROACHING_PROBABILITY * VERTICAL_CREVICE_POSITION_PROBABILITIES[successor_state_record['vertical_crevice_position']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
 
