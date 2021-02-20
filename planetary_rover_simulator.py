@@ -2,18 +2,14 @@ import logging
 import random
 import time
 
-from matplotlib.pyplot import plot
-
 import plotter
 import utils
 from printers.visualizer import Visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
 from safety_processes.dust_storm_safety_process import DustStormSafetyProcess
+from safety_processes.rough_terrain_safety_process import RoughTerrainSafetyProcess
 from selector import Selector
-from task_processes.planetary_rover_task_process import (
-    GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
-
-RESULTS_DIRECTORY = 'results'
+from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
 GRID_WORLD = [
     ['O', 'W', 'O', 'O'],
@@ -25,7 +21,7 @@ POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
 SHADY_LOCATIONS = [(1, 1), (1, 2)]
 INITIAL_STATE = '1:0:5:NOMINAL:NOMINAL:NOT_ANALYZED:NOT_ANALYZED'
 
-SAFETY_PROCESSES = 2
+SAFETY_PROCESSES = 3
 
 TASK_PROCESS_SLEEP_DURATION = 0
 SAFETY_PROCESS_SLEEP_DURATION = 0
@@ -36,21 +32,45 @@ IS_VERBOSE = False
 VISUALIZER = Visualizer(is_verbose=IS_VERBOSE)
 
 EXPERIMENTS = {
-    'INACTIVE:INACTIVE': [
+    'INACTIVE:INACTIVE:INACTIVE': [
         {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
-        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': False}
     ],
-    'ACTIVE:INACTIVE': [
-        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
-        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False}
-    ],
-    'INACTIVE:ACTIVE': [
+    'INACTIVE:INACTIVE:ACTIVE': [
         {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
-        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': True}
     ],
-    'ACTIVE:ACTIVE': [
+    'INACTIVE:ACTIVE:INACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': False}
+    ],
+    'INACTIVE:ACTIVE:ACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': True}
+    ],
+    'ACTIVE:INACTIVE:INACTIVE': [
         {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
-        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True}
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': False}
+    ],
+    'ACTIVE:INACTIVE:ACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': False},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': True}
+    ],
+    'ACTIVE:ACTIVE:INACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': False}
+    ],
+    'ACTIVE:ACTIVE:ACTIVE': [
+        {'constructor': CreviceSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': DustStormSafetyProcess, 'arguments': [], 'is_active': True},
+        {'constructor': RoughTerrainSafetyProcess, 'arguments': [], 'is_active': True}
     ]
 }
 SIMULATIONS = 5
