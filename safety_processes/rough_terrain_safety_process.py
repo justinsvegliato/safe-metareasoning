@@ -173,9 +173,14 @@ class RoughTerrainSafetyProcess:
         return 1
 
     def severity_function(self, state, _):
+        horizontal_rough_terrain_position = self.state_registry[state]['horizontal_rough_terrain_position']
         rough_terrain_level = self.state_registry[state]['rough_terrain_level']
         rover_speed = self.state_registry[state]['rover_speed']
-        return ROVER_SPEED_SEVERITY_MAP[rover_speed][rough_terrain_level]
+
+        if horizontal_rough_terrain_position == 'AT':
+            return ROVER_SPEED_SEVERITY_MAP[rover_speed][rough_terrain_level]
+
+        return 1
 
     def interference_function(self, _, parameter):
         parameter_record = self.parameter_registry[parameter]
