@@ -8,6 +8,19 @@ MINIMUM_TERRAIN_LEVEL = 1
 MAXIMUM_TERRAIN_LEVEL = 10
 ROUGH_TERRAIN_LEVEL = range(MINIMUM_TERRAIN_LEVEL, MAXIMUM_TERRAIN_LEVEL + 1)
 
+ROUGH_TERRAIN_LEVEL_PROBABILITY = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0.2,
+    7: 0.5,
+    8: 0.2,
+    9: 0.05,
+    10: 0.05
+}
+
 WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
@@ -18,13 +31,13 @@ PASS_PROBABILITY = 0.5
 SPEED_PROBABILITIES = {
     'NONE': {'NONE': 0.1, 'LOW': 0.1, 'NORMAL': 0.7, 'HIGH': 0.1},
     'SPEED_UP': {'NONE': 0.0, 'LOW': 0.0, 'NORMAL': 0.0, 'HIGH': 1.0},
-    'SLOW_DOWN': {'NONE': 0.0, 'LOW': 1.0, 'NORMAL': 0.0, 'HIGH': 0.0},
-    'STOP': {'NONE': 1.0, 'LOW': 0.0, 'NORMAL': 0.0, 'HIGH': 0.0}
+    'SLOW_DOWN': {'NONE': 0.0, 'LOW': 0.6, 'NORMAL': 0.4, 'HIGH': 0.0},
+    'STOP': {'NONE': 0.0, 'LOW': 0.0, 'NORMAL': 0.0, 'HIGH': 1.0}
 }
 
-ROUGH_TERRAIN_INCREASE_PROBABILITY = 0.05
-ROUGH_TERRAIN_REMAIN_PROBABILITY = 0.75
-ROUGH_TERRAIN_DECREASE_PROBABILITY = 0.20
+ROUGH_TERRAIN_INCREASE_PROBABILITY = 0.2
+ROUGH_TERRAIN_REMAIN_PROBABILITY = 0.6
+ROUGH_TERRAIN_DECREASE_PROBABILITY = 0.2
 
 ROVER_SPEED_SEVERITY_MAP = {
     'NONE': {
@@ -64,14 +77,14 @@ ROVER_SPEED_SEVERITY_MAP = {
         10: 5
     },
     'HIGH': {
-        1: 3,
-        2: 3,
-        3: 4,
-        4: 4,
-        5: 4,
-        6: 5,
-        7: 5,
-        8: 5,
+        1: 1,
+        2: 1,
+        3: 1,
+        4: 1,
+        5: 1,
+        6: 1,
+        7: 3,
+        8: 4,
         9: 5,
         10: 5
     }
@@ -136,7 +149,7 @@ class RoughTerrainSafetyProcess:
                 return (1 - APPROACHING_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']]
 
             if successor_state_record['horizontal_rough_terrain_position'] == 'APPROACHING':
-                return APPROACHING_PROBABILITY * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * (1 / (MAXIMUM_TERRAIN_LEVEL - MINIMUM_TERRAIN_LEVEL))
+                return APPROACHING_PROBABILITY * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * ROUGH_TERRAIN_LEVEL_PROBABILITY[successor_state_record['rough_terrain_level']]
 
             return 0
 

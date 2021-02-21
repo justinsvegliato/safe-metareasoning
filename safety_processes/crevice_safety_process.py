@@ -8,9 +8,24 @@ ROVER_OFFSET = ['LEFT', 'CENTER', 'RIGHT']
 WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
-APPROACHING_PROBABILITY = 0.2
-AT_PROBABILITY = 0.5
-PASS_PROBABILITY = 0.5
+APPROACHING_PROBABILITY = {
+    'NONE': 0.25,
+    'SPEED_UP': 0.5,
+    'SLOW_DOWN': 0.25,
+    'STOP': 0.0
+}
+AT_PROBABILITY = {
+    'NONE': 0.25,
+    'SPEED_UP': 0.5,
+    'SLOW_DOWN': 0.25,
+    'STOP': 0.0
+}
+PASS_PROBABILITY = {
+    'NONE': 0.25,
+    'SPEED_UP': 0.5,
+    'SLOW_DOWN': 0.25,
+    'STOP': 0.0
+}
 
 VERTICAL_CREVICE_POSITION_PROBABILITIES = {
     'NONE': 0.0,
@@ -109,28 +124,28 @@ class CreviceSafetyProcess:
 
         if state_record['horizontal_crevice_position'] == 'NONE':
             if successor_state_record['horizontal_crevice_position'] == 'NONE' and successor_state_record['vertical_crevice_position'] == 'NONE':
-                return (1 - APPROACHING_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return (1 - APPROACHING_PROBABILITY[parameter_record['wheel_rotation_parameter']]) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             if successor_state_record['horizontal_crevice_position'] == 'APPROACHING':
-                return APPROACHING_PROBABILITY * VERTICAL_CREVICE_POSITION_PROBABILITIES[successor_state_record['vertical_crevice_position']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return APPROACHING_PROBABILITY[parameter_record['wheel_rotation_parameter']] * VERTICAL_CREVICE_POSITION_PROBABILITIES[successor_state_record['vertical_crevice_position']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
 
         if state_record['horizontal_crevice_position'] == 'APPROACHING':
             if successor_state_record['horizontal_crevice_position'] == 'APPROACHING' and state_record['vertical_crevice_position'] == successor_state_record['vertical_crevice_position']:
-                return (1 - AT_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return (1 - AT_PROBABILITY[parameter_record['wheel_rotation_parameter']]) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             if successor_state_record['horizontal_crevice_position'] == 'AT' and state_record['vertical_crevice_position'] == successor_state_record['vertical_crevice_position']:
-                return AT_PROBABILITY * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return AT_PROBABILITY[parameter_record['wheel_rotation_parameter']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
 
         if state_record['horizontal_crevice_position'] == 'AT':
             if successor_state_record['horizontal_crevice_position'] == 'AT' and state_record['vertical_crevice_position'] == successor_state_record['vertical_crevice_position']:
-                return (1 - PASS_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return (1 - PASS_PROBABILITY[parameter_record['wheel_rotation_parameter']]) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             if successor_state_record['horizontal_crevice_position'] == 'NONE' and successor_state_record['vertical_crevice_position'] == 'NONE':
-                return PASS_PROBABILITY * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
+                return PASS_PROBABILITY[parameter_record['wheel_rotation_parameter']] * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']] * VEHICLE_OFFSET_PROBABILITIES[parameter_record['steering_parameter']][successor_state_record['rover_offset']]
 
             return 0
 

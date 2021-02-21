@@ -51,3 +51,27 @@ def get_task_process_solution(task_process):
     logging.debug("Loading the policy: [task_process=%s, file=%s]", task_process.kind, file_path)
     with open(file_path) as file:
         return json.load(file)
+
+
+def get_plot_specification(experiment_results_container, safety_process_count):
+    safety_processes = range(safety_process_count)
+
+    plot_specification = {
+        4: [[] for _ in safety_processes],
+        3: [[] for _ in safety_processes],
+        2: [[] for _ in safety_processes],
+        1: [[] for _ in safety_processes],
+        0: [[] for _ in safety_processes],
+        999: [[] for _ in safety_processes]
+    }
+
+    for experimental_results in experiment_results_container:
+        for safety_process in range(safety_process_count):
+            plot_specification[4][safety_process].append(experimental_results['severity_level_5'][safety_process])
+            plot_specification[3][safety_process].append(experimental_results['severity_level_4'][safety_process])
+            plot_specification[2][safety_process].append(experimental_results['severity_level_3'][safety_process])
+            plot_specification[1][safety_process].append(experimental_results['severity_level_2'][safety_process])
+            plot_specification[0][safety_process].append(experimental_results['severity_level_1'][safety_process])
+            plot_specification[999][safety_process].append(experimental_results['interference'][safety_process])
+
+    return plot_specification
