@@ -67,20 +67,13 @@ class Selector:
         best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, ratings)
         return best_severity_interference_parameters[0]
 
-    def recommend(self, safety_process, state, is_nonmyopic=True):
+    def recommend(self, safety_process, state):
         rating = {}
 
-        if is_nonmyopic:
-            for parameter in safety_process.parameters():
-                rating[parameter] = {
-                    'severity': self.severity_parameter_value_map[safety_process.name][state][parameter],
-                    'interference': self.interference_parameter_value_map[safety_process.name][state][parameter]
-                }
-        else:
-            for parameter in safety_process.parameters():
-                rating[parameter] = {
-                    'severity': safety_process.severity_function(state, parameter),
-                    'interference': safety_process.interference_function(state, parameter)
-                }
+        for parameter in safety_process.parameters():
+            rating[parameter] = {
+                'severity': self.severity_parameter_value_map[safety_process.name][state][parameter],
+                'interference': self.interference_parameter_value_map[safety_process.name][state][parameter]
+            }
 
         return rating
