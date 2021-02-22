@@ -91,7 +91,6 @@ class PlanetaryRoverTaskProcess:
     def actions(self):
         return self.action_space
 
-    # TODO: Clean up this transition function
     def transition_function(self, state, action, successor_state):
         if state == GOAL_STATE and successor_state == GOAL_STATE:
             return 1
