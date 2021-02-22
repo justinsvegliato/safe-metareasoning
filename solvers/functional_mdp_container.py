@@ -1,4 +1,4 @@
-class MdpContainer:
+class FunctionalMdpContainer:
     def __init__(self, safety_process, objective):
         self.safety_process = safety_process
         self.objective = objective
