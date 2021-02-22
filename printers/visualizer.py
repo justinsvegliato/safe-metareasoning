@@ -91,11 +91,3 @@ class Visualizer():
     def print_separator(self):
         if self.is_verbose:
             print("=" * BORDER_SIZE)
-
-    def print_results(self, statistics):
-        print(f"Cumulative Severity Level 5 Count: {statistics['cumulative_severity_level_count_5']}")
-        print(f"Cumulative Severity Level 4 Count: {statistics['cumulative_severity_level_count_4']}")
-        print(f"Cumulative Severity Level 3 Count: {statistics['cumulative_severity_level_count_3']}")
-        print(f"Cumulative Severity Level 2 Count: {statistics['cumulative_severity_level_count_2']}")
-        print(f"Cumulative Severity Level 1 Count: {statistics['cumulative_severity_level_count_1']}")
-        print(f"Cumulative Interference: {statistics['cumulative_interference']}")
