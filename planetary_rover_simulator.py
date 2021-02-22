@@ -306,9 +306,6 @@ def main():
             
             experiment_results_container.append(experiment_results)
 
-        import pprint as pp
-        pp.pprint(experiment_results_container)
-
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
         plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
 
