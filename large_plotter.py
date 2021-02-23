@@ -21,7 +21,7 @@ HELPER = {
     2: {'domain': [i - WIDTH for i in SYSTEMS], 'color': '#b8aa95'},
     1: {'domain': [i for i in SYSTEMS], 'color': '#9fd1f1'},
     0: {'domain': [i + WIDTH for i in SYSTEMS], 'color': '#3a82c4'},
-    # 999: {'domain': [i + 2 * WIDTH for i in SYSTEMS], 'color': 'gray'},
+    999: {'domain': [i + 2 * WIDTH for i in SYSTEMS], 'color': 'gray'}
 }
 
 
@@ -50,9 +50,11 @@ def plot(plot_specification, ticks, id):
         Patch(facecolor=HELPER[4]['color']),
         Patch(facecolor=HELPER[3]['color']),
         Patch(facecolor=HELPER[2]['color']),
-        Patch(facecolor=HELPER[1]['color'])
+        Patch(facecolor=HELPER[1]['color']),
+        Patch(facecolor=HELPER[0]['color']),
+        Patch(facecolor=HELPER[999]['color']),
     ]
-    plt.legend(patches, ['Severity Level 5', 'Severity Level 4', 'Severity Level 3', 'Severity Level 2'], ncol=2, handletextpad=0.5, labelspacing=0.2, prop={'size': 12})
+    plt.legend(patches, ['Severity Level 5', 'Severity Level 4', 'Severity Level 3', 'Severity Level 2', 'Severity Level 1', 'Interference'], ncol=2, handletextpad=0.5, labelspacing=0.2, prop={'size': 12})
 
     plt.tight_layout()
 

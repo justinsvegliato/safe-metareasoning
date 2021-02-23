@@ -2,7 +2,7 @@ import logging
 import random
 import time
 
-import plotter
+import small_plotter
 import utils
 from printers.visualizer import Visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
@@ -33,7 +33,7 @@ VISUALIZER = Visualizer(is_verbose=False)
 EXPERIMENTS = [
     {
         'id': 1,
-        'ticks': (r'$\{ \}$', r'$\{ C \}$', r'$\{ C, D \}$', r'$\{ C, D, R \}$'),
+        'ticks': (r'$[]$', r'$[C]$', r'$[C, D]$', r'$[C, D, R]$'),
         'INACTIVE:INACTIVE:INACTIVE': [
             {'constructor': CreviceSafetyProcess, 'is_active': False},
             {'constructor': DustStormSafetyProcess, 'is_active': False},
@@ -55,126 +55,126 @@ EXPERIMENTS = [
             {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
         ]
     },
-    {
-        'id': 2,
-        'ticks': (r'$\{ \}$', r'$\{ C \}$', r'$\{ C, R \}$', r'$\{ C, R, D \}$'),
-        'INACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'INACTIVE:ACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ],
-        'ACTIVE:ACTIVE:ACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ]
-    },
-    {
-        'id': 3,
-        'ticks': (r'$\{ \}$', r'$\{ D \}$', r'$\{ D, C \}$', r'$\{ D, C, R \}$'),
-        'INACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'INACTIVE:ACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:ACTIVE:ACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ]
-    },
-    {
-        'id': 4,
-        'ticks': (r'$\{ \}$', r'$\{ D \}$', r'$\{ D, R \}$', r'$\{ D, R, C \}$'),
-        'INACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'INACTIVE:ACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ],
-        'ACTIVE:ACTIVE:ACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ]
-    },
-    {
-        'id': 5,
-        'ticks': (r'$\{ \}$', r'$\{ R \}$', r'$\{ R, C \}$', r'$\{ R, C, D \}$'),
-        'INACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ],
-        'INACTIVE:ACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ],
-        'ACTIVE:ACTIVE:ACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ]
-    },
-    {
-        'id': 6,
-        'ticks': (r'$\{ \}$', r'$\{ R \}$', r'$\{ R, D \}$', r'$\{ R, D, C \}$'),
-        'INACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ],
-        'INACTIVE:ACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ],
-        'ACTIVE:ACTIVE:ACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-        ]
-    }
+    # {
+    #     'id': 2,
+    #     'ticks': (r'$\{ \}$', r'$\{ C \}$', r'$\{ C, R \}$', r'$\{ C, R, D \}$'),
+    #     'INACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'ACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'INACTIVE:ACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ],
+    #     'ACTIVE:ACTIVE:ACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ]
+    # },
+    # {
+    #     'id': 3,
+    #     'ticks': (r'$\{ \}$', r'$\{ D \}$', r'$\{ D, C \}$', r'$\{ D, C, R \}$'),
+    #     'INACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'ACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'INACTIVE:ACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'ACTIVE:ACTIVE:ACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ]
+    # },
+    # {
+    #     'id': 4,
+    #     'ticks': (r'$\{ \}$', r'$\{ D \}$', r'$\{ D, R \}$', r'$\{ D, R, C \}$'),
+    #     'INACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'ACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'INACTIVE:ACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ],
+    #     'ACTIVE:ACTIVE:ACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ]
+    # },
+    # {
+    #     'id': 5,
+    #     'ticks': (r'$\{ \}$', r'$\{ R \}$', r'$\{ R, C \}$', r'$\{ R, C, D \}$'),
+    #     'INACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'ACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ],
+    #     'INACTIVE:ACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ],
+    #     'ACTIVE:ACTIVE:ACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ]
+    # },
+    # {
+    #     'id': 6,
+    #     'ticks': (r'$\{ \}$', r'$\{ R \}$', r'$\{ R, D \}$', r'$\{ R, D, C \}$'),
+    #     'INACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+    #     ],
+    #     'ACTIVE:INACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ],
+    #     'INACTIVE:ACTIVE:INACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ],
+    #     'ACTIVE:ACTIVE:ACTIVE': [
+    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
+    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
+    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
+    #     ]
+    # }
 ]
 SIMULATIONS = 25
 
@@ -307,7 +307,7 @@ def main():
             experiment_results_container.append(experiment_results)
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
-        plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
+        small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
 
 
 if __name__ == '__main__':

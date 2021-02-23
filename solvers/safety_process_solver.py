@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 
-from solvers.functional_mdp_container import FunctionMdpContainer
+from solvers.functional_mdp_container import FunctionalMdpContainer
 from solvers.memory_mdp_container import MemoryMdpContainer
 
 ROUNDER = 3
@@ -76,7 +76,7 @@ def solve(safety_process, gamma, epsilon):
     severity_state_values = get_empty_severity_state_values(safety_process)
     severity_parameter_values = get_empty_severity_parameter_values(safety_process)
 
-    severity_memory_mdp_container = MemoryMdpContainer(FunctionMdpContainer(safety_process, 'severity'))
+    severity_memory_mdp_container = MemoryMdpContainer(FunctionalMdpContainer(safety_process, 'severity'))
     size = severity_memory_mdp_container.n_states * severity_memory_mdp_container.n_actions
 
     forbidden_state_action_pairs = set()
@@ -98,7 +98,7 @@ def solve(safety_process, gamma, epsilon):
 
     logging.debug("Performing value iteration: [interference, size=%d]", size - len(forbidden_state_action_pairs))
 
-    interference_memory_mdp_container = MemoryMdpContainer(FunctionMdpContainer(safety_process, 'interference'))
+    interference_memory_mdp_container = MemoryMdpContainer(FunctionalMdpContainer(safety_process, 'interference'))
     solution = value_iteration(interference_memory_mdp_container, gamma, epsilon, False, forbidden_state_action_pairs)
 
     interference_state_values = get_rounded_interference_state_values(safety_process, solution['state_values'])
