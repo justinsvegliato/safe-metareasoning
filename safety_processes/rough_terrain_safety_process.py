@@ -15,9 +15,9 @@ ROUGH_TERRAIN_LEVEL_PROBABILITY = {
     4: 0,
     5: 0,
     6: 0,
-    7: 0.2,
+    7: 0.15,
     8: 0.7,
-    9: 0.05,
+    9: 0.1,
     10: 0.05
 }
 
@@ -82,7 +82,7 @@ ROVER_SPEED_SEVERITY_MAP = {
         3: 1,
         4: 1,
         5: 1,
-        6: 1,
+        6: 2,
         7: 3,
         8: 4,
         9: 5,
@@ -91,12 +91,13 @@ ROVER_SPEED_SEVERITY_MAP = {
 }
 
 INTERFERENCE_MAP = {
-    'NONE': {'NONE': 0, 'SHIFT_LEFT': 10, 'SHIFT_RIGHT': 10},
-    'SPEED_UP': {'NONE': 0, 'SHIFT_LEFT': 15, 'SHIFT_RIGHT': 15},
-    'SLOW_DOWN': {'NONE': 10, 'SHIFT_LEFT': 15, 'SHIFT_RIGHT': 15},
-    'STOP': {'NONE': 20, 'SHIFT_LEFT': 25, 'SHIFT_RIGHT': 30},
+    'NONE': 0,
+    'SPEED_UP': 0.05,
+    'SLOW_DOWN': 0.15,
+    'STOP': 0.25,
+    'SHIFT_LEFT': 0.1,
+    'SHIFT_RIGHT': 0.1
 }
-
 
 class RoughTerrainSafetyProcess:
     identifier = 1
@@ -199,7 +200,7 @@ class RoughTerrainSafetyProcess:
         parameter_record = self.parameter_registry[parameter]
         wheel_rotation_parameter = parameter_record['wheel_rotation_parameter']
         steering_parameter = parameter_record['steering_parameter']
-        return INTERFERENCE_MAP[wheel_rotation_parameter][steering_parameter]
+        return INTERFERENCE_MAP[wheel_rotation_parameter] + INTERFERENCE_MAP[steering_parameter]
 
     def start_states(self):
         start_states = []

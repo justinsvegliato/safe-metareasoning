@@ -18,7 +18,7 @@ SEVERITY_MAP = {
     1: 1,
     2: 1,
     3: 1,
-    4: 1,
+    4: 2,
     5: 2,
     6: 3,
     7: 4,
@@ -29,11 +29,11 @@ SEVERITY_MAP = {
 
 INTERFERENCE_MAP = {
     'NONE': 0,
-    'SPEED_UP': 1,
-    'SLOW_DOWN': 5,
-    'STOP': 10,
-    'SHIFT_LEFT': 2,
-    'SHIFT_RIGHT': 2
+    'SPEED_UP': 0.05,
+    'SLOW_DOWN': 0.15,
+    'STOP': 0.25,
+    'SHIFT_LEFT': 0.1,
+    'SHIFT_RIGHT': 0.1
 }
 
 class DustStormSafetyProcess:

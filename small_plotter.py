@@ -19,12 +19,12 @@ SEVERITY_LEVEL_COUNT = 5
 SEVERITY_LEVELS = list(range(SEVERITY_LEVEL_COUNT)) + [999]
 
 HELPER = {
-    4: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 5$ Frequency', 'file_key': '5'},
-    3: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 4$ Frequency', 'file_key': '4'},
-    2: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 3$ Frequency', 'file_key': '3'},
-    1: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 2$ Frequency', 'file_key': '2'},
-    0: {'maximum': 3500, 'ylabel': 'Severity Level $\ell = 1$ Frequency', 'file_key': '1'},
-    999: {'maximum': 60000, 'ylabel': 'Cumulative Interference', 'file_key': 'interference'}
+    4: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 5$ Frequency', 'file_key': '5', 'labelpad': -20},
+    3: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 4$ Frequency', 'file_key': '4', 'labelpad': -20},
+    2: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 3$ Frequency', 'file_key': '3', 'labelpad': -20},
+    1: {'maximum': 100, 'ylabel': 'Severity Level $\ell = 2$ Frequency', 'file_key': '2', 'labelpad': -20},
+    0: {'maximum': 6000, 'ylabel': 'Severity Level $\ell = 1$ Frequency', 'file_key': '1', 'labelpad': -17},
+    999: {'maximum': 2000, 'ylabel': 'Cumulative Interference [sec]', 'file_key': 'interference', 'labelpad': -17}
 }
 
 
@@ -59,7 +59,7 @@ def plot(plot_specification, ticks, id):
         plt.rcParams["text.usetex"] = True
 
         plt.margins(x=0.01, y=0.01)
-        plt.ylabel(HELPER[severity_level]['ylabel'], labelpad=-20) 
+        plt.ylabel(HELPER[severity_level]['ylabel'], labelpad=HELPER[severity_level]['labelpad']) 
         plt.xticks(SYSTEMS, ticks)
         plt.yticks([1, HELPER[severity_level]['maximum']])
 
@@ -82,7 +82,7 @@ def plot(plot_specification, ticks, id):
             Patch(facecolor='#83dd70'),
             Patch(facecolor='#b09cdb')
         ]
-        plt.legend(patches, ['$C$', '$D$', '$R$'], ncol=1, handletextpad=0.5, labelspacing=0.2, prop={'size': 12})
+        plt.legend(patches, [r'Crevices', r'Dust Storms', r'Rough Terrain'], ncol=1, handletextpad=0.3, labelspacing=0.2, prop={'size': 12})
 
         plt.tight_layout()
 

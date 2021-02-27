@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import os
@@ -75,3 +76,48 @@ def get_plot_specification(experiment_results_container, safety_process_count):
             plot_specification[999][safety_process].append(experimental_results['interference'][safety_process])
 
     return plot_specification
+
+
+def get_empty_cells(grid_world):
+    empty_cells = []
+
+    for row in range(len(grid_world)):
+        for column in range(len(grid_world[0])):
+            if grid_world[row][column] == 'O':
+                empty_cells.append((row, column))
+
+    return empty_cells
+
+
+
+def get_random_empty_cells(grid_world, retention_probability):
+    empty_cells = []
+
+    for row in range(len(grid_world)):
+        for column in range(len(grid_world[0])):
+            if grid_world[row][column] == 'O':
+                empty_cells.append((row, column))
+
+    return random.sample(empty_cells, round(retention_probability * len(empty_cells)))
+
+
+def get_grid_world_with_weather(grid_world, shady_locations):
+    new_grid_world = copy.deepcopy(grid_world)
+
+    for shady_location in shady_locations:
+        row = shady_location[0]
+        column = shady_location[1]
+        new_grid_world[row][column] = 'S' 
+    
+    return new_grid_world
+
+
+def get_grid_world_with_points_of_interest(grid_world, points_of_interest):
+    new_grid_world = copy.deepcopy(grid_world)
+
+    for shady_location in points_of_interest:
+        row = shady_location[0]
+        column = shady_location[1]
+        new_grid_world[row][column] = 'P' 
+    
+    return new_grid_world
