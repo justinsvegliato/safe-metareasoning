@@ -22,4 +22,4 @@ class MemoryMdpContainer:
 
         self.start_state_probabilities = np.zeros(self.n_states)
         for state in range(self.n_states):
-            self.start_state_probabilities[state] = self.start_state_probabilities[state] = mdp.start_state_function(self.states[state])
+            self.start_state_probabilities[state] = mdp.start_state_function(self.states[state])
