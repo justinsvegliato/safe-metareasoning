@@ -103,7 +103,7 @@ def get_random_empty_cells(grid_world, retention_probability):
 
 def get_grid_world_with_weather(grid_world, shady_locations):
     new_grid_world = copy.deepcopy(grid_world)
-
+    
     for shady_location in shady_locations:
         row = shady_location[0]
         column = shady_location[1]
