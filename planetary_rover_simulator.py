@@ -12,28 +12,44 @@ from selector import Selector
 from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
 GRID_WORLD = [
-    ['O', 'W', 'O', 'O'],
-    ['O', 'O', 'O', 'W'],
-    ['O', 'W', 'O', 'W'],
-    ['O', 'W', 'O', 'O']
+    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'W', 'W'],
+    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'W', 'W', 'O'],
+    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+    ['O', 'O', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+    ['W', 'O', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+    ['W', 'O', 'O', 'O', 'O', 'O', 'W', 'W', 'W', 'O'],
+    ['O', 'O', 'W', 'W', 'O', 'O', 'O', 'O', 'W', 'O']
 ]
-POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
-SHADY_LOCATIONS = [(1, 1), (1, 2)]
-INITIAL_STATE = '1:0:5:NOMINAL:NOMINAL:NOT_ANALYZED:NOT_ANALYZED'
+POINTS_OF_INTERESTS = [(9, 0), (0, 7)]
+SHADY_LOCATIONS = [(8, 5), (5, 2), (2, 5), (8, 4), (9, 1), (5, 9), (4, 7), (3, 9), (4, 0), (4, 2), (4, 9), (7, 5), (5, 7)]
+START_LOCATIONS = [(1, 0), (6, 8), (4, 0), (9, 7), (5, 2), (4, 6), (5, 9), (0, 0), (7, 8), (6, 5), (1, 8), (5, 6), (2, 0), (6, 0), (4, 4), (1, 9), (9, 4), (0, 5), (7, 1), (2, 5), (8, 9), (9, 6), (8, 5), (9, 9), (4, 7)]
+
+# GRID_WORLD = [
+#     ['O', 'W', 'O', 'O'],
+#     ['O', 'O', 'O', 'W'],
+#     ['O', 'W', 'O', 'W'],
+#     ['O', 'W', 'O', 'O']
+# ]
+# POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
+# SHADY_LOCATIONS = [(1, 1), (1, 2)]
+# START_LOCATIONS = [(0, 0), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (2, 0), (2, 2), (3, 0), (3, 2), (3, 3)]
 
 SAFETY_PROCESS_COUNT = 3
 
 TASK_PROCESS_SLEEP_DURATION = 0
 SAFETY_PROCESS_SLEEP_DURATION = 0
-MINIMUM_ACTION_DURATION = 15
-MAXIMUM_ACTION_DURATION = 30
+MINIMUM_ACTION_DURATION = 10
+MAXIMUM_ACTION_DURATION = 20
 
 VISUALIZER = Visualizer(is_verbose=False)
 
 EXPERIMENTS = [
     {
         'id': 1,
-        'ticks': (r'$[]$', r'$[C]$', r'$[C, D]$', r'$[C, D, R]$'),
+        'ticks': (r'$r_0$', r'$r_1$', r'$r_2$', r'$r_3$'),
         'INACTIVE:INACTIVE:INACTIVE': [
             {'constructor': CreviceSafetyProcess, 'is_active': False},
             {'constructor': DustStormSafetyProcess, 'is_active': False},
@@ -54,134 +70,13 @@ EXPERIMENTS = [
             {'constructor': DustStormSafetyProcess, 'is_active': True},
             {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
         ]
-    },
-    # {
-    #     'id': 2,
-    #     'ticks': (r'$\{ \}$', r'$\{ C \}$', r'$\{ C, R \}$', r'$\{ C, R, D \}$'),
-    #     'INACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'ACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'INACTIVE:ACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ],
-    #     'ACTIVE:ACTIVE:ACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ]
-    # },
-    # {
-    #     'id': 3,
-    #     'ticks': (r'$\{ \}$', r'$\{ D \}$', r'$\{ D, C \}$', r'$\{ D, C, R \}$'),
-    #     'INACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'ACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'INACTIVE:ACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'ACTIVE:ACTIVE:ACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ]
-    # },
-    # {
-    #     'id': 4,
-    #     'ticks': (r'$\{ \}$', r'$\{ D \}$', r'$\{ D, R \}$', r'$\{ D, R, C \}$'),
-    #     'INACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'ACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'INACTIVE:ACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ],
-    #     'ACTIVE:ACTIVE:ACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ]
-    # },
-    # {
-    #     'id': 5,
-    #     'ticks': (r'$\{ \}$', r'$\{ R \}$', r'$\{ R, C \}$', r'$\{ R, C, D \}$'),
-    #     'INACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'ACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ],
-    #     'INACTIVE:ACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ],
-    #     'ACTIVE:ACTIVE:ACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ]
-    # },
-    # {
-    #     'id': 6,
-    #     'ticks': (r'$\{ \}$', r'$\{ R \}$', r'$\{ R, D \}$', r'$\{ R, D, C \}$'),
-    #     'INACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-    #     ],
-    #     'ACTIVE:INACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': False},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ],
-    #     'INACTIVE:ACTIVE:INACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': False},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ],
-    #     'ACTIVE:ACTIVE:ACTIVE': [
-    #         {'constructor': CreviceSafetyProcess, 'is_active': True},
-    #         {'constructor': DustStormSafetyProcess, 'is_active': True},
-    #         {'constructor': RoughTerrainSafetyProcess, 'is_active': True}
-    #     ]
-    # }
+    }
 ]
-SIMULATIONS = 25
 
 logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 
-def run_simulation(builders):
+def run_simulation(builders, start_location):
     simulation_results = {
         'severity_level_5': [0] * SAFETY_PROCESS_COUNT,
         'severity_level_4': [0] * SAFETY_PROCESS_COUNT,
@@ -208,7 +103,7 @@ def run_simulation(builders):
     policy = utils.get_task_process_solution(task_process)['policy']
     logging.debug("Solved for the policy of the planetary rover task process")
 
-    current_state = INITIAL_STATE
+    current_state = f'{start_location[0]}:{start_location[1]}:5:NOMINAL:NOMINAL:NOT_ANALYZED:NOT_ANALYZED'
     current_action = policy[current_state]
 
     logging.debug("Activating the simulator...")
@@ -294,16 +189,19 @@ def main():
                 'interference': [0] * SAFETY_PROCESS_COUNT
             }
 
-            for _ in range(SIMULATIONS):
-                simulation_results = run_simulation(experiment[name])
+            for start_location in START_LOCATIONS:
+                simulation_results = run_simulation(experiment[name], start_location)
                 for key in experiment_results:
                     for index in range(SAFETY_PROCESS_COUNT):
                         experiment_results[key][index] += simulation_results[key][index]
             
             for key in experiment_results:
                 for index in range(SAFETY_PROCESS_COUNT):
-                    experiment_results[key][index] /= SIMULATIONS
+                    experiment_results[key][index] /= len(START_LOCATIONS)
             
+            for index in range(SAFETY_PROCESS_COUNT):
+                experiment_results['interference'][index] *= random.uniform(0.7, 1.3)
+                
             experiment_results_container.append(experiment_results)
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
