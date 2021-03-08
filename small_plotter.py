@@ -82,7 +82,7 @@ def plot(plot_specification, ticks, id):
             Patch(facecolor='#83dd70'),
             Patch(facecolor='#b09cdb')
         ]
-        plt.legend(patches, [r'Crevices', r'Dust Storms', r'Rough Terrain'], ncol=1, handletextpad=0.3, labelspacing=0.2, prop={'size': 12})
+        plt.legend(patches, [r'Crevices', r'Dust Storms', r'Rough Terrain'], ncol=1, handletextpad=0.3, labelspacing=0.2)
 
         plt.tight_layout()
 

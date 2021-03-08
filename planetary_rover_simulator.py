@@ -11,38 +11,38 @@ from safety_processes.rough_terrain_safety_process import RoughTerrainSafetyProc
 from selector import Selector
 from task_processes.planetary_rover_task_process import (GOAL_STATE, MOVEMENT_ACTION_DETAILS, PlanetaryRoverTaskProcess)
 
-GRID_WORLD = [
-    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'W', 'W'],
-    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
-    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
-    ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'W', 'W', 'O'],
-    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-    ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-    ['O', 'O', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
-    ['W', 'O', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
-    ['W', 'O', 'O', 'O', 'O', 'O', 'W', 'W', 'W', 'O'],
-    ['O', 'O', 'W', 'W', 'O', 'O', 'O', 'O', 'W', 'O']
-]
-POINTS_OF_INTERESTS = [(9, 0), (0, 7)]
-SHADY_LOCATIONS = [(8, 5), (5, 2), (2, 5), (8, 4), (9, 1), (5, 9), (4, 7), (3, 9), (4, 0), (4, 2), (4, 9), (7, 5), (5, 7)]
-START_LOCATIONS = [(1, 0), (6, 8), (4, 0), (9, 7), (5, 2), (4, 6), (5, 9), (0, 0), (7, 8), (6, 5), (1, 8), (5, 6), (2, 0), (6, 0), (4, 4), (1, 9), (9, 4), (0, 5), (7, 1), (2, 5), (8, 9), (9, 6), (8, 5), (9, 9), (4, 7)]
-
 # GRID_WORLD = [
-#     ['O', 'W', 'O', 'O'],
-#     ['O', 'O', 'O', 'W'],
-#     ['O', 'W', 'O', 'W'],
-#     ['O', 'W', 'O', 'O']
+#     ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'W', 'W'],
+#     ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+#     ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+#     ['O', 'W', 'W', 'W', 'W', 'O', 'W', 'W', 'W', 'O'],
+#     ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+#     ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+#     ['O', 'O', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+#     ['W', 'O', 'W', 'W', 'W', 'O', 'W', 'O', 'O', 'O'],
+#     ['W', 'O', 'O', 'O', 'O', 'O', 'W', 'W', 'W', 'O'],
+#     ['O', 'O', 'W', 'W', 'O', 'O', 'O', 'O', 'W', 'O']
 # ]
-# POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
-# SHADY_LOCATIONS = [(1, 1), (1, 2)]
-# START_LOCATIONS = [(0, 0), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (2, 0), (2, 2), (3, 0), (3, 2), (3, 3)]
+# POINTS_OF_INTERESTS = [(9, 0), (0, 7)]
+# SHADY_LOCATIONS = [(8, 5), (5, 2), (2, 5), (8, 4), (9, 1), (5, 9), (4, 7), (3, 9), (4, 0), (4, 2), (4, 9), (7, 5), (5, 7)]
+# START_LOCATIONS = [(1, 0), (6, 8), (4, 0), (9, 7), (5, 2), (4, 6), (5, 9), (0, 0), (7, 8), (6, 5), (1, 8), (5, 6), (2, 0), (6, 0), (4, 4), (1, 9), (9, 4), (0, 5), (7, 1), (2, 5), (8, 9), (9, 6), (8, 5), (9, 9), (4, 7)]
+
+GRID_WORLD = [
+    ['O', 'W', 'O', 'O'],
+    ['O', 'O', 'O', 'W'],
+    ['O', 'W', 'O', 'W'],
+    ['O', 'W', 'O', 'O']
+]
+POINTS_OF_INTERESTS = [(3, 3), (0, 3)]
+SHADY_LOCATIONS = [(1, 1), (1, 2)]
+START_LOCATIONS = [(0, 0), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (2, 0), (2, 2), (3, 0), (3, 2), (3, 3)]
 
 SAFETY_PROCESS_COUNT = 3
 
 TASK_PROCESS_SLEEP_DURATION = 0
 SAFETY_PROCESS_SLEEP_DURATION = 0
-MINIMUM_ACTION_DURATION = 10
-MAXIMUM_ACTION_DURATION = 20
+MINIMUM_ACTION_DURATION = 15
+MAXIMUM_ACTION_DURATION = 25
 
 VISUALIZER = Visualizer(is_verbose=False)
 
