@@ -83,7 +83,8 @@ def run_simulation(builders, start_location):
         'severity_level_3': [0] * SAFETY_PROCESS_COUNT,
         'severity_level_2': [0] * SAFETY_PROCESS_COUNT,
         'severity_level_1': [0] * SAFETY_PROCESS_COUNT,
-        'interference': [0] * SAFETY_PROCESS_COUNT
+        'interference': [0] * SAFETY_PROCESS_COUNT,
+        'overhead_duration': []
     }
 
     task_process = PlanetaryRoverTaskProcess(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
@@ -147,7 +148,10 @@ def run_simulation(builders, start_location):
 
                 active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
+
+                start_time = time.time()
                 parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
+                simulation_results['overhead_duration'].append(time.time() - start_time)
 
                 for index, name in enumerate(execution_contexts):
                     safety_process = execution_contexts[name]['instance']                
@@ -186,23 +190,31 @@ def main():
                 'severity_level_3': [0] * SAFETY_PROCESS_COUNT,
                 'severity_level_2': [0] * SAFETY_PROCESS_COUNT,
                 'severity_level_1': [0] * SAFETY_PROCESS_COUNT,
-                'interference': [0] * SAFETY_PROCESS_COUNT
+                'interference': [0] * SAFETY_PROCESS_COUNT,
+                'overhead_duration': 0
             }
 
             for start_location in START_LOCATIONS:
                 simulation_results = run_simulation(experiment[name], start_location)
                 for key in experiment_results:
-                    for index in range(SAFETY_PROCESS_COUNT):
-                        experiment_results[key][index] += simulation_results[key][index]
+                    if key != 'overhead_duration':
+                        for index in range(SAFETY_PROCESS_COUNT):
+                            experiment_results[key][index] += simulation_results[key][index]
+                    else:
+                        experiment_results[key] += sum(simulation_results['overhead_duration']) / len(simulation_results['overhead_duration'])
             
             for key in experiment_results:
-                for index in range(SAFETY_PROCESS_COUNT):
-                    experiment_results[key][index] /= len(START_LOCATIONS)
+                if key != 'overhead_duration':
+                    for index in range(SAFETY_PROCESS_COUNT):
+                        experiment_results[key][index] /= len(START_LOCATIONS)
+                else:
+                    experiment_results[key] /= len(START_LOCATIONS)
             
             for index in range(SAFETY_PROCESS_COUNT):
                 experiment_results['interference'][index] *= random.uniform(0.7, 1.3)
                 
             experiment_results_container.append(experiment_results)
+            logging.info("Resolved conflicts in [%.9f] seconds", experiment_results['overhead_duration'])
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
         small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
