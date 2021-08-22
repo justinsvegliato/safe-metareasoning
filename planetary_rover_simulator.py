@@ -1,6 +1,9 @@
 import logging
 import random
+import statistics
 import time
+
+from scipy.stats import sem
 
 import small_plotter
 import utils
@@ -191,7 +194,7 @@ def main():
                 'severity_level_2': [0] * SAFETY_PROCESS_COUNT,
                 'severity_level_1': [0] * SAFETY_PROCESS_COUNT,
                 'interference': [0] * SAFETY_PROCESS_COUNT,
-                'overhead_duration': 0
+                'overhead_duration': []
             }
 
             for start_location in START_LOCATIONS:
@@ -201,20 +204,19 @@ def main():
                         for index in range(SAFETY_PROCESS_COUNT):
                             experiment_results[key][index] += simulation_results[key][index]
                     else:
-                        experiment_results[key] += sum(simulation_results['overhead_duration']) / len(simulation_results['overhead_duration'])
+                        experiment_results[key].extend(simulation_results[key])
             
             for key in experiment_results:
                 if key != 'overhead_duration':
                     for index in range(SAFETY_PROCESS_COUNT):
                         experiment_results[key][index] /= len(START_LOCATIONS)
-                else:
-                    experiment_results[key] /= len(START_LOCATIONS)
             
             for index in range(SAFETY_PROCESS_COUNT):
                 experiment_results['interference'][index] *= random.uniform(0.7, 1.3)
                 
             experiment_results_container.append(experiment_results)
-            logging.info("Resolved conflicts in [%.9f] seconds", experiment_results['overhead_duration'])
+
+            logging.info("Resolved conflicts in [%.2e +/- %.2e] seconds", statistics.mean(experiment_results['overhead_duration']), sem(experiment_results['overhead_duration']))
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
         small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
