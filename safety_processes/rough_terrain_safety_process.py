@@ -3,7 +3,7 @@ import itertools
 HORIZONTAL_ROUGH_TERRAIN_POSITION = ['NONE', 'APPROACHING', 'AT']
 ROVER_SPEED = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 
-NOMINAL_TERRAIN_LEVEL = 1
+NOMINAL_TERRAIN_LEVEL = 8
 MINIMUM_TERRAIN_LEVEL = 1
 MAXIMUM_TERRAIN_LEVEL = 10
 ROUGH_TERRAIN_LEVEL = range(MINIMUM_TERRAIN_LEVEL, MAXIMUM_TERRAIN_LEVEL + 1)
@@ -103,6 +103,7 @@ class RoughTerrainSafetyProcess:
     identifier = 1
 
     def __init__(self):
+        self.safety_problem = 'rough-terrain'
         self.kind = 'rough-terrain-safety-process'
         self.name = f'rough-terrain-safety-process-{RoughTerrainSafetyProcess.identifier}'
 
@@ -142,8 +143,8 @@ class RoughTerrainSafetyProcess:
         if state_record['horizontal_rough_terrain_position'] == 'NONE' and state_record['rough_terrain_level'] != NOMINAL_TERRAIN_LEVEL:
             return 1 if state == successor_state else 0
 
-        if state_record['horizontal_rough_terrain_position'] != 'NONE' and state_record['rough_terrain_level'] == NOMINAL_TERRAIN_LEVEL:
-            return 1 if state == successor_state else 0
+        # if state_record['horizontal_rough_terrain_position'] != 'NONE' and state_record['rough_terrain_level'] == NOMINAL_TERRAIN_LEVEL:
+        #     return 1 if state == successor_state else 0
 
         if state_record['horizontal_rough_terrain_position'] == 'NONE':
             if successor_state_record['horizontal_rough_terrain_position'] == 'NONE' and successor_state_record['rough_terrain_level'] == NOMINAL_TERRAIN_LEVEL:

@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import random
+from itertools import chain, combinations
 
 from solvers import safety_process_solver, task_process_solver
 
@@ -121,3 +122,8 @@ def get_grid_world_with_points_of_interest(grid_world, points_of_interest):
         new_grid_world[row][column] = 'P' 
     
     return new_grid_world
+
+
+def powerset(iterable):
+    set = list(iterable)
+    return chain.from_iterable(combinations(set, r) for r in range(len(set) + 1))
