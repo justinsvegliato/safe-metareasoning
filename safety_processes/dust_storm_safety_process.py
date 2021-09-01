@@ -40,7 +40,7 @@ class DustStormSafetyProcess:
     identifier = 1
 
     def __init__(self):
-        self.safety_problem = 'dust-storm'
+        self.safety_concern = 'dust-storm'
         self.kind = 'dust-storm-safety-process'
         self.name = f'dust-storm-safety-process-{DustStormSafetyProcess.identifier}'
 

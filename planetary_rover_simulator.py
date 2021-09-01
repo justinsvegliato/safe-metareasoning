@@ -42,6 +42,9 @@ START_LOCATIONS = [(0, 0), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (2, 0), (2, 2
 
 SAFETY_PROCESS_COUNT = 3
 
+SAFETY_CONCERNS = {'crevice': "Crevice", 'dust-storm': "Dust Storm", 'rough-terrain': "Rough Terrain"}
+SAFETY_CONCERN_EVENTS = utils.get_safety_concern_events(SAFETY_CONCERNS)
+
 TASK_PROCESS_SLEEP_DURATION = 0
 SAFETY_PROCESS_SLEEP_DURATION = 0
 MINIMUM_ACTION_DURATION = 15
@@ -49,27 +52,25 @@ MAXIMUM_ACTION_DURATION = 25
 
 VISUALIZER = Visualizer(is_verbose=True)
 
-SAFETY_PROBLEMS = ['crevice', 'dust-storm', 'rough-terrain']
-
 EXPERIMENTS = [
     {
         'id': 1,
         'ticks': (r'$r_0$', r'$r_1$', r'$r_2$', r'$r_3$'),
-        'INACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': False},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'ACTIVE:INACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': False},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
-        'INACTIVE:ACTIVE:INACTIVE': [
-            {'constructor': CreviceSafetyProcess, 'is_active': True},
-            {'constructor': DustStormSafetyProcess, 'is_active': True},
-            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        ],
+        # 'INACTIVE:INACTIVE:INACTIVE': [
+        #     {'constructor': CreviceSafetyProcess, 'is_active': False},
+        #     {'constructor': DustStormSafetyProcess, 'is_active': False},
+        #     {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+        # ],
+        # 'ACTIVE:INACTIVE:INACTIVE': [
+        #     {'constructor': CreviceSafetyProcess, 'is_active': True},
+        #     {'constructor': DustStormSafetyProcess, 'is_active': False},
+        #     {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+        # ],
+        # 'INACTIVE:ACTIVE:INACTIVE': [
+        #     {'constructor': CreviceSafetyProcess, 'is_active': True},
+        #     {'constructor': DustStormSafetyProcess, 'is_active': True},
+        #     {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+        # ],
         'ACTIVE:ACTIVE:ACTIVE': [
             {'constructor': CreviceSafetyProcess, 'is_active': True},
             {'constructor': DustStormSafetyProcess, 'is_active': True},
@@ -92,10 +93,8 @@ def run_simulation(builders, start_location):
         'overhead_duration': []
     }
     
-    safety_problem_power_set = utils.powerset(SAFETY_PROBLEMS)
-    for safety_problem_set in safety_problem_power_set:
-        combination_key = ','.join(safety_problem_set) if safety_problem_set else "none"
-        simulation_results[combination_key] = {
+    for safety_concern_event in SAFETY_CONCERN_EVENTS:
+        simulation_results[safety_concern_event] = {
             'severity_level_5': 0,
             'severity_level_4': 0,
             'severity_level_3': 0,
@@ -111,7 +110,7 @@ def run_simulation(builders, start_location):
     for builder in builders:
         safety_process = builder['constructor']()
         is_active = builder['is_active']
-        execution_contexts[safety_process.name] = {'instance': safety_process, 'safety_problem': safety_process.safety_problem, 'current_state': None, 'current_rating': None, 'is_active': is_active}
+        execution_contexts[safety_process.name] = {'instance': safety_process, 'safety_problem': safety_process.safety_concern, 'current_state': None, 'current_rating': None, 'is_active': is_active}
         logging.debug("Built a safety process: [name=%s]", safety_process.name)
 
     selector = Selector([execution_contexts[name]['instance'] for name in execution_contexts])
@@ -133,8 +132,6 @@ def run_simulation(builders, start_location):
 
         if current_action in MOVEMENT_ACTION_DETAILS:
             VISUALIZER.print_header("Safety Monitors")
-
-            safety_problems = []
 
             for name in execution_contexts:
                 safety_process = execution_contexts[name]['instance']
@@ -161,7 +158,7 @@ def run_simulation(builders, start_location):
 
             step = 1
             while step <= action_duration or parameter != 'NONE:NONE':
-                new_safety_problems = []
+                safety_concerns = []
 
                 for name in execution_contexts:
                     safety_process = execution_contexts[name]['instance']
@@ -170,15 +167,12 @@ def run_simulation(builders, start_location):
                     execution_contexts[name]['current_state'] = current_safety_process_state
                     execution_contexts[name]['current_rating'] = current_safety_process_rating
                     
-                    if safety_process.safety_problem == 'crevice' and any(element in current_safety_process_state for element in ['APPROACHING', 'AT']):
-                        new_safety_problems.append(safety_process.safety_problem)
-                    if safety_process.safety_problem == 'dust-storm' and any(element in current_safety_process_state for element in [str(level) for level in range(4, 11)]):
-                        new_safety_problems.append(safety_process.safety_problem)
-                    if safety_process.safety_problem == 'rough-terrain' and any(element in current_safety_process_state for element in ['APPROACHING', 'AT']):
-                        new_safety_problems.append(safety_process.safety_problem)
-
-                safety_problems = new_safety_problems
-                combination_key = ','.join(safety_problems) if safety_problems else 'none'
+                    if safety_process.safety_concern == 'crevice' and any(element in current_safety_process_state for element in ['APPROACHING', 'AT']):
+                        safety_concerns.append(safety_process.safety_concern)
+                    if safety_process.safety_concern == 'dust-storm' and any(element in current_safety_process_state for element in [str(level) for level in range(4, 11)]):
+                        safety_concerns.append(safety_process.safety_concern)
+                    if safety_process.safety_concern == 'rough-terrain' and any(element in current_safety_process_state for element in ['APPROACHING', 'AT']):
+                        safety_concerns.append(safety_process.safety_concern)
 
                 active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
@@ -194,8 +188,9 @@ def run_simulation(builders, start_location):
                     interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                     simulation_results[f'interference'][index] += interference
 
-                    simulation_results[combination_key][f'severity_level_{severity}'] += 1
-                    simulation_results[combination_key][f'interference'] += interference
+                    safety_concern_event = utils.get_safety_concern_event(safety_concerns)
+                    simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
+                    simulation_results[safety_concern_event][f'interference'] += interference
 
                 VISUALIZER.print_safety_process_information(step, execution_contexts, parameter)
 
@@ -231,10 +226,8 @@ def main():
                 'overhead_duration': []
             }
 
-            safety_problem_power_set = utils.powerset(SAFETY_PROBLEMS)
-            for safety_problem_set in safety_problem_power_set:
-                combination_key = ','.join(safety_problem_set) if safety_problem_set else "none"
-                experiment_results[combination_key] = {
+            for safety_concern_event in SAFETY_CONCERN_EVENTS:
+                experiment_results[safety_concern_event] = {
                     'severity_level_5': 0,
                     'severity_level_4': 0,
                     'severity_level_3': 0,
@@ -247,26 +240,45 @@ def main():
                 simulation_results = run_simulation(experiment[name], start_location)
 
                 for key in experiment_results:
-                    if key == 'severity_level_5' or key == 'severity_level_4' or key == 'severity_level_3' or key == 'severity_level_2' or key == 'severity_level_1' or key == 'interference':
+                    if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
                         for index in range(SAFETY_PROCESS_COUNT):
                             experiment_results[key][index] += simulation_results[key][index]
-                    elif key == 'overhead_duration':
+
+                    if key in ['overhead_duration']:
                         experiment_results[key].extend(simulation_results[key])
-                    else:
+
+                    if key in SAFETY_CONCERN_EVENTS:
                         for metric in experiment_results[key]:
                             experiment_results[key][metric] += simulation_results[key][metric]
             
             fudge = random.uniform(0.7, 1.3)
 
+            # normalizers = {}
+            # for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
+            #     normalizers[metric] = 0
+            #     for safety_concern_event in SAFETY_CONCERN_EVENTS:
+            #         normalizers[metric] += experiment_results[safety_concern_event][metric]
+
+            normalizers = {}
+            for safety_concern_event in SAFETY_CONCERN_EVENTS:
+                normalizers[safety_concern_event] = 0
+                for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
+                    normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
+
             for key in experiment_results:
-                if key == 'severity_level_5' or key == 'severity_level_4' or key == 'severity_level_3' or key == 'severity_level_2' or key == 'severity_level_1' or key == 'interference':
+                if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
                     for index in range(SAFETY_PROCESS_COUNT):
                         experiment_results[key][index] /= len(START_LOCATIONS)
-                elif key != 'overhead_duration':
+
+                # if key in SAFETY_CONCERN_EVENTS:
+                #     for metric in experiment_results[key]:
+                #         if normalizers[metric] > 0:
+                #             experiment_results[key][metric] /= normalizers[metric]
+
+                if key in SAFETY_CONCERN_EVENTS:
                     for metric in experiment_results[key]:
-                        experiment_results[key][metric] /= len(START_LOCATIONS)
-                        if metric == 'interference':
-                            experiment_results[key][metric] *= fudge
+                        if normalizers[key] > 0:
+                            experiment_results[key][metric] /= normalizers[key]
             
             for index in range(SAFETY_PROCESS_COUNT):
                 experiment_results['interference'][index] *= fudge
@@ -275,13 +287,8 @@ def main():
 
             logging.info("Resolved conflicts in [%.2e +/- %.2e] seconds", statistics.mean(experiment_results['overhead_duration']), sem(experiment_results['overhead_duration']))
 
-            VISUALIZER.print_header("Statistics")
-
-            safety_problem_power_set = utils.powerset(SAFETY_PROBLEMS)
-            for safety_problem_set in safety_problem_power_set:
-                combination_key = ','.join(safety_problem_set) if safety_problem_set else 'none'
-                combination_key_display = combination_key.ljust(35)
-                print(f"{combination_key_display} {experiment_results[combination_key]}")
+            VISUALIZER.print_header("Tabular Analysiss")
+            VISUALIZER.print_safety_concern_events(SAFETY_CONCERN_EVENTS, experiment_results)
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
         small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])

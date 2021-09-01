@@ -80,7 +80,7 @@ class CreviceSafetyProcess:
     identifier = 1
 
     def __init__(self):
-        self.safety_problem = 'crevice'
+        self.safety_concern = 'crevice'
         self.kind = 'crevice-safety-process'
         self.name = f'crevice-safety-process-{CreviceSafetyProcess.identifier}'
 

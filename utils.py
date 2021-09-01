@@ -10,6 +10,7 @@ from solvers import safety_process_solver, task_process_solver
 GAMMA = 0.99
 POLICY_CACHE_DIRECTORY = 'policies'
 POLICY_CACHE_EXTENSION = '.json'
+DELIMITER = ','
 
 logging.basicConfig(format='[%(asctime)s|%(module)-25s|%(funcName)-15s|%(levelname)-5s] %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
@@ -124,6 +125,11 @@ def get_grid_world_with_points_of_interest(grid_world, points_of_interest):
     return new_grid_world
 
 
-def powerset(iterable):
-    set = list(iterable)
-    return chain.from_iterable(combinations(set, r) for r in range(len(set) + 1))
+def get_safety_concern_event(entry):
+    return DELIMITER.join(entry) if entry else 'none'
+
+
+def get_safety_concern_events(safety_concerns):
+    keys = list(safety_concerns.keys())
+    entries = chain.from_iterable(combinations(keys, r) for r in range(len(keys) + 1))
+    return [get_safety_concern_event(entry) for entry in entries]

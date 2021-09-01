@@ -103,7 +103,7 @@ class RoughTerrainSafetyProcess:
     identifier = 1
 
     def __init__(self):
-        self.safety_problem = 'rough-terrain'
+        self.safety_concern = 'rough-terrain'
         self.kind = 'rough-terrain-safety-process'
         self.name = f'rough-terrain-safety-process-{RoughTerrainSafetyProcess.identifier}'
 

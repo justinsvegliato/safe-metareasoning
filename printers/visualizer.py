@@ -91,3 +91,9 @@ class Visualizer():
     def print_separator(self):
         if self.is_verbose:
             print("=" * BORDER_SIZE)
+
+    def print_safety_concern_events(self, safety_concern_events, experiment_results):
+        for safety_concern_event in safety_concern_events:
+            header = ', '.join([entry.title().replace('-', ' ') for entry in safety_concern_event.split(',')]).ljust(35)
+            row = ' '.join([format(entry * 100, '.2f').rjust(7) for entry in experiment_results[safety_concern_event].values()])
+            print(f"{header} {row}")
