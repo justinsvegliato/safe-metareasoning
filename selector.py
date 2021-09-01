@@ -61,11 +61,37 @@ class Selector:
 
         return list(interference_matrix.keys())
 
-    def select(self, ratings):
+    # def select(self, ratings):
+    #     parameters = self.safety_processes[0].parameters()
+    #     best_severity_parameters = self.filter_by_severity(parameters, ratings)
+    #     best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, ratings)
+    #     return best_severity_interference_parameters[0]
+
+    def naive_select(self, ratings): 
         parameters = self.safety_processes[0].parameters()
-        best_severity_parameters = self.filter_by_severity(parameters, ratings)
-        best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, ratings)
-        return best_severity_interference_parameters[0]
+
+        i = 0
+
+        print(f"Length: {len(ratings)}")
+        
+        for rating in ratings:
+            print(f"Iteration: {i}")
+
+            naive_ratings = [rating]
+            best_severity_parameters = self.filter_by_severity(parameters, naive_ratings)
+            best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, naive_ratings)
+            parameter = best_severity_interference_parameters[0]
+
+            i += 1 
+
+            print(f"Parameter: {parameter}")
+            if parameter != 'NONE:NONE':
+                print(f"Status Entered")
+                break
+
+            print(f"Status Not Entered")
+
+        return parameter
 
     def recommend(self, safety_process, state):
         rating = {}

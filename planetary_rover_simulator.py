@@ -99,8 +99,7 @@ def run_simulation(builders, start_location):
             'severity_level_4': 0,
             'severity_level_3': 0,
             'severity_level_2': 0,
-            'severity_level_1': 0,
-            'interference': 0
+            'severity_level_1': 0
         }
 
     task_process = PlanetaryRoverTaskProcess(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
@@ -133,6 +132,8 @@ def run_simulation(builders, start_location):
         if current_action in MOVEMENT_ACTION_DETAILS:
             VISUALIZER.print_header("Safety Monitors")
 
+            safety_concerns = []
+
             for name in execution_contexts:
                 safety_process = execution_contexts[name]['instance']
                 current_safety_process_state = random.choice(safety_process.start_states())
@@ -140,9 +141,18 @@ def run_simulation(builders, start_location):
                 execution_contexts[name]['current_state'] = current_safety_process_state
                 execution_contexts[name]['current_rating'] = current_safety_process_rating
 
+                if safety_process.safety_concern == 'crevice' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
+                    safety_concerns.append(safety_process.safety_concern)
+
+                if safety_process.safety_concern == 'dust-storm' and any([needle in current_safety_process_state for needle in [str(level) for level in range(4, 11)]]):
+                    safety_concerns.append(safety_process.safety_concern)
+
+                if safety_process.safety_concern == 'rough-terrain' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
+                    safety_concerns.append(safety_process.safety_concern)
+
             active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
             ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
-            parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
+            parameter = selector.naive_select(ratings) if len(ratings) > 0 else "NONE:NONE"
 
             for index, name in enumerate(execution_contexts):
                 safety_process = execution_contexts[name]['instance']
@@ -151,8 +161,8 @@ def run_simulation(builders, start_location):
                 interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                 simulation_results[f'interference'][index] += interference
 
-                simulation_results['none'][f'severity_level_{severity}'] += 1
-                simulation_results['none'][f'interference'] += interference
+                safety_concern_event = utils.get_safety_concern_event(safety_concerns)
+                simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
 
             VISUALIZER.print_safety_process_information(0, execution_contexts, parameter)
 
@@ -167,18 +177,20 @@ def run_simulation(builders, start_location):
                     execution_contexts[name]['current_state'] = current_safety_process_state
                     execution_contexts[name]['current_rating'] = current_safety_process_rating
                     
-                    if safety_process.safety_concern == 'crevice' and any(element in current_safety_process_state for element in ['APPROACHING', 'AT']):
+                    if safety_process.safety_concern == 'crevice' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
                         safety_concerns.append(safety_process.safety_concern)
-                    if safety_process.safety_concern == 'dust-storm' and any(element in current_safety_process_state for element in [str(level) for level in range(4, 11)]):
+
+                    if safety_process.safety_concern == 'dust-storm' and any([needle in current_safety_process_state for needle in [str(level) for level in range(4, 11)]]):
                         safety_concerns.append(safety_process.safety_concern)
-                    if safety_process.safety_concern == 'rough-terrain' and any(element in current_safety_process_state for element in ['APPROACHING', 'AT']):
+
+                    if safety_process.safety_concern == 'rough-terrain' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
                         safety_concerns.append(safety_process.safety_concern)
 
                 active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
 
                 start_time = time.time()
-                parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
+                parameter = selector.naive_select(ratings) if len(ratings) > 0 else "NONE:NONE"
                 simulation_results['overhead_duration'].append(time.time() - start_time)
 
                 for index, name in enumerate(execution_contexts):
@@ -190,7 +202,6 @@ def run_simulation(builders, start_location):
 
                     safety_concern_event = utils.get_safety_concern_event(safety_concerns)
                     simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
-                    simulation_results[safety_concern_event][f'interference'] += interference
 
                 VISUALIZER.print_safety_process_information(step, execution_contexts, parameter)
 
@@ -232,8 +243,7 @@ def main():
                     'severity_level_4': 0,
                     'severity_level_3': 0,
                     'severity_level_2': 0,
-                    'severity_level_1': 0,
-                    'interference': 0
+                    'severity_level_1': 0
                 }
 
             for start_location in START_LOCATIONS:
@@ -287,7 +297,7 @@ def main():
 
             logging.info("Resolved conflicts in [%.2e +/- %.2e] seconds", statistics.mean(experiment_results['overhead_duration']), sem(experiment_results['overhead_duration']))
 
-            VISUALIZER.print_header("Tabular Analysiss")
+            VISUALIZER.print_header("Safety Analysis")
             VISUALIZER.print_safety_concern_events(SAFETY_CONCERN_EVENTS, experiment_results)
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
