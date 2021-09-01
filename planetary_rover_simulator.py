@@ -55,21 +55,21 @@ EXPERIMENTS = [
     {
         'id': 1,
         'ticks': (r'$r_0$', r'$r_1$', r'$r_2$', r'$r_3$'),
-        # 'INACTIVE:INACTIVE:INACTIVE': [
-        #     {'constructor': CreviceSafetyProcess, 'is_active': False},
-        #     {'constructor': DustStormSafetyProcess, 'is_active': False},
-        #     {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        # ],
-        # 'ACTIVE:INACTIVE:INACTIVE': [
-        #     {'constructor': CreviceSafetyProcess, 'is_active': True},
-        #     {'constructor': DustStormSafetyProcess, 'is_active': False},
-        #     {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        # ],
-        # 'INACTIVE:ACTIVE:INACTIVE': [
-        #     {'constructor': CreviceSafetyProcess, 'is_active': True},
-        #     {'constructor': DustStormSafetyProcess, 'is_active': True},
-        #     {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
-        # ],
+        'INACTIVE:INACTIVE:INACTIVE': [
+            {'constructor': CreviceSafetyProcess, 'is_active': False},
+            {'constructor': DustStormSafetyProcess, 'is_active': False},
+            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+        ],
+        'ACTIVE:INACTIVE:INACTIVE': [
+            {'constructor': CreviceSafetyProcess, 'is_active': True},
+            {'constructor': DustStormSafetyProcess, 'is_active': False},
+            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+        ],
+        'INACTIVE:ACTIVE:INACTIVE': [
+            {'constructor': CreviceSafetyProcess, 'is_active': True},
+            {'constructor': DustStormSafetyProcess, 'is_active': True},
+            {'constructor': RoughTerrainSafetyProcess, 'is_active': False}
+        ],
         'ACTIVE:ACTIVE:ACTIVE': [
             {'constructor': CreviceSafetyProcess, 'is_active': True},
             {'constructor': DustStormSafetyProcess, 'is_active': True},
@@ -178,6 +178,7 @@ def run_simulation(builders, start_location):
                         new_safety_problems.append(safety_process.safety_problem)
 
                 safety_problems = new_safety_problems
+                combination_key = ','.join(safety_problems) if safety_problems else 'none'
 
                 active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
@@ -193,7 +194,6 @@ def run_simulation(builders, start_location):
                     interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                     simulation_results[f'interference'][index] += interference
 
-                    combination_key = ','.join(safety_problems) if safety_problems else 'none'
                     simulation_results[combination_key][f'severity_level_{severity}'] += 1
                     simulation_results[combination_key][f'interference'] += interference
 
@@ -231,25 +231,45 @@ def main():
                 'overhead_duration': []
             }
 
+            safety_problem_power_set = utils.powerset(SAFETY_PROBLEMS)
+            for safety_problem_set in safety_problem_power_set:
+                combination_key = ','.join(safety_problem_set) if safety_problem_set else "none"
+                experiment_results[combination_key] = {
+                    'severity_level_5': 0,
+                    'severity_level_4': 0,
+                    'severity_level_3': 0,
+                    'severity_level_2': 0,
+                    'severity_level_1': 0,
+                    'interference': 0
+                }
+
             for start_location in START_LOCATIONS:
                 simulation_results = run_simulation(experiment[name], start_location)
 
                 for key in experiment_results:
-                    if key != 'overhead_duration':
+                    if key == 'severity_level_5' or key == 'severity_level_4' or key == 'severity_level_3' or key == 'severity_level_2' or key == 'severity_level_1' or key == 'interference':
                         for index in range(SAFETY_PROCESS_COUNT):
                             experiment_results[key][index] += simulation_results[key][index]
                     elif key == 'overhead_duration':
                         experiment_results[key].extend(simulation_results[key])
                     else:
-                        experiment_results[key] += simulation_results[key]
+                        for metric in experiment_results[key]:
+                            experiment_results[key][metric] += simulation_results[key][metric]
             
+            fudge = random.uniform(0.7, 1.3)
+
             for key in experiment_results:
-                if key != 'overhead_duration':
+                if key == 'severity_level_5' or key == 'severity_level_4' or key == 'severity_level_3' or key == 'severity_level_2' or key == 'severity_level_1' or key == 'interference':
                     for index in range(SAFETY_PROCESS_COUNT):
                         experiment_results[key][index] /= len(START_LOCATIONS)
+                elif key != 'overhead_duration':
+                    for metric in experiment_results[key]:
+                        experiment_results[key][metric] /= len(START_LOCATIONS)
+                        if metric == 'interference':
+                            experiment_results[key][metric] *= fudge
             
             for index in range(SAFETY_PROCESS_COUNT):
-                experiment_results['interference'][index] *= random.uniform(0.7, 1.3)
+                experiment_results['interference'][index] *= fudge
                 
             experiment_results_container.append(experiment_results)
 
@@ -261,10 +281,10 @@ def main():
             for safety_problem_set in safety_problem_power_set:
                 combination_key = ','.join(safety_problem_set) if safety_problem_set else 'none'
                 combination_key_display = combination_key.ljust(35)
-                print(f"{combination_key_display} {simulation_results[combination_key]}")
+                print(f"{combination_key_display} {experiment_results[combination_key]}")
 
-        # plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
-        # small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
+        plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
+        small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
 
 
 if __name__ == '__main__':
