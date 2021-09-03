@@ -2,7 +2,8 @@ from termcolor import colored
 
 BORDER_CHARACTER = '='
 BORDER_STARTER = BORDER_CHARACTER * 5
-BORDER_SIZE = 88
+BORDER_SIZE = 100
+TABLE_SIZE = 100
 
 class Visualizer():
     def __init__(self, is_verbose=True):
@@ -105,3 +106,4 @@ class Visualizer():
             header = ', '.join([entry.title().replace('-', ' ') for entry in safety_concern_event.split(',')]).ljust(35)
             row = ' '.join([format(entry * 100, '.2f').rjust(10) for entry in experiment_results[safety_concern_event].values()])
             print(f"{header} {row}")
+            print("-" * TABLE_SIZE)

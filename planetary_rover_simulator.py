@@ -267,9 +267,15 @@ def main():
 
             fudge = random.uniform(0.7, 1.3)
 
+            # normalizers = {}
+            # for safety_concern_event in SAFETY_CONCERN_EVENTS:
+            #     normalizers[safety_concern_event] = experiment_results[safety_concern_event]['severity_level_1']
+
             normalizers = {}
             for safety_concern_event in SAFETY_CONCERN_EVENTS:
-                normalizers[safety_concern_event] = experiment_results[safety_concern_event]['severity_level_1']
+                normalizers[safety_concern_event] = 0
+                for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
+                    normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
 
             for key in experiment_results:
                 if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
@@ -281,16 +287,16 @@ def main():
                         if normalizers[key] > 0:
                             experiment_results[key][metric] /= normalizers[key]
 
-            normalizers = {}
-            for safety_concern_event in SAFETY_CONCERN_EVENTS:
-                normalizers[safety_concern_event] = 0
-                for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2']:
-                    normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
+            # normalizers = {}
+            # for safety_concern_event in SAFETY_CONCERN_EVENTS:
+            #     normalizers[safety_concern_event] = 0
+            #     for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2']:
+            #         normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
 
-            for key in SAFETY_CONCERN_EVENTS:
-                for metric in experiment_results[key]:
-                    if normalizers[key] > 0:
-                        experiment_results[key][metric] /= normalizers[key]
+            # for key in SAFETY_CONCERN_EVENTS:
+            #     for metric in experiment_results[key]:
+            #         if normalizers[key] > 0:
+            #             experiment_results[key][metric] /= normalizers[key]
             
             for index in range(SAFETY_PROCESS_COUNT):
                 experiment_results['interference'][index] *= fudge
