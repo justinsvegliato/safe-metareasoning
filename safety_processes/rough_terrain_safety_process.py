@@ -3,7 +3,7 @@ import itertools
 HORIZONTAL_ROUGH_TERRAIN_POSITION = ['NONE', 'APPROACHING', 'AT']
 ROVER_SPEED = ['NONE', 'LOW', 'NORMAL', 'HIGH']
 
-NOMINAL_TERRAIN_LEVEL = 8
+NOMINAL_TERRAIN_LEVEL = 7
 MINIMUM_TERRAIN_LEVEL = 1
 MAXIMUM_TERRAIN_LEVEL = 10
 ROUGH_TERRAIN_LEVEL = range(MINIMUM_TERRAIN_LEVEL, MAXIMUM_TERRAIN_LEVEL + 1)
@@ -143,9 +143,6 @@ class RoughTerrainSafetyProcess:
         if state_record['horizontal_rough_terrain_position'] == 'NONE' and state_record['rough_terrain_level'] != NOMINAL_TERRAIN_LEVEL:
             return 1 if state == successor_state else 0
 
-        # if state_record['horizontal_rough_terrain_position'] != 'NONE' and state_record['rough_terrain_level'] == NOMINAL_TERRAIN_LEVEL:
-        #     return 1 if state == successor_state else 0
-
         if state_record['horizontal_rough_terrain_position'] == 'NONE':
             if successor_state_record['horizontal_rough_terrain_position'] == 'NONE' and successor_state_record['rough_terrain_level'] == NOMINAL_TERRAIN_LEVEL:
                 return (1 - APPROACHING_PROBABILITY) * SPEED_PROBABILITIES[parameter_record['wheel_rotation_parameter']][successor_state_record['rover_speed']]
@@ -211,3 +208,8 @@ class RoughTerrainSafetyProcess:
             start_states.append(start_state)
 
         return start_states
+
+    def is_active(self, state):
+        haystack1 = ['APPROACHING', 'AT']
+        haystack2 = [str(level) for level in range(NOMINAL_TERRAIN_LEVEL, MAXIMUM_TERRAIN_LEVEL + 1)]
+        return any([needle in state for needle in haystack1 + haystack2])

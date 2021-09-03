@@ -47,8 +47,8 @@ SAFETY_CONCERN_EVENTS = utils.get_safety_concern_events(SAFETY_CONCERNS)
 
 TASK_PROCESS_SLEEP_DURATION = 0
 SAFETY_PROCESS_SLEEP_DURATION = 0
-MINIMUM_ACTION_DURATION = 15
-MAXIMUM_ACTION_DURATION = 25
+MINIMUM_ACTION_DURATION = 100
+MAXIMUM_ACTION_DURATION = 200
 
 VISUALIZER = Visualizer(is_verbose=True)
 
@@ -141,18 +141,12 @@ def run_simulation(builders, start_location):
                 execution_contexts[name]['current_state'] = current_safety_process_state
                 execution_contexts[name]['current_rating'] = current_safety_process_rating
 
-                if safety_process.safety_concern == 'crevice' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
-                    safety_concerns.append(safety_process.safety_concern)
-
-                if safety_process.safety_concern == 'dust-storm' and any([needle in current_safety_process_state for needle in [str(level) for level in range(4, 11)]]):
-                    safety_concerns.append(safety_process.safety_concern)
-
-                if safety_process.safety_concern == 'rough-terrain' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
-                    safety_concerns.append(safety_process.safety_concern)
+                if safety_process.is_active(current_safety_process_state):
+                        safety_concerns.append(safety_process.safety_concern)
 
             active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
             ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
-            parameter = selector.naive_select(ratings) if len(ratings) > 0 else "NONE:NONE"
+            parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
 
             for index, name in enumerate(execution_contexts):
                 safety_process = execution_contexts[name]['instance']
@@ -177,20 +171,14 @@ def run_simulation(builders, start_location):
                     execution_contexts[name]['current_state'] = current_safety_process_state
                     execution_contexts[name]['current_rating'] = current_safety_process_rating
                     
-                    if safety_process.safety_concern == 'crevice' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
-                        safety_concerns.append(safety_process.safety_concern)
-
-                    if safety_process.safety_concern == 'dust-storm' and any([needle in current_safety_process_state for needle in [str(level) for level in range(4, 11)]]):
-                        safety_concerns.append(safety_process.safety_concern)
-
-                    if safety_process.safety_concern == 'rough-terrain' and any([needle in current_safety_process_state for needle in ['APPROACHING', 'AT']]):
+                    if safety_process.is_active(current_safety_process_state):
                         safety_concerns.append(safety_process.safety_concern)
 
                 active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
 
                 start_time = time.time()
-                parameter = selector.naive_select(ratings) if len(ratings) > 0 else "NONE:NONE"
+                parameter = selector.select(ratings) if len(ratings) > 0 else "NONE:NONE"
                 simulation_results['overhead_duration'].append(time.time() - start_time)
 
                 for index, name in enumerate(execution_contexts):

@@ -54,7 +54,7 @@ def plot(plot_specification, ticks, id):
         figure = plt.figure(figsize=(4, 4))
 
         plt.rcParams["font.family"] = "serif"
-        plt.rcParams["font.serif"] = "Times"
+        plt.rcParams["font.serif"] = ['Times'] + plt.rcParams['font.serif']
         plt.rcParams["font.size"] = 15
         plt.rcParams["text.usetex"] = True
 

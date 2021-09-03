@@ -5,6 +5,8 @@ EPSILON = 0.001
 MINIMUM_SEVERITY = 1
 MAXIMUM_SEVERITY = 5
 
+IS_NAIVE = True
+
 
 class Selector:
     def __init__(self, safety_processes):
@@ -61,11 +63,16 @@ class Selector:
 
         return list(interference_matrix.keys())
 
-    # def select(self, ratings):
-    #     parameters = self.safety_processes[0].parameters()
-    #     best_severity_parameters = self.filter_by_severity(parameters, ratings)
-    #     best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, ratings)
-    #     return best_severity_interference_parameters[0]
+    def select(self, ratings):
+        if IS_NAIVE:
+            return self.naive_select(ratings)
+        return self.informed_select(ratings)
+
+    def informed_select(self, ratings):
+        parameters = self.safety_processes[0].parameters()
+        best_severity_parameters = self.filter_by_severity(parameters, ratings)
+        best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, ratings)
+        return best_severity_interference_parameters[0]
 
     def naive_select(self, ratings): 
         parameters = self.safety_processes[0].parameters()

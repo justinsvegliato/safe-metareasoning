@@ -1,4 +1,5 @@
 import itertools
+from safety_processes.rough_terrain_safety_process import NOMINAL_TERRAIN_LEVEL
 
 NOMINAL_DUST_STORM_LEVEL = 4
 MINIMUM_DUST_STORM_LEVEL = 1
@@ -31,7 +32,7 @@ INTERFERENCE_MAP = {
     'NONE': 0,
     'SPEED_UP': 0.05,
     'SLOW_DOWN': 0.15,
-    'STOP': 0.25,
+    'STOP': 0.50,
     'SHIFT_LEFT': 0.1,
     'SHIFT_RIGHT': 0.1
 }
@@ -113,3 +114,7 @@ class DustStormSafetyProcess:
 
     def start_states(self):
         return [f'{NOMINAL_DUST_STORM_LEVEL}:IS_STOPPED', f'{NOMINAL_DUST_STORM_LEVEL}:IS_NOT_STOPPED']
+
+    def is_active(self, state):
+        haystack = [str(level) for level in range(NOMINAL_DUST_STORM_LEVEL, MAXIMUM_DUST_STORM_LEVEL + 1)]
+        return any([needle in state for needle in haystack])

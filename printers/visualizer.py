@@ -2,7 +2,7 @@ from termcolor import colored
 
 BORDER_CHARACTER = '='
 BORDER_STARTER = BORDER_CHARACTER * 5
-BORDER_SIZE = 150
+BORDER_SIZE = 100
 
 class Visualizer():
     def __init__(self, is_verbose=True):
