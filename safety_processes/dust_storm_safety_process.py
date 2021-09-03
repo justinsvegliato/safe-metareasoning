@@ -19,10 +19,10 @@ SEVERITY_MAP = {
     1: 1,
     2: 1,
     3: 1,
-    4: 2,
-    5: 2,
-    6: 3,
-    7: 4,
+    4: 1,
+    5: 1,
+    6: 2,
+    7: 3,
     8: 4,
     9: 5,
     10: 5
@@ -114,7 +114,3 @@ class DustStormSafetyProcess:
 
     def start_states(self):
         return [f'{NOMINAL_DUST_STORM_LEVEL}:IS_STOPPED', f'{NOMINAL_DUST_STORM_LEVEL}:IS_NOT_STOPPED']
-
-    def is_active(self, state):
-        haystack = [str(level) for level in range(NOMINAL_DUST_STORM_LEVEL, MAXIMUM_DUST_STORM_LEVEL + 1)]
-        return any([needle in state for needle in haystack])

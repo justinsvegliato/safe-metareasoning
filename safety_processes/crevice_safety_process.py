@@ -179,7 +179,3 @@ class CreviceSafetyProcess:
                 start_states.append(start_state)
 
         return start_states
-
-    def is_active(self, state):
-        haystack = ['APPROACHING', 'AT']
-        return any([needle in state for needle in haystack])

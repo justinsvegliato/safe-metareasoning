@@ -2,10 +2,8 @@ import utils
 
 EPSILON = 0.001
 
-MINIMUM_SEVERITY = 1
+MINIMUM_SEVERITY = 1    
 MAXIMUM_SEVERITY = 5
-
-IS_NAIVE = True
 
 
 class Selector:
@@ -63,42 +61,37 @@ class Selector:
 
         return list(interference_matrix.keys())
 
-    def select(self, ratings):
-        if IS_NAIVE:
-            return self.naive_select(ratings)
-        return self.informed_select(ratings)
-
-    def informed_select(self, ratings):
+    def select(self, ratings, is_baseline):
+        if is_baseline:
+            return self.baseline_select(ratings)
+        
         parameters = self.safety_processes[0].parameters()
         best_severity_parameters = self.filter_by_severity(parameters, ratings)
         best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, ratings)
         return best_severity_interference_parameters[0]
 
-    def naive_select(self, ratings): 
+    def baseline_select(self, ratings): 
         parameters = self.safety_processes[0].parameters()
-
-        i = 0
-
-        print(f"Length: {len(ratings)}")
         
         for rating in ratings:
-            print(f"Iteration: {i}")
-
-            naive_ratings = [rating]
-            best_severity_parameters = self.filter_by_severity(parameters, naive_ratings)
-            best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, naive_ratings)
+            independent_ratings = [rating]
+            best_severity_parameters = self.filter_by_severity(parameters, independent_ratings)
+            best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, independent_ratings)
             parameter = best_severity_interference_parameters[0]
 
-            i += 1 
-
-            print(f"Parameter: {parameter}")
             if parameter != 'NONE:NONE':
-                print(f"Status Entered")
                 break
 
-            print(f"Status Not Entered")
-
         return parameter
+
+    def independent_select(self, rating):
+        parameters = self.safety_processes[0].parameters()
+
+        independent_ratings = [rating]
+
+        best_severity_parameters = self.filter_by_severity(parameters, independent_ratings)
+        best_severity_interference_parameters = self.filter_by_interference(best_severity_parameters, independent_ratings)
+        return best_severity_interference_parameters[0]
 
     def recommend(self, safety_process, state):
         rating = {}

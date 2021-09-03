@@ -2,7 +2,7 @@ from termcolor import colored
 
 BORDER_CHARACTER = '='
 BORDER_STARTER = BORDER_CHARACTER * 5
-BORDER_SIZE = 100
+BORDER_SIZE = 88
 
 class Visualizer():
     def __init__(self, is_verbose=True):
@@ -72,14 +72,22 @@ class Visualizer():
 
                 print(f"{text}")
 
-    def print_safety_process_information(self, step, execution_contexts, parameter):
+    def print_safety_process_information(self, step, execution_contexts, parameter, selector):
         if self.is_verbose:
             length = len(str(step))
 
             is_initial_loop = True
             for name in execution_contexts:
                 indicator = step if is_initial_loop else " " * length
-                print(f"{indicator} {name} State: [{execution_contexts[name]['current_state']}]")
+
+                current_state = execution_contexts[name]['current_state']
+                independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
+                
+                if execution_contexts[name]['is_active']:
+                    print(f"{indicator} {name} State: [{current_state}] -> Parameter: [{independent_parameter}]")
+                else:
+                    print(f"{indicator} {name} State: [{current_state}]")
+
                 is_initial_loop = False
 
             print(f"{' ' * length} \u221F Parameter: [{parameter}]")
@@ -95,5 +103,5 @@ class Visualizer():
     def print_safety_concern_events(self, safety_concern_events, experiment_results):
         for safety_concern_event in safety_concern_events:
             header = ', '.join([entry.title().replace('-', ' ') for entry in safety_concern_event.split(',')]).ljust(35)
-            row = ' '.join([format(entry * 100, '.2f').rjust(7) for entry in experiment_results[safety_concern_event].values()])
+            row = ' '.join([format(entry * 100, '.2f').rjust(10) for entry in experiment_results[safety_concern_event].values()])
             print(f"{header} {row}")

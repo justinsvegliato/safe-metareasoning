@@ -25,14 +25,14 @@ WHEEL_ROTATION_PARAMETERS = ['NONE', 'SPEED_UP', 'SLOW_DOWN', 'STOP']
 STEERING_PARAMETERS = ['NONE', 'SHIFT_LEFT', 'SHIFT_RIGHT']
 
 APPROACHING_PROBABILITY = 0.5
-AT_PROBABILITY = 0.5
+AT_PROBABILITY = 0.3
 PASS_PROBABILITY = 0.2
 
 SPEED_PROBABILITIES = {
     'NONE': {'NONE': 0.1, 'LOW': 0.1, 'NORMAL': 0.7, 'HIGH': 0.1},
     'SPEED_UP': {'NONE': 0.0, 'LOW': 0.0, 'NORMAL': 0.0, 'HIGH': 1.0},
     'SLOW_DOWN': {'NONE': 0.0, 'LOW': 0.6, 'NORMAL': 0.4, 'HIGH': 0.0},
-    'STOP': {'NONE': 0.0, 'LOW': 0.0, 'NORMAL': 0.0, 'HIGH': 1.0}
+    'STOP': {'NONE': 0.7, 'LOW': 0.3, 'NORMAL': 0.0, 'HIGH': 0.0}
 }
 
 ROUGH_TERRAIN_INCREASE_PROBABILITY = 0.2
@@ -69,21 +69,21 @@ ROVER_SPEED_SEVERITY_MAP = {
         2: 1,
         3: 1,
         4: 1,
-        5: 1,
-        6: 1,
-        7: 2,
-        8: 3,
-        9: 4,
+        5: 2,
+        6: 3,
+        7: 4,
+        8: 4,
+        9: 5,
         10: 5
     },
     'HIGH': {
         1: 1,
         2: 1,
         3: 1,
-        4: 1,
-        5: 1,
-        6: 2,
-        7: 3,
+        4: 2,
+        5: 3,
+        6: 3,
+        7: 4,
         8: 4,
         9: 5,
         10: 5
@@ -208,8 +208,3 @@ class RoughTerrainSafetyProcess:
             start_states.append(start_state)
 
         return start_states
-
-    def is_active(self, state):
-        haystack1 = ['APPROACHING', 'AT']
-        haystack2 = [str(level) for level in range(NOMINAL_TERRAIN_LEVEL, MAXIMUM_TERRAIN_LEVEL + 1)]
-        return any([needle in state for needle in haystack1 + haystack2])
