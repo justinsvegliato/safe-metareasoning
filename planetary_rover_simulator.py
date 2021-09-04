@@ -2,12 +2,10 @@ import logging
 import random
 import statistics
 import time
-from numpy.core.numeric import False_
 
 from scipy.stats import sem
 
 import small_plotter
-import analysis_plotter
 import utils
 from printers.visualizer import Visualizer
 from safety_processes.crevice_safety_process import CreviceSafetyProcess
@@ -165,8 +163,6 @@ def run_simulation(builders, start_location, is_baseline):
                 interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                 simulation_results[f'interference'][index] += interference
 
-                # if execution_contexts[name]['is_active']:
-                #     simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
                 independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
                 if execution_contexts[name]['is_active']:
                     severities.append(severity)
@@ -209,8 +205,6 @@ def run_simulation(builders, start_location, is_baseline):
                     interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                     simulation_results[f'interference'][index] += interference
 
-                    # if execution_contexts[name]['is_active']:
-                    #     simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
                     if execution_contexts[name]['is_active']:
                         severities.append(severity)
 
@@ -260,30 +254,22 @@ def main():
                         'instances': 0
                     }
 
-                for seed in range(0, 20):
-                    random.seed(seed)
-                    for start_location in START_LOCATIONS:
-                        simulation_results = run_simulation(experiment[name], start_location, is_baseline)
+                for start_location in START_LOCATIONS:
+                    simulation_results = run_simulation(experiment[name], start_location, is_baseline)
 
-                        for key in experiment_results:
-                            if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
-                                for index in range(SAFETY_PROCESS_COUNT):
-                                    experiment_results[key][index] += simulation_results[key][index]
+                    for key in experiment_results:
+                        if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
+                            for index in range(SAFETY_PROCESS_COUNT):
+                                experiment_results[key][index] += simulation_results[key][index]
 
-                            if key in ['overhead_duration']:
-                                experiment_results[key].extend(simulation_results[key])
+                        if key in ['overhead_duration']:
+                            experiment_results[key].extend(simulation_results[key])
 
-                            if key in SAFETY_CONCERN_EVENTS:
-                                for metric in experiment_results[key]:
-                                    experiment_results[key][metric] += simulation_results[key][metric]
+                        if key in SAFETY_CONCERN_EVENTS:
+                            for metric in experiment_results[key]:
+                                experiment_results[key][metric] += simulation_results[key][metric]
 
                 fudge = random.uniform(0.7, 1.3)
-
-                # normalizers = {}
-                # for safety_concern_event in SAFETY_CONCERN_EVENTS:
-                #     normalizers[safety_concern_event] = 0
-                #     for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
-                #         normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
 
                 for key in experiment_results:
                     if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
@@ -292,8 +278,6 @@ def main():
 
                     if key in SAFETY_CONCERN_EVENTS:
                         for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
-                            # if normalizers[key] > 0:
-                                # experiment_results[key][metric] /= normalizers[key]
                             experiment_results[key][metric] /= experiment_results[key]['instances']
                 
                 for index in range(SAFETY_PROCESS_COUNT):
@@ -305,7 +289,8 @@ def main():
 
                 VISUALIZER.print_safety_concern_events(SAFETY_CONCERN_EVENTS, is_baseline, experiment_results)
         
-        analysis_plotter.plot(experiment_results_container[0], experiment_results_container[1])
+        utils.save_plot_data('baseline_approach', experiment_results_container[0])
+        utils.save_plot_data('proposed_approach', experiment_results_container[1])
 
         # plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
         # small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
