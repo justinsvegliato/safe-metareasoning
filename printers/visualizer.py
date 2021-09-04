@@ -75,6 +75,8 @@ class Visualizer():
 
     def print_safety_process_information(self, step, execution_contexts, parameter, selector):
         if self.is_verbose:
+            self.print_header("Safety Monitors")
+
             length = len(str(step))
 
             is_initial_loop = True
@@ -94,16 +96,18 @@ class Visualizer():
             print(f"{' ' * length} \u221F Parameter: [{parameter}]")
 
     def print_header(self, title):
-        if self.is_verbose:
-            print(f"{BORDER_STARTER} {title} ".ljust(BORDER_SIZE, BORDER_CHARACTER))
+        print(f"{BORDER_STARTER} {title} ".ljust(BORDER_SIZE, BORDER_CHARACTER))
 
     def print_separator(self):
         if self.is_verbose:
             print("=" * BORDER_SIZE)
 
-    def print_safety_concern_events(self, safety_concern_events, experiment_results):
+    def print_safety_concern_events(self, safety_concern_events, is_baseline, experiment_results):
+        title = 'Baseline Approach' if is_baseline else 'Proposed Approach'
+        self.print_header(f"{title} Safety Analysis" )
+
         for safety_concern_event in safety_concern_events:
             header = ', '.join([entry.title().replace('-', ' ') for entry in safety_concern_event.split(',')]).ljust(35)
-            row = ' '.join([format(entry * 100, '.2f').rjust(10) for entry in experiment_results[safety_concern_event].values()])
-            print(f"{header} {row}")
+            row = ''.join([format(entry * 100, '.2f').rjust(10) for entry in list(experiment_results[safety_concern_event].values())[0:5]])
+            print(f"{header} | {row}")
             print("-" * TABLE_SIZE)

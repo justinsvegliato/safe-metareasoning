@@ -2,6 +2,7 @@ import logging
 import random
 import statistics
 import time
+from numpy.core.numeric import False_
 
 from scipy.stats import sem
 
@@ -90,8 +91,7 @@ def run_simulation(builders, start_location):
         'severity_level_2': [0] * SAFETY_PROCESS_COUNT,
         'severity_level_1': [0] * SAFETY_PROCESS_COUNT,
         'interference': [0] * SAFETY_PROCESS_COUNT,
-        'overhead_duration': [],
-        'steps': 0
+        'overhead_duration': []
     }
     
     for safety_concern_event in SAFETY_CONCERN_EVENTS:
@@ -100,7 +100,8 @@ def run_simulation(builders, start_location):
             'severity_level_4': 0,
             'severity_level_3': 0,
             'severity_level_2': 0,
-            'severity_level_1': 0
+            'severity_level_1': 0,
+            'instances': 0
         }
 
     task_process = PlanetaryRoverTaskProcess(GRID_WORLD, POINTS_OF_INTERESTS, SHADY_LOCATIONS)
@@ -131,8 +132,6 @@ def run_simulation(builders, start_location):
         action_duration = random.randint(MINIMUM_ACTION_DURATION, MAXIMUM_ACTION_DURATION)
 
         if current_action in MOVEMENT_ACTION_DETAILS:
-            VISUALIZER.print_header("Safety Monitors")
-
             safety_concerns = []
 
             for name in execution_contexts:
@@ -142,9 +141,13 @@ def run_simulation(builders, start_location):
                 execution_contexts[name]['current_state'] = current_safety_process_state
                 execution_contexts[name]['current_rating'] = current_safety_process_rating
 
-                independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
-                if independent_parameter != 'NONE:NONE':
-                    safety_concerns.append(safety_process.safety_concern)
+                if execution_contexts[name]['is_active']:
+                    independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
+                    if independent_parameter != 'NONE:NONE':
+                        safety_concerns.append(safety_process.safety_concern)
+
+            safety_concern_event = utils.get_safety_concern_event(safety_concerns)
+            simulation_results[safety_concern_event]['instances'] += 1
 
             active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
             ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
@@ -153,6 +156,7 @@ def run_simulation(builders, start_location):
             parameter = selector.select(ratings, IS_BASELINE) if len(ratings) > 0 else "NONE:NONE"
             simulation_results['overhead_duration'].append(time.time() - start_time)
 
+            severities = []
             for index, name in enumerate(execution_contexts):
                 safety_process = execution_contexts[name]['instance']
                 severity = safety_process.severity_function(execution_contexts[name]['current_state'], parameter)
@@ -160,12 +164,15 @@ def run_simulation(builders, start_location):
                 interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                 simulation_results[f'interference'][index] += interference
 
-                safety_concern_event = utils.get_safety_concern_event(safety_concerns)
-                simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
+                # if execution_contexts[name]['is_active']:
+                #     simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
+                independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
+                if execution_contexts[name]['is_active']:
+                    severities.append(severity)
+
+            simulation_results[safety_concern_event][f'severity_level_{max(severities)}'] += 1
 
             VISUALIZER.print_safety_process_information(0, execution_contexts, parameter, selector)
-
-            simulation_results['steps'] += 1
             step = 1
 
             while step <= action_duration or parameter != 'NONE:NONE':
@@ -178,9 +185,13 @@ def run_simulation(builders, start_location):
                     execution_contexts[name]['current_state'] = current_safety_process_state
                     execution_contexts[name]['current_rating'] = current_safety_process_rating
                     
-                    independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
-                    if independent_parameter != 'NONE:NONE':
-                        safety_concerns.append(safety_process.safety_concern)
+                    if execution_contexts[name]['is_active']:
+                        independent_parameter = selector.independent_select(execution_contexts[name]['current_rating'])
+                        if independent_parameter != 'NONE:NONE':
+                            safety_concerns.append(safety_process.safety_concern)
+
+                safety_concern_event = utils.get_safety_concern_event(safety_concerns)
+                simulation_results[safety_concern_event]['instances'] += 1
 
                 active_execution_contexts = [name for name in execution_contexts if execution_contexts[name]['is_active']]
                 ratings = [execution_contexts[name]['current_rating'] for name in active_execution_contexts]
@@ -189,6 +200,7 @@ def run_simulation(builders, start_location):
                 parameter = selector.select(ratings, IS_BASELINE) if len(ratings) > 0 else "NONE:NONE"
                 simulation_results['overhead_duration'].append(time.time() - start_time)
 
+                severities = []
                 for index, name in enumerate(execution_contexts):
                     safety_process = execution_contexts[name]['instance']                
                     severity = safety_process.severity_function(execution_contexts[name]['current_state'], parameter)
@@ -196,14 +208,15 @@ def run_simulation(builders, start_location):
                     interference = safety_process.interference_function(execution_contexts[name]['current_state'], parameter)
                     simulation_results[f'interference'][index] += interference
 
-                    safety_concern_event = utils.get_safety_concern_event(safety_concerns)
-                    simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
+                    # if execution_contexts[name]['is_active']:
+                    #     simulation_results[safety_concern_event][f'severity_level_{severity}'] += 1
+                    if execution_contexts[name]['is_active']:
+                        severities.append(severity)
+
+                simulation_results[safety_concern_event][f'severity_level_{max(severities)}'] += 1
 
                 VISUALIZER.print_safety_process_information(step, execution_contexts, parameter, selector)
-
-                simulation_results['steps'] += 1
                 step += 1
-
                 time.sleep(SAFETY_PROCESS_SLEEP_DURATION)
 
         current_state = utils.get_successor_state(current_state, current_action, task_process)
@@ -232,8 +245,7 @@ def main():
                 'severity_level_2': [0] * SAFETY_PROCESS_COUNT,
                 'severity_level_1': [0] * SAFETY_PROCESS_COUNT,
                 'interference': [0] * SAFETY_PROCESS_COUNT,
-                'overhead_duration': [],
-                'steps': 0
+                'overhead_duration': []
             }
 
             for safety_concern_event in SAFETY_CONCERN_EVENTS:
@@ -242,40 +254,34 @@ def main():
                     'severity_level_4': 0,
                     'severity_level_3': 0,
                     'severity_level_2': 0,
-                    'severity_level_1': 0
+                    'severity_level_1': 0,
+                    'instances': 0
                 }
 
-            # for seed in [26, 63, 47, 83, 25, 55, 25, 66, 78, 45]:
-            random.seed(10)
-            for start_location in START_LOCATIONS:
-                simulation_results = run_simulation(experiment[name], start_location)
+            for seed in range(0, 20):
+                random.seed(seed)
+                for start_location in START_LOCATIONS:
+                    simulation_results = run_simulation(experiment[name], start_location)
 
-                for key in experiment_results:
-                    if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
-                        for index in range(SAFETY_PROCESS_COUNT):
-                            experiment_results[key][index] += simulation_results[key][index]
+                    for key in experiment_results:
+                        if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
+                            for index in range(SAFETY_PROCESS_COUNT):
+                                experiment_results[key][index] += simulation_results[key][index]
 
-                    if key in ['overhead_duration']:
-                        experiment_results[key].extend(simulation_results[key])
+                        if key in ['overhead_duration']:
+                            experiment_results[key].extend(simulation_results[key])
 
-                    if key in ['steps']:
-                        experiment_results['steps'] += simulation_results['steps']
-
-                    if key in SAFETY_CONCERN_EVENTS:
-                        for metric in experiment_results[key]:
-                            experiment_results[key][metric] += simulation_results[key][metric]
+                        if key in SAFETY_CONCERN_EVENTS:
+                            for metric in experiment_results[key]:
+                                experiment_results[key][metric] += simulation_results[key][metric]
 
             fudge = random.uniform(0.7, 1.3)
 
             # normalizers = {}
             # for safety_concern_event in SAFETY_CONCERN_EVENTS:
-            #     normalizers[safety_concern_event] = experiment_results[safety_concern_event]['severity_level_1']
-
-            normalizers = {}
-            for safety_concern_event in SAFETY_CONCERN_EVENTS:
-                normalizers[safety_concern_event] = 0
-                for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
-                    normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
+            #     normalizers[safety_concern_event] = 0
+            #     for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
+            #         normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
 
             for key in experiment_results:
                 if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
@@ -283,20 +289,10 @@ def main():
                         experiment_results[key][index] /= len(START_LOCATIONS)
 
                 if key in SAFETY_CONCERN_EVENTS:
-                    for metric in experiment_results[key]:
-                        if normalizers[key] > 0:
-                            experiment_results[key][metric] /= normalizers[key]
-
-            # normalizers = {}
-            # for safety_concern_event in SAFETY_CONCERN_EVENTS:
-            #     normalizers[safety_concern_event] = 0
-            #     for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2']:
-            #         normalizers[safety_concern_event] += experiment_results[safety_concern_event][metric]
-
-            # for key in SAFETY_CONCERN_EVENTS:
-            #     for metric in experiment_results[key]:
-            #         if normalizers[key] > 0:
-            #             experiment_results[key][metric] /= normalizers[key]
+                    for metric in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1']:
+                        # if normalizers[key] > 0:
+                            # experiment_results[key][metric] /= normalizers[key]
+                        experiment_results[key][metric] /= experiment_results[key]['instances']
             
             for index in range(SAFETY_PROCESS_COUNT):
                 experiment_results['interference'][index] *= fudge
@@ -305,9 +301,7 @@ def main():
 
             logging.info("Resolved conflicts in [%.2e +/- %.2e] seconds", statistics.mean(experiment_results['overhead_duration']), sem(experiment_results['overhead_duration']))
 
-            title = 'Baseline Approach' if IS_BASELINE else 'Proposed Approach'
-            VISUALIZER.print_header(f"{title} Safety Analysis" )
-            VISUALIZER.print_safety_concern_events(SAFETY_CONCERN_EVENTS, experiment_results)
+            VISUALIZER.print_safety_concern_events(SAFETY_CONCERN_EVENTS, IS_BASELINE, experiment_results)
 
         plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
         small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
