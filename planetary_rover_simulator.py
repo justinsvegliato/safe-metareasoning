@@ -49,7 +49,6 @@ SAFETY_PROCESS_SLEEP_DURATION = 0
 MINIMUM_ACTION_DURATION = 100
 MAXIMUM_ACTION_DURATION = 200
 
-IS_BASELINE = False
 VISUALIZER = Visualizer(is_verbose=False)
 
 EXPERIMENTS = [
@@ -253,21 +252,23 @@ def main():
                         'severity_level_1': 0,
                         'instances': 0
                     }
+                
+                for i in range(50):
+                    random.seed(50)
+                    for start_location in START_LOCATIONS:
+                        simulation_results = run_simulation(experiment[name], start_location, is_baseline)
 
-                for start_location in START_LOCATIONS:
-                    simulation_results = run_simulation(experiment[name], start_location, is_baseline)
+                        for key in experiment_results:
+                            if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
+                                for index in range(SAFETY_PROCESS_COUNT):
+                                    experiment_results[key][index] += simulation_results[key][index]
 
-                    for key in experiment_results:
-                        if key in ['severity_level_5', 'severity_level_4', 'severity_level_3', 'severity_level_2', 'severity_level_1', 'interference']:
-                            for index in range(SAFETY_PROCESS_COUNT):
-                                experiment_results[key][index] += simulation_results[key][index]
+                            if key in ['overhead_duration']:
+                                experiment_results[key].extend(simulation_results[key])
 
-                        if key in ['overhead_duration']:
-                            experiment_results[key].extend(simulation_results[key])
-
-                        if key in SAFETY_CONCERN_EVENTS:
-                            for metric in experiment_results[key]:
-                                experiment_results[key][metric] += simulation_results[key][metric]
+                            if key in SAFETY_CONCERN_EVENTS:
+                                for metric in experiment_results[key]:
+                                    experiment_results[key][metric] += simulation_results[key][metric]
 
                 fudge = random.uniform(0.7, 1.3)
 
