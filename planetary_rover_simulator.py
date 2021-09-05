@@ -253,8 +253,8 @@ def main():
                         'instances': 0
                     }
                 
-                for i in range(50):
-                    random.seed(50)
+                for i in range(0, 50):
+                    random.seed(i)
                     for start_location in START_LOCATIONS:
                         simulation_results = run_simulation(experiment[name], start_location, is_baseline)
 
@@ -293,8 +293,8 @@ def main():
         utils.save_plot_data('baseline_approach', experiment_results_container[0])
         utils.save_plot_data('proposed_approach', experiment_results_container[1])
 
-        # plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
-        # small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
+        plot_specification = utils.get_plot_specification(experiment_results_container, SAFETY_PROCESS_COUNT)
+        small_plotter.plot(plot_specification, experiment['ticks'], experiment['id'])
 
 
 if __name__ == '__main__':
