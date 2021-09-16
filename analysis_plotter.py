@@ -22,6 +22,8 @@ def plot(nothing_results, baseline_results, proposed_results):
         plt.xticks([0, 1, 2, 3, 4], ('$\ell = 5$', '$\ell = 4$', '$\ell = 3$', '$\ell = 2$', '$\ell = 1$'))
         plt.yticks([0, 20, 40, 60, 80, 100], ('0.0', '0.2', '0.4', '0.6', '0.8', '1.0'))
 
+        plt.ylabel('$\Pr(\ell)$')
+
         axes = plt.gca()
         axes.set_ylim([-7, 107])
 
